@@ -129,6 +129,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\Scripts\TH.dialog.js" />
+    <Content Include="Resources\Scripts\TH.js" />
     <Content Include="Resources\Styles\bootstrap-theme.css" />
     <Content Include="Resources\Styles\bootstrap-theme.min.css" />
     <Content Include="Resources\Styles\bootstrap.css" />

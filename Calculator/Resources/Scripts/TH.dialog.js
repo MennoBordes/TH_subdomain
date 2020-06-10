@@ -68,7 +68,7 @@ var DialogSystem = (function ($) {
         h += '<div id="' + _ID_MAIN + '">';
         h += '<div id="' + _ID_OVERLAY + '"></div>';
         h += '<div id="' + _ID_LOADER + '" class="dialog-loader">';
-        h += '<div data-hook="preview-loader" class="mx-preview-loader"></div>';
+        h += '<div data-hook="preview-loader" class="th-preview-loader"></div>';
         h += '<div id="' + _ID_LOADERTEXT + '"></div>';
         h += '</div>';
 
@@ -297,7 +297,7 @@ var DialogSystem = (function ($) {
 
                 ds.loader({ text: _ajax.text });
 
-                MX.ajax.postJSON({
+                TH.ajax.postJSON({
                     url: _ajax.url,
                     data: _ajax.data,
                     success: function (response) {
@@ -930,7 +930,7 @@ var DialogSystem = (function ($) {
 
                 var _ajax = options.ajax;
 
-                MX.ajax.postJSON({
+                TH.ajax.postJSON({
                     url: _ajax.url,
                     data: _ajax.data,
                     success: function (response) {

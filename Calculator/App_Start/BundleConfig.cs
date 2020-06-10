@@ -27,7 +27,8 @@ namespace Calculator
                       "~/Resources/Styles/site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/TH").Include(
-                        "~/Resources/Scripts/TH.dialog.js"));
+                        "~/Resources/Scripts/TH.dialog.js",
+                        "~/Resources/Scripts/TH.js"));
         }
     }
 }
