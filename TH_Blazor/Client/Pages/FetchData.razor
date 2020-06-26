@@ -1,0 +1,82 @@
+@page "/fetchdata"
+@using TH_Blazor.Shared
+@using TH_Blazor.Shared.Models
+@inject HttpClient Http
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h1>Peoples</h1>
+
+@if (peoples is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Date of Birth</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var people in peoples)
+            {
+                <tr>
+                    <td>@people.Id</td>
+                    <td>@people.FirstName</td>
+                    <td>@people.LastName</td>
+                    <td>@people.DateOfBirth</td>
+                    <td>@people.EmailAddress</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private WeatherForecast[] forecasts;
+    private PeopleModel[] peoples;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        peoples = await Http.GetFromJsonAsync<PeopleModel[]>("api/people");
+    }
+
+}
