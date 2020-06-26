@@ -7,95 +7,102 @@
 
 @inject IKozijnController _db 
 
-<SfButton @onclick="@openDialogBtnClick">Raamkozijn samenstellen</SfButton>
-<SfDialog Width="750px" MinHeight="450px" @bind-Visible="@isVisible" IsModal="true" ShowCloseIcon="true">
-    <DialogTemplates>
-        <Header>
-            <SfButton @onclick="@(() => GoToStep(1))">Stap 1</SfButton>
-            <SfButton @onclick="@(() => GoToStep(2))">Stap 2</SfButton>
-            <SfButton @onclick="@(() => GoToStep(3))">Stap 3</SfButton>
-            <SfButton @onclick="@(() => GoToStep(4))">Stap 4</SfButton>
-        </Header>
-        <Content>
-            @if (!Loading())
-            {
+@if (!Loading())
+{
+    <SfButton @onclick="@openDialogBtnClick">Raamkozijn samenstellen</SfButton>
+    <SfDialog Width="750px" MinHeight="450px" @bind-Visible="@isVisible" IsModal="true" ShowCloseIcon="true">
+        <DialogTemplates>
+            <Header>
+                @*<SfButton @onclick="@(() => GoToStep(1))">Stap 1</SfButton>
+                <SfButton @onclick="@(() => GoToStep(2))">Stap 2</SfButton>
+                <SfButton @onclick="@(() => GoToStep(3))">Stap 3</SfButton>
+                <SfButton @onclick="@(() => GoToStep(4))">Stap 4</SfButton>*@
                 <div class="card-title">
-                    <h1>Stap @StepId</h1>
-                    <h4>@kozijnStappen[StepId - 1].Description</h4>
+                    <span>Stap @(StepId): </span>
+                    <span>@kozijnStappen[StepId-1].Description</span>
                 </div>
-                <div class="add-to-cart-form">
-                    <div class="left">
-                        @if (StepId == 1)
-                        {
-                            <div class="sizing">
-                                <h4>Maatvoering</h4>
-                                <div class="d-flex flex-column mb-3">
-                                    <input @bind-value="@width_mm" @oninput="@((e) => { width_mm = (string)e.Value; })" type="number" placeholder="Breedte (in mm)" />
-                                    <label>Voer een getal tussen 950 en 2600 in</label>
+
+            </Header>
+            <Content>
+                @if (!Loading())
+                {
+                    <div class="card-title">
+                        <h1>Stap @StepId</h1>
+                        <h4>@kozijnStappen[StepId - 1].Description</h4>
+                    </div>
+                    <div class="add-to-cart-form">
+                        <div class="left">
+                            @if (StepId == 1)
+                            {
+                                <div class="sizing">
+                                    <div class="d-flex flex-column mb-3">
+                                        <input @bind-value="@width_mm" @oninput="@((e) => { width_mm = (string)e.Value; })" type="number" placeholder="Breedte (in mm)" />
+                                        <label>Voer een getal tussen 950 en 2600 in</label>
+                                    </div>
+                                    <div class="d-flex flex-column mb-3">
+                                        <input @bind-value="@height_mm" @oninput="@((e) => { height_mm = (string)e.Value; })" type="number" placeholder="Hoogte (in mm)" />
+                                        <label>Voer een getal tussen 700 en 1800 in</label>
+                                    </div>
+                                    <div class="d-flex flex-column mb-3">
+                                        <h4>Kleur kozijn</h4>
+                                        @if (kozijnKleuren is null)
+                                        {
+                                            <p><em>Loading...</em></p>
+                                        }
+                                        else
+                                        {
+                                            <SfDropDownList TValue="int" TItem="KozijnKleurModel"
+                                                            DataSource="@kozijnKleuren" @bind-Value="@kozijnKleurSelect">
+                                                <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
+                                            </SfDropDownList>
+                                        }
+                                    </div>
                                 </div>
-                                <div class="d-flex flex-column mb-3">
-                                    <input @bind-value="@height_mm" @oninput="@((e) => { height_mm = (string)e.Value; })" type="number" placeholder="Hoogte (in mm)" />
-                                    <label>Voer een getal tussen 700 en 1800 in</label>
+                            }
+                            else if (StepId == 2)
+                            {
+                                <div class="">
+
                                 </div>
-                                <div class="d-flex flex-column mb-3">
-                                    <h4>Kleur kozijn</h4>
-                                    @if (kozijnKleuren is null)
-                                    {
-                                        <p><em>Loading...</em></p>
-                                    }
-                                    else
-                                    {
-                                        <SfDropDownList TValue="int" TItem="KozijnKleurModel"
-                                                        DataSource="@kozijnKleuren" @bind-Value="@kozijnKleurSelect">
-                                            <DropDownListFieldSettings Value="Id" Text="Name"></DropDownListFieldSettings>
-                                        </SfDropDownList>
-                                    }
-                                </div>
-                            </div>
-                        }
-                        else if (StepId == 2)
-                        {
-                            <div class="">
+                            }
+                        </div>
+                        <div class="right">
+                            <div class="product-img">
 
                             </div>
-                        }
-                    </div>
-                    <div class="right">
-                        <div class="product-img">
-
-                        </div>
-                        <div class="step-buttons">
-                            <div class="previous-step-btn">
-                                @if (StepId > 1)
-                                {
-                                    <SfButton @onclick="(() => GoToStep(StepId - 1))">Terug</SfButton>
-                                }
-                            </div>
-                            <div class="next-step-btn @(StepId == 1 ? "full-width" : "")">
-                                @if (StepId < kozijnStappen.Count)
-                                {
-                                    <SfButton @onclick="(() => GoToStep(StepId + 1))">Ga naar stap @(StepId + 1)</SfButton>
-                                }
-                            </div>
-                            <div class="add-to-cart-btn">
-                                @if (StepId == kozijnStappen.Count)
-                                {
-                                    <SfButton>Toevoegen</SfButton>
-                                }
+                            <div class="step-buttons">
+                                <div class="previous-step-btn">
+                                    @if (StepId > 1)
+                                    {
+                                        <SfButton @onclick="(() => GoToStep(StepId - 1))">Terug</SfButton>
+                                    }
+                                </div>
+                                <div class="next-step-btn @(StepId == 1 ? "full-width" : "")">
+                                    @if (StepId < kozijnStappen.Count)
+                                    {
+                                        <SfButton @onclick="(() => GoToStep(StepId + 1))">Ga naar stap @(StepId + 1)</SfButton>
+                                    }
+                                </div>
+                                <div class="add-to-cart-btn">
+                                    @if (StepId == kozijnStappen.Count)
+                                    {
+                                        <SfButton>Toevoegen</SfButton>
+                                    }
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
 
 
                 }
-            </Content>
-        <FooterTemplate>
-            Footer
-        </FooterTemplate>
-    </DialogTemplates>
-</SfDialog>
+                </Content>
+            <FooterTemplate>
+                Footer
+            </FooterTemplate>
+        </DialogTemplates>
+    </SfDialog>
+}
                 
 <style>
     .add-to-cart-form{
@@ -129,7 +136,6 @@
     .right .step-buttons .next-step-btn.full-width{
         width: 90%
     }
-
 
     .sizing input{
         font-size: 22px!important;
