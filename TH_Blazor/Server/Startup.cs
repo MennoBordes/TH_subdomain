@@ -24,7 +24,14 @@ namespace TH_Blazor.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options => options.UseMySql(Configuration.GetConnectionString("Default")));
+#if RELEASE
+            string connString = "Release";
+#elif LAPTOP
+            string connString = "Laptop";
+#else
+            string connString = "Default";
+#endif
+            services.AddDbContext<DataContext>(options => options.UseMySql(Configuration.GetConnectionString(connString)));
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
