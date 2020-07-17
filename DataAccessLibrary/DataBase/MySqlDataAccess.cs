@@ -14,8 +14,13 @@ namespace DataAccessLibrary.DataBase
     public class MySqlDataAccess : IMySqlDataAccess
     {
         private readonly IConfiguration _config;
-
+#if RELEASE
+        public string ConnectionStringName { get; set; } = "Release";
+#elif LAPTOP
+        public string ConnectionStringName { get; set; } = "Laptop";
+#else
         public string ConnectionStringName { get; set; } = "Default";
+#endif
 
         public MySqlDataAccess(IConfiguration config)
         {
