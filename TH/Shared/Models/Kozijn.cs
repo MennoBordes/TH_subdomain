@@ -14,36 +14,44 @@ namespace TH.Shared.Models
         /// <summary> Default height of the kozijn. </summary>
         public const int DefaultHeight = 1000;
 
-        [Key, Column("Id")]
         /// <summary> The unique identifier. </summary>
+        [Key, Column("Id")]
         public int Id { get; set; }
 
-        [Column("Name")]
         /// <summary> The name of the model. </summary>
+        [Column("Name")]
         public string Name { get; set; }
 
-        [Column("Description")]
         /// <summary> The description of the model. </summary>
+        [Column("Description")]
         public string Description { get; set; }
 
-        [Column("Width")]
         /// <summary> The width of the kozijn. </summary>
+        [Column("Width")]
         public int Width { get; set; }
 
-        [Column("Height")]
         /// <summary> The height of the kozijn. </summary>
+        [Column("Height")]
         public int Height { get; set; }
 
-        [Column("BasePrice")]
         /// <summary> The base price of the model. </summary>
+        [Column("BasePrice")]
         public decimal BasePrice { get; set; }
 
 
         // === Helpers
 
-        [NotMapped]
         /// <summary> The houtsoort. </summary>
+        [NotMapped]
         public HoutSoort HoutSoort { get; set; }
+
+        /// <summary> The kozijn kleur. </summary>
+        [NotMapped]
+        public KozijnKleur KozijnKleur { get; set; }
+
+        /// <summary> The possible steps. </summary>
+        [NotMapped]
+        public KozijnStappen KozijnStappen { get; set; }
 
 
         // === Helper functions

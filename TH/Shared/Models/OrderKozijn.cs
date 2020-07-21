@@ -13,6 +13,7 @@ namespace TH.Shared.Models
         /// <summary> The primary key. </summary>
         public int Id { get; set; }
 
+        /// <summary> The parent Id </summary>
         [ForeignKey("Order"), Column("Order_Id")]
         public int OrderId { get; set; }
         

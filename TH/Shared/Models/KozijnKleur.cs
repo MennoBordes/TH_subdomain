@@ -9,12 +9,12 @@ namespace TH.Shared.Models
     [Table("kozijn_kleur")]
     public class KozijnKleur
     {
-        [Key, Column("Id")]
         /// <summary> The unique identifier of the kozijn kleur. </summary>
+        [Key, Column("Id")]
         public int Id { get; set; }
 
-        [Column("Name")]
         /// <summary> The name of the kozijn kleur. </summary>
+        [Column("Name")]
         public string Name { get; set; }
     }
 }

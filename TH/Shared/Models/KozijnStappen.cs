@@ -9,20 +9,20 @@ namespace TH.Shared.Models
     [Table("kozijn_stappen")]
     public class KozijnStappen
     {
-        [Key, Column("Id")]
         /// <summary> THe unique identifier of the kozijnStap. </summary>
+        [Key, Column("Id")]
         public int Id { get; set; }
 
-        [Column("Type")]
         /// <summary> The type of step. </summary>
+        [Column("Type")]
         public int StepType { get; set; }
 
-        [Column("Step")]
         /// <summary> The Step index. </summary>
+        [Column("Step")]
         public int StepCount { get; set; }
 
-        [Column("Description")]
         /// <summary> The description of the step. </summary>
+        [Column("Description")]
         public string Description { get; set; }
 
         /// <summary> The possible types of steps. </summary>

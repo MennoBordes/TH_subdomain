@@ -9,16 +9,16 @@ namespace TH.Shared.Models
     [Table("hout_soort")]
     public class HoutSoort
     {
-        [Key, Column("Id")]
         /// <summary> The unique identifier. </summary>
+        [Key, Column("Id")]
         public int Id { get; set; }
 
-        [Column("Name")]
         /// <summary> The name of the houtsoort. </summary>
+        [Column("Name")]
         public string Name { get; set; }
 
-        [Column("Price")]
         /// <summary> The price per (100mm) (10cm) (0.1m) </summary>
+        [Column("Price")]
         public decimal Price { get; set; }
 
 

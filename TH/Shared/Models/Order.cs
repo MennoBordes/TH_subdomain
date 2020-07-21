@@ -9,33 +9,34 @@ namespace TH.Shared.Models
     [Table("order")]
     public class Order
     {
-        [Key, Column("Id")]
         /// <summary> The unique identifier of the order. </summary>
+        [Key, Column("Id")]
         public int Id { get; set; }
 
-        [Column("Project_Name")]
         /// <summary> The name of the project. </summary>
+        [Column("Project_Name")]
         public string ProjectName { get; set; }
 
-        [Column("Created_Date")]
         /// <summary> The creation date of the order. </summary>
+        [Column("Created_Date")]
         public DateTime CreatedDate { get; set; }
 
-        [NotMapped]
+        // === Helpers
+
         /// <summary> A list of the kozijnen in the order. </summary>
+        [NotMapped]
         public List<OrderKozijn> OrderKozijn { get; set; }
 
-        // === Helpers
-        [NotMapped]
         /// <summary> A list of the kozijnen to order. </summary>
+        [NotMapped]
         public List<Kozijn> Kozijnen { get; set; }
 
-        [NotMapped]
         /// <summary> A list of the erkers to order. </summary>
+        [NotMapped]
         public List<Erker> Erkers { get; set; }
 
-        [NotMapped]
         /// <summary> A list of the windows to order. </summary>
+        [NotMapped]
         public List<Window> Windows { get; set; }
 
         // === Helper functions

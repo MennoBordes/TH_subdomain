@@ -9,26 +9,26 @@ namespace TH.Shared.Models
     [Table("windows")]
     public class Window
     {
-        [Key, Column("Id")]
         /// <summary> The unique identifier of the window. </summary>
+        [Key, Column("Id")]
         public int Id { get; set; }
 
-        [Column("Name")]
         /// <summary> The name of the window. </summary>
+        [Column("Name")]
         public string Name { get; set; }
 
-        [Column("Description")]
         /// <summary> The description of the window. </summary>
+        [Column("Description")]
         public string Description { get; set; }
 
-        [Column("Status")]
         /// <summary> The status of the window. </summary>
+        [Column("Status")]
         public int Status { get; set; }
 
         // Helpers
 
-        [NotMapped]
         /// <summary> The options present for this window. </summary>
+        [NotMapped]
         public List<WindowOption> WindowOptions { get; set; }
     }
 }

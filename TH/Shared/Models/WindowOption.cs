@@ -9,20 +9,20 @@ namespace TH.Shared.Models
     [Table("window_options")]
     public class WindowOption
     {
-        [Key, Column("Id")]
         /// <summary> The unique identifier. </summary>
+        [Key, Column("Id")]
         public int Id { get; set; }
 
-        [Column("Name")]
         /// <summary> The name of the option. </summary>
+        [Column("Name")]
         public string Name { get; set; }
 
-        [Column("Description")]
         /// <summary> The description of the option </summary>
+        [Column("Description")]
         public string Description { get; set; }
 
-        [Column("Base_Price")]
         /// <summary> The base price of the option. </summary>
+        [Column("Base_Price")]
         public decimal BasePrice { get; set; }
 
 

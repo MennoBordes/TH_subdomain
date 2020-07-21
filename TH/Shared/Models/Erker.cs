@@ -9,11 +9,12 @@ namespace TH.Shared.Models
     [Table("erker")]
     public class Erker
     {
-        [Key, Column("Id")]
         /// <summary> The unique identifier. </summary>
+        [Key, Column("Id")]
         public int Id { get; set; }
-        [Column("Name")]
+
         /// <summary> The name. </summary>
+        [Column("Name")]
         public string Name { get; set; }
     }
 }
