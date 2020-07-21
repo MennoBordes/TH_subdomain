@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace TH.Server.Database.DataRetrieval
+namespace TH.Server.Base.Database.DataRetrieval
 {
     public class PaginationSpecifier
     {

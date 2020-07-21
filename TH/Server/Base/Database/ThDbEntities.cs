@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TH.Shared.Models;
 
-namespace TH.Server.Database
+namespace TH.Server.Base.Database
 {
     public class ThDbEntities : DbContext
     {
@@ -37,6 +37,11 @@ namespace TH.Server.Database
         public DbSet<Order> Order { get; set; }
 
         /// <summary>
+        /// The Order kozijn DB table.
+        /// </summary>
+        public DbSet<OrderKozijn> OrderKozijn { get; set; }
+
+        /// <summary>
         /// The Erker DB table.
         /// </summary>
         public DbSet<Erker> Erker { get; set; }
@@ -55,5 +60,7 @@ namespace TH.Server.Database
         /// The WindowOption DB table.
         /// </summary>
         public DbSet<WindowOption> WindowOption { get; set; }
+
+        
     }
 }

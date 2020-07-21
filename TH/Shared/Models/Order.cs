@@ -21,6 +21,10 @@ namespace TH.Shared.Models
         /// <summary> The creation date of the order. </summary>
         public DateTime CreatedDate { get; set; }
 
+        [NotMapped]
+        /// <summary> A list of the kozijnen in the order. </summary>
+        public List<OrderKozijn> OrderKozijn { get; set; }
+
         // === Helpers
         [NotMapped]
         /// <summary> A list of the kozijnen to order. </summary>

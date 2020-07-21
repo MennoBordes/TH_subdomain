@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TH.Server.Database;
+using TH.Server.Base.Database;
 using TH.Shared.Models;
 
 namespace TH.Server.Controllers
