@@ -51,7 +51,7 @@ namespace TH.Server.Modules.Orders
 
             if (ids != null)
             {
-                query = query.Where(t => ids.Contains(t.Id));
+                query = query.Where(x => ids.Contains(x.Id));
             }
 
             List<Order> orders = await query.ToListAsync();
