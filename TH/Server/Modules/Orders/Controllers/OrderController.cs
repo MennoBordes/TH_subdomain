@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TH.Server.Base.Database;
 using TH.Server.Base.Database.DataRetrieval;
-using TH.Server.Services;
+using TH.Server.Modules.Orders;
 using TH.Shared.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace TH.Server.Controllers.Orders
+namespace TH.Server.Modules.Orders.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

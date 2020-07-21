@@ -8,7 +8,7 @@ using TH.Server.Base.Database;
 using TH.Server.Base.Extensions;
 using TH.Shared.Models;
 
-namespace TH.Server.Services
+namespace TH.Server.Modules.Orders
 {
     public class OrderManager
     {

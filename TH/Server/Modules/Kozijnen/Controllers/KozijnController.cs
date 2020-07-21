@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using TH.Server.Base.Database;
 using TH.Shared.Models;
 
-namespace TH.Server.Controllers
+namespace TH.Server.Modules.Kozijnen.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TH.Server.Base.Database;
 using TH.Shared.Models;
 
-namespace TH.Server.Controllers
+namespace TH.Server.Modules.Peoples.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
