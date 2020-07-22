@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TH.Server.Base.Database;
-using TH.Shared.Models;
+//using TH.Shared.Base.Database;
+using TH.Shared.Modules.People.Entities;
 
 namespace TH.Server.Modules.Peoples.Controllers
 {

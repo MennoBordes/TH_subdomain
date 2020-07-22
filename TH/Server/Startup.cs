@@ -6,7 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
-using TH.Server.Base.Database;
+//using TH.Server.Base.Database;
+using TH.Shared.Base.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace TH.Server

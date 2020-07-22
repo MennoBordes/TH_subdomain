@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TH.Shared.Models
+namespace TH.Shared.Modules.People.Entities
 {
     [Table("people")]
     public class People

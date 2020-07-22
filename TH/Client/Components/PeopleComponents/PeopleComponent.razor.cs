@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using TH.Shared.Models;
+using TH.Shared.Modules.People.Entities;
 
 namespace TH.Client.Components.PeopleComponents
 {
