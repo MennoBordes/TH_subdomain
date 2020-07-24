@@ -12,12 +12,9 @@ namespace TH2.Server.Controllers
     [ApiController]
     public class PeopleController : ControllerBase
     {
-        private readonly ThDbEntities _context;
-
-        public PeopleController(ThDbEntities context)
+        public PeopleController()
         {
-            _context = context;
-            pMan = new PeopleManager(context);
+            pMan = new PeopleManager();
         }
         PeopleManager pMan;
 
@@ -26,14 +23,12 @@ namespace TH2.Server.Controllers
         {
             List<People> res = pMan.GetPeoples();
             return res;
-            //return _context.People.ToList();
         }
 
         [HttpGet("GetPerson/{id}")]
         public ActionResult<People> GetPeople(int id)
         {
             People people = pMan.GetPerson(id);
-            //People people = await _context.People.FindAsync(id);
 
             if (people == null)
             {

@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+using THTools.ORM;
+using THTools.ORM.Common;
 
 namespace TH2.Shared.Modules.People.Entities
 {
-    [Table("people")]
-    public class People
+    [DbTable("people")]
+    public class People : Entity
     {
-        [Column("Id")]
+        [DbPrimaryKey, DbColumn]
         public int Id { get; set; }
+        [DbColumn]
         public string FirstName { get; set; }
+        [DbColumn]
         public string LastName { get; set; }
+        [DbColumn]
         public DateTime DateOfBirth { get; set; }
+        [DbColumn]
         public string EmailAddress { get; set; }
     }
 }

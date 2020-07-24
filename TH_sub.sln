@@ -18,11 +18,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TH.Client", "TH\Client\TH.C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TH.Shared", "TH\Shared\TH.Shared.csproj", "{CDD896D6-6F50-4ECB-82D1-B3C18D851B4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH2.Server", "TH2\Server\TH2.Server.csproj", "{71CE9F27-B502-4E45-9146-7170589AF8FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TH2.Server", "TH2\Server\TH2.Server.csproj", "{71CE9F27-B502-4E45-9146-7170589AF8FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH2.Client", "TH2\Client\TH2.Client.csproj", "{D8CF8AA6-B214-412F-9408-770286C0EF06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TH2.Client", "TH2\Client\TH2.Client.csproj", "{D8CF8AA6-B214-412F-9408-770286C0EF06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH2.Shared", "TH2\Shared\TH2.Shared.csproj", "{B5A5E336-91BA-4EBA-A523-A8A55EEF450C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TH2.Shared", "TH2\Shared\TH2.Shared.csproj", "{B5A5E336-91BA-4EBA-A523-A8A55EEF450C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

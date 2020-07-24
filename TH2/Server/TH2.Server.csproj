@@ -7,12 +7,17 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="3.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Client\TH2.Client.csproj" />
     <ProjectReference Include="..\Shared\TH2.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="THTools.ORM">
+      <HintPath>..\..\Libraries\THTools.ORM\THTools.ORM.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 

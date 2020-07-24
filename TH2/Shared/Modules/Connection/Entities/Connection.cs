@@ -1,33 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using THTools.ORM;
+using THTools.ORM.Common;
 
 namespace TH2.Shared.Modules.Connection.Entities
 {
-    [Table("connection")]
-    public class Connection
+    [DbTable("connection")]
+    public class Connection : Entity
     {
-        [Key, Column("Id")]
+        [DbPrimaryKey, DbColumn("Id")]
         public int Id { get; set; }
 
-        [Column("Type")]
-        public EType Type { get; set; }
+        [DbColumn("Type")]
+        public int Type { get; set; }
 
-        [Column("Created_At")]
+        [DbColumn("Created_At")]
         public DateTime CreationDate { get; set; }
 
 
         // === Helpers
 
-        [NotMapped]
         public List<ConnectionCorner> Corners { get; set; }
 
-        [NotMapped]
         public List<ConnectionHinge> Hinges { get; set; }
 
-        [NotMapped]
         public List<ConnectionLock> Locks { get; set; }
 
         // === Helper functions
@@ -40,7 +37,7 @@ namespace TH2.Shared.Modules.Connection.Entities
             return cornerPrice + hingePrice + lockPrice;
         }
 
-        public enum EType
+        public enum ConnectionType
         {
             Door = 0,
             Window = 1,

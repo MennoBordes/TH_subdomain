@@ -1,21 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using THTools.ORM;
+using THTools.ORM.Common;
 
 namespace TH2.Shared.Modules.Connection.Entities
 {
-    [Table("Connection_corner")]
-    public class ConnectionCorner
+    [DbTable("Connection_corner")]
+    public class ConnectionCorner : Entity
     {
-        [Key, Column("Id")]
+        [DbPrimaryKey, DbColumn("Id")]
         public int Id { get; set; }
 
-        [ForeignKey("connection"), Column("Id_Connection")]
+        [DbColumn("Id_Connection")]
         public int IdConnection { get; set; }
 
-        [Column("Amount")]
+        [DbColumn("Amount")]
         public int Amount { get; set; }
 
-        [Column("Price_Piece")]
+        [DbColumn("Price_Piece")]
         public decimal PricePiece { get; set; }
 
         // === Helper functions

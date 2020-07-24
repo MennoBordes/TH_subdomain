@@ -4,14 +4,15 @@
     using Entities;
     using System.Collections.Generic;
     using System.Linq;
+    using THTools.ORM;
 
     public class PeopleManager
     {
-        private readonly ThDbEntities _context;
-
-        public PeopleManager(ThDbEntities context)
+        private Repository repository;
+        public Repository Repository { get { return this.repository; } }
+        public PeopleManager()
         {
-            _context = context;
+            this.repository = new Repository();
         }
 
         public People GetPerson(int id)
@@ -21,17 +22,19 @@
                 return null;
 
             // Get
-            People people = _context.People.Where(x => x.Id == id).FirstOrDefault();
-
-            if (people == null)
-                return null;
+            People people = repository.GetEntity<People>(id);
 
             return people;
         }
 
         public List<People> GetPeoples()
         {
-            List<People> peoples = _context.People.ToList();
+            XQuery q = new XQuery()
+                .From<People>()
+                .Where()
+                    .Column<People>(x => x.Id).GreaterThan().Value(0);
+
+            List<People> peoples = repository.GetEntities<People>(q).ToList();
 
             return peoples;
         }

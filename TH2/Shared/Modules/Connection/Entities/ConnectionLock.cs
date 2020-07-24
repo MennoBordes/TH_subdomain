@@ -1,24 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using THTools.ORM;
+using THTools.ORM.Common;
 
 namespace TH2.Shared.Modules.Connection.Entities
 {
-    [Table("connection_lock")]
-    public class ConnectionLock
+    [DbTable("connection_lock")]
+    public class ConnectionLock : Entity
     {
-        [Key, Column("Id")]
+        [DbPrimaryKey, DbColumn("Id")]
         public int Id { get; set; }
 
-        [ForeignKey("connection"), Column("Id_Connection")]
+        [DbColumn("Id_Connection")]
         public int IdConnection { get; set; }
 
-        [Column("Type")]
+        [DbColumn("Type")]
         public int Type { get; set; }
 
-        [Column("Name")]
+        [DbColumn("Name")]
         public string Name { get; set; }
 
-        [Column("Price")]
+        [DbColumn("Price")]
         public decimal Price { get; set; }
 
         // === Helper functions
