@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using TH2.Shared.Base.Database;
-using TH2.Shared.Modules.People;
-using TH2.Shared.Modules.People.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TH2.Server.Controllers
 {
+    using Shared.Modules.People;
+    using Shared.Modules.People.Entities;
+
     [Route("api/[controller]")]
     [ApiController]
     public class PeopleController : ControllerBase

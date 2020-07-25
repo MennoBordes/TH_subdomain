@@ -1,12 +1,11 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
-
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TH2.Server.Modules.Connection
 {
-    using Newtonsoft.Json.Linq;
     using Modules.Base;
     using Shared.Modules.Connection;
     using Shared.Modules.Connection.Entities;
