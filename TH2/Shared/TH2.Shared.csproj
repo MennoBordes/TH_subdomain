@@ -14,11 +14,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Modules\Frame\Entities\" />
-    <Folder Include="Modules\Order\Entities\" />
-    <Folder Include="Modules\Window\Entities\" />
-    <Folder Include="Modules\Wood\Entities\" />
-  </ItemGroup>
-
 </Project>
