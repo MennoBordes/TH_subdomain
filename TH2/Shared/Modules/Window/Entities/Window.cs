@@ -1,10 +1,12 @@
-﻿using THTools.ORM;
+﻿using System;
+using System.Collections.Generic;
+using THTools.ORM;
 using THTools.ORM.Common;
 
 namespace TH2.Shared.Modules.Window.Entities
 {
     using Connection.Entities;
-    using Glass.Entities;
+    using Glass.Entities;    
 
     [DbTable("window")]
     public class Window : Entity
@@ -19,7 +21,8 @@ namespace TH2.Shared.Modules.Window.Entities
         public int IdWindowKind { get; set; }
 
         [DbColumn("Id_Glass")]
-        public int IdGlass { get; set; }
+        [Obsolete]
+        public int? IdGlass { get; set; }
 
         /// <summary> Width in mm. </summary>
         [DbColumn]
@@ -41,7 +44,10 @@ namespace TH2.Shared.Modules.Window.Entities
 
         public WindowKind WindowKind { get; set; }
 
+        [Obsolete]
         public Glass Glass { get; set; }
+
+        public List<WindowGlass> WindowGlasses { get; set; }
 
         //=== Helper functions
 

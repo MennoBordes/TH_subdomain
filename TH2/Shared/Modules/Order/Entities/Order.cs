@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using THTools.ORM;
 using THTools.ORM.Common;
 
@@ -15,5 +16,9 @@ namespace TH2.Shared.Modules.Order.Entities
 
         [DbColumn("Created_Date")]
         public DateTime CreationDate { get; set; }
+
+        // Helpers
+
+        public List<OrderData> OrderDatas { get; set; }
     }
 }

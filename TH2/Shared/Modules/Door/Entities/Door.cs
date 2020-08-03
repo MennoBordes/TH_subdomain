@@ -1,4 +1,6 @@
-﻿using THTools.ORM;
+﻿using System;
+using System.Collections.Generic;
+using THTools.ORM;
 using THTools.ORM.Common;
 
 namespace TH2.Shared.Modules.Door.Entities
@@ -19,6 +21,7 @@ namespace TH2.Shared.Modules.Door.Entities
         public int IdDoorKind { get; set; }
 
         [DbColumn("Id_Glass")]
+        [Obsolete]
         public int? IdGlass { get; set; }
 
         /// <summary> Width in mm. </summary>
@@ -37,16 +40,24 @@ namespace TH2.Shared.Modules.Door.Entities
         public decimal Price { get; set; }
 
         //=== Helpers
+        public List<DoorWood> DoorWoods { get; set; }
+
         public DoorKind DoorKind { get; set; }
 
         public Connection Connection { get; set; }
 
+        [Obsolete]
         public Glass Glass { get; set; }
+
+        public List<DoorGlass> DoorGlasses { get; set; }
+
 
         //=== Helper functions
         public decimal GetPrice()
         {
             decimal totalPrice = 0m;
+            //if (DoorGlasses != null) totalPrice += DoorGlasses.ForEach(x => x.)
+
             if (Glass != null) totalPrice += Glass.GetPrice();
 
             if (Connection != null) totalPrice += Connection.GetPrice();

@@ -22,7 +22,7 @@ namespace TH2.Shared.Modules.Wood.Entities
         [DbColumn]
         public int Length { get; set; }
 
-        [DbColumn]
+        [DbColumn("Price_m")]
         public decimal Price { get; set; }
 
         //=== Helpers
@@ -37,6 +37,13 @@ namespace TH2.Shared.Modules.Wood.Entities
             if(WoodPaintColor != null) totalPrice += WoodPaintColor.GetPrice();
 
             return totalPrice;
+        }
+
+        public enum WoodType
+        {
+            Meranti = 0,
+            Mahonie = 1,
+            Other = 2
         }
     }
 }

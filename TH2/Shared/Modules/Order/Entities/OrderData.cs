@@ -7,8 +7,8 @@ namespace TH2.Shared.Modules.Order.Entities
     using Window.Entities;
     using Frame.Entities;
 
-    [DbTable("order_content")]
-    public class OrderContent : Entity
+    [DbTable("order_data")]
+    public class OrderData : Entity
     {
         [DbPrimaryKey, DbColumn]
         public int Id { get; set; }
@@ -26,6 +26,8 @@ namespace TH2.Shared.Modules.Order.Entities
         public int? IdFrame { get; set; }
 
         //=== Helpers
+        public Order Order { get; set; }
+
         public Door Door { get; set; }
 
         public Window Window { get; set; }

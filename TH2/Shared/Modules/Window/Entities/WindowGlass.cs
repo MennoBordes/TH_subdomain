@@ -4,10 +4,10 @@ using THTools.ORM.Common;
 
 namespace TH2.Shared.Modules.Window.Entities
 {
-    using Wood.Entities;
+    using Glass.Entities;
 
-    [DbTable("window_wood")]
-    public class WindowWood : Entity
+    [DbTable("window_glass")]
+    public class WindowGlass : Entity
     {
         [DbPrimaryKey, DbColumn]
         public int Id { get; set; }
@@ -15,12 +15,12 @@ namespace TH2.Shared.Modules.Window.Entities
         [DbColumn("Id_Window")]
         public int IdWindow { get; set; }
 
-        [DbColumn("Id_Wood")]
-        public int IdWood { get; set; }
+        [DbColumn("Id_Glass")]
+        public int IdGlass { get; set; }
 
         //=== Helpers
         public List<Window> Windows { get; set; }
 
-        public List<Wood> Woods { get; set; }
+        public List<Glass> Glasses { get; set; }
     }
 }
