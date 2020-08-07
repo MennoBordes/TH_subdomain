@@ -19,8 +19,8 @@ namespace TH2.Shared.Modules.Door.Entities
         public int IdWood { get; set; }
 
         //=== Helpers
-        public List<Door> Doors { get; set; }
+        public Door Door { get; set; }
 
-        public List<Wood> Woods { get; set; }
+        public Wood Wood { get; set; }
     }
 }

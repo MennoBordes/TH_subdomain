@@ -7,6 +7,7 @@ namespace TH2.Shared.Modules.Door.Entities
 {
     using Connection.Entities;
     using Glass.Entities;
+    using TH2.Shared.Base.Extensions;
 
     [DbTable("Door")]
     public class Door : Entity
@@ -40,7 +41,6 @@ namespace TH2.Shared.Modules.Door.Entities
         public decimal Price { get; set; }
 
         //=== Helpers
-        public List<DoorWood> DoorWoods { get; set; }
 
         public DoorKind DoorKind { get; set; }
 
@@ -49,6 +49,8 @@ namespace TH2.Shared.Modules.Door.Entities
         [Obsolete]
         public Glass Glass { get; set; }
 
+        public List<DoorWood> DoorWoods { get; set; }
+
         public List<DoorGlass> DoorGlasses { get; set; }
 
 
@@ -56,15 +58,48 @@ namespace TH2.Shared.Modules.Door.Entities
         public decimal GetPrice()
         {
             decimal totalPrice = 0m;
-            //if (DoorGlasses != null) totalPrice += DoorGlasses.ForEach(x => x.)
 
-            if (Glass != null) totalPrice += Glass.GetPrice();
+            totalPrice += GetWoodPrice();
+
+            totalPrice += GetGlassPrice();
 
             if (Connection != null) totalPrice += Connection.GetPrice();
 
             if (DoorKind != null) totalPrice += DoorKind.GetPrice();
 
             return totalPrice;
+        }
+
+        public decimal GetWoodPrice()
+        {
+            decimal price = 0m;
+
+            if (DoorWoods.IsNullOrEmpty())
+                return price;
+
+            foreach (DoorWood doorWood in DoorWoods)
+            {
+                // TODO
+                // price += doorWood.GetPrice();
+            }
+
+            return price;
+        }
+
+        public decimal GetGlassPrice()
+        {
+            decimal price = 0m;
+
+            if (DoorGlasses.IsNullOrEmpty())
+                return price;
+
+            foreach (DoorGlass doorGlass in DoorGlasses)
+            {
+                // TODO
+                // price += doorGlass.GetPrice();
+            }
+
+            return price;
         }
     }
 }

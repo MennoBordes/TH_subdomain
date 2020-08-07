@@ -16,11 +16,11 @@ namespace TH2.Shared.Modules.Door.Entities
         public int IdDoor { get; set; }
 
         [DbColumn("Id_Glass")]
-        public int IdGlass { get; set; }
+        public int? IdGlass { get; set; }
 
         //=== Helpers
-        public List<Door> Doors { get; set; }
+        public Door Door { get; set; }
 
-        public List<Glass> Glasses { get; set; }
+        public Glass Glass { get; set; }
     }
 }
