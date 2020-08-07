@@ -16,12 +16,12 @@ namespace TH2.Shared.Modules.Frame.Entities
         public int IdFrame { get; set; }
 
         [DbColumn("Id_Glass")]
-        public int IdGlass { get; set; }
+        public int? IdGlass { get; set; }
 
         //=== Helpers
 
-        public List<Frame> Frames { get; set; }
+        public Frame Frame { get; set; }
 
-        public List<Glass> Glasses { get; set; }
+        public Glass Glass { get; set; }
     }
 }

@@ -19,8 +19,8 @@ namespace TH2.Shared.Modules.Frame.Entities
         public int IdWood { get; set; }
 
         //=== Helpers
-        public List<Frame> Frames { get; set; }
+        public Frame Frame { get; set; }
 
-        public List<Wood> Woods { get; set; }
+        public Wood Wood { get; set; }
     }
 }

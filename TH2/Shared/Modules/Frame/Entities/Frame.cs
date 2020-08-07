@@ -9,6 +9,7 @@ namespace TH2.Shared.Modules.Frame.Entities
     using Glass.Entities;
     using Door.Entities;
     using Window.Entities;
+    using TH2.Shared.Base.Extensions;
 
     [DbTable("frame")]
     public class Frame: Entity
@@ -62,18 +63,58 @@ namespace TH2.Shared.Modules.Frame.Entities
 
         public List<FrameGlass> FrameGlasses { get; set; }
 
+        public List<FrameWood> FrameWoods { get; set; }
+
         //=== Helper functions
 
         public decimal GetPrice()
         {
             decimal totalPrice = PriceBase;
+
+            totalPrice += GetGlassPrice();
+
+            totalPrice += GetWoodPrice();
+
             if (Connection != null) totalPrice += Connection.GetPrice();
+
             if (FrameSill != null) totalPrice += FrameSill.GetPrice();
-            if (Glass != null) totalPrice += Glass.GetPrice();
+
             if (Window != null) totalPrice += Window.GetPrice();
+
             if (Door != null) totalPrice += Door.GetPrice();
 
             return totalPrice;
+        }
+
+        public decimal GetGlassPrice()
+        {
+            decimal price = 0m;
+
+            if (FrameWoods.IsNullOrEmpty())
+                return price;
+
+            foreach (FrameGlass frameGlass in FrameGlasses)
+            {
+                // TODO
+                // price += frameGlass.GetPrice();
+            }
+
+            return price;
+        } 
+        public decimal GetWoodPrice()
+        {
+            decimal price = 0m;
+
+            if (FrameWoods.IsNullOrEmpty())
+                return price;
+
+            foreach (FrameWood frameWood in FrameWoods)
+            {
+                // TODO
+                // price += frameWood.GetPrice();
+            }
+
+            return price;
         }
     }
 }
