@@ -5,8 +5,9 @@ using THTools.ORM.Common;
 
 namespace TH2.Shared.Modules.Window.Entities
 {
+    using Base.Extensions;
     using Connection.Entities;
-    using Glass.Entities;    
+    using Glass.Entities;
 
     [DbTable("window")]
     public class Window : Entity
@@ -49,16 +50,55 @@ namespace TH2.Shared.Modules.Window.Entities
 
         public List<WindowGlass> WindowGlasses { get; set; }
 
+        public List<WindowWood> WindowWoods { get; set; }
+
         //=== Helper functions
 
         public decimal GetPrice()
         {
             decimal totalPrice = PriceBase;
+
+            totalPrice += GetWoodPrice();
+
+            totalPrice += GetGlassPrice();
+
             if (Connection != null) totalPrice += Connection.GetPrice();
+
             if (WindowKind != null) totalPrice += WindowKind.GetPrice();
-            if (Glass != null) totalPrice += Glass.GetPrice();
 
             return totalPrice;
+        }
+
+        public decimal GetWoodPrice()
+        {
+            decimal price = 0m;
+
+            if (WindowWoods.IsNullOrEmpty())
+                return price;
+
+            foreach (WindowWood windowWood in WindowWoods)
+            {
+                // TODO
+                // price += windowWood.GetPrice();
+            }
+
+            return price;
+        }
+
+        public decimal GetGlassPrice()
+        {
+            decimal price = 0m;
+
+            if (WindowGlasses.IsNullOrEmpty())
+                return price;
+
+            foreach (WindowGlass windowGlass in WindowGlasses)
+            {
+                // TODO
+                // price += windowGlass.GetPrice();
+            }
+
+            return price;
         }
     }
 }
