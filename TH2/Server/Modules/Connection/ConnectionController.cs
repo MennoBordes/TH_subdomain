@@ -14,12 +14,12 @@ namespace TH2.Server.Modules.Connection
     [ApiController]
     public class ConnectionController : BaseController
     {
+        ConnectionManager cMan;
+
         public ConnectionController()
         {
             cMan = new ConnectionManager();
         }
-
-        ConnectionManager cMan;
 
         [HttpGet("GetConnection")]
         public Connection GetConnection([FromBody] JToken json)
@@ -32,8 +32,9 @@ namespace TH2.Server.Modules.Connection
                     locks: false
                 }             
              */
-            
-            if (json["id"]==null) throw new Exception("No Id specified.");
+
+            if (json["id"] == null)
+                throw new Exception("No Id specified.");
 
             int id = json.Value<int>("id");
             bool corners = json.Value<bool>("corners");
