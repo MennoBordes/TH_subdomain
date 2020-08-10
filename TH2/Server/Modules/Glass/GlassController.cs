@@ -1,17 +1,18 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TH2.Server.Modules.Glass
 {
-    using Newtonsoft.Json.Linq;
+    using Base;
     using Shared.Modules.Glass;
     using Shared.Modules.Glass.Entities;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class GlassController : ControllerBase
+    public class GlassController : BaseController
     {
         GlassManager gMan;
 

@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TH2.Server.Modules.Frame
 {
+    using Base
+
     [Route("api/[controller]")]
     [ApiController]
-    public class FrameController : ControllerBase
+    public class FrameController : BaseController
     {
         // GET: api/<FrameController>
         [HttpGet]

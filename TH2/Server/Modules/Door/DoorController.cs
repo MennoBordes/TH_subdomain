@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TH2.Server.Modules.Door
 {
+    using Base;
+
     [Route("api/[controller]")]
     [ApiController]
-    public class DoorController : ControllerBase
+    public class DoorController : BaseController
     {
         // GET: api/<DoorController>
         [HttpGet]

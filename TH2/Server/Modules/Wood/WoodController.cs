@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace TH2.Server.Modules.Wood
 {
-    using Modules.Base;
+    using Base;
     using Shared.Modules.Wood;
     using Shared.Modules.Wood.Entities;
 

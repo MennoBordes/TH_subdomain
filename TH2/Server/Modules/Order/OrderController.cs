@@ -7,13 +7,14 @@ using Newtonsoft.Json.Linq;
 
 namespace TH2.Server.Modules.Order
 {
+    using Base;
     using Shared.Modules.Order;
     using Shared.Modules.Order.Entities;
     using Shared.Modules.Order.Getter;
 
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController : BaseController
     {
         OrderManager oMan;
         public OrderController()

@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TH2.Server.Modules.Window
 {
+    using Base;
+
     [Route("api/[controller]")]
     [ApiController]
-    public class WindowController : ControllerBase
+    public class WindowController : BaseController
     {
         // GET: api/<WindowController>
         [HttpGet]
