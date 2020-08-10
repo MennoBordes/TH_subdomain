@@ -144,7 +144,25 @@ namespace TH2.Shared.Modules.Glass
             if (id < 1)
                 return;
 
+            // Check if any references
             XQuery q = new XQuery()
+                .From<Glass>()
+                .Where()
+                    .Column<Glass>(x => x.IdGlassVentilation).Equals().Value(id);
+
+            List<Glass> glasses = repository.GetEntities<Glass>(q).ToList();
+
+            // If reference present, remove reference
+            if (!glasses.IsNullOrEmpty())
+            {
+                foreach (Glass glass in glasses)
+                {
+                    glass.IdGlassVentilation = (int?)null;
+                }
+                repository.Update(glasses);
+            }
+
+            q = new XQuery()
                 .Delete()
                 .From<GlassVentilation>()
                 .Where()
