@@ -21,6 +21,8 @@ namespace TH2.Server.Modules.Wood
             wMan = new WoodManager();
         }
 
+        #region Wood
+
         [HttpGet("GetWood")]
         public Wood GetWood([FromBody] JToken json)
         {
@@ -61,5 +63,111 @@ namespace TH2.Server.Modules.Wood
 
             return Ok();
         }
+
+        #endregion
+
+        #region WoodKind
+        [HttpGet("GetKind")]
+        public WoodKind GetKind([FromBody] JToken json)
+        {
+            /*
+            Request
+                {
+                    id: 1,
+                    woodpaint: true
+                }             
+            */
+            if (json["id"] == null)
+                throw new Exception("Invalid Id Specified!");
+
+            int id = json.Value<int>("id");
+            bool paint = json.Value<bool>("woodpaint");
+
+            return wMan.GetKind(id, paint);
+        }
+
+        [HttpPost("SaveKind")]
+        public int SaveKind([FromBody] WoodKind kind)
+        {
+            return wMan.SaveKind(kind);
+        }
+
+        [HttpPost("DeleteKind")]
+        public ActionResult DeleteKind([FromBody] WoodKind kind)
+        {
+            if (kind == null || kind.Id < 1)
+                return BadRequest();
+
+            wMan.DeleteKind(kind.Id);
+
+            return Ok();
+        }
+        #endregion
+
+        #region WoodGlassSlat
+        [HttpGet("GetGlassSlat")]
+        public WoodGlassSlat GetGlassSlat([FromBody] JToken json)
+        {
+            /*
+            Request
+                {
+                    id: 1,
+                    woodkind: true
+                }             
+            */
+            if (json["id"] == null)
+                throw new Exception("Invalid Id Specified!");
+
+            int id = json.Value<int>("id");
+            bool kind = json.Value<bool>("woodkind");
+
+            return wMan.GetGlassSlat(id, kind);
+        }
+
+        [HttpPost("SaveGlassSlat")]
+        public int SaveGlassSlat([FromBody] WoodGlassSlat glassSlat)
+        {
+            return wMan.SaveGlassSlat(glassSlat);
+        }
+
+        [HttpPost("DeleteGlassSlat")]
+        public ActionResult DeleteGlassSlat([FromBody] WoodGlassSlat glassSlat)
+        {
+            if (glassSlat == null || glassSlat.Id < 1)
+                return BadRequest();
+
+            wMan.DeleteGlassSlat(glassSlat.Id);
+
+            return Ok();
+        }
+        #endregion
+
+        #region WoodPaintColor
+        [HttpGet("GetPaintColor")]
+        public WoodPaintColor GetPaintColor([FromBody] int id)
+        {
+            if (id < 1)
+                throw new Exception("Invalid Id Specified!");
+
+            return wMan.GetPaintColor(id);
+        }
+
+        [HttpPost("SavePaintColor")]
+        public int SavePaintColor([FromBody] WoodPaintColor paintColor)
+        {
+            return wMan.SavePaintColor(paintColor);
+        }
+
+        [HttpPost("DeletePaintColor")]
+        public ActionResult DeletePaintColor([FromBody] WoodPaintColor paintColor)
+        {
+            if (paintColor == null || paintColor.Id < 1)
+                return BadRequest();
+
+            wMan.DeletePaintColor(paintColor.Id);
+
+            return Ok();
+        }
+        #endregion
     }
 }
