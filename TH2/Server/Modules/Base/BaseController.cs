@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace TH2.Server.Modules.Base
 {
+    /// <summary>
+    /// The default controller to inherit from.
+    /// Adds fault handling.
+    /// </summary>
     public class BaseController : ControllerBase
     {
         protected HttpResponseMessage BadRequest(string message)
