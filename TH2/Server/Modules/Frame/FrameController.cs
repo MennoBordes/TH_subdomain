@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace TH2.Server.Modules.Frame
 {
-    using Base
+    using Base;
 
     [Route("api/[controller]")]
     [ApiController]
