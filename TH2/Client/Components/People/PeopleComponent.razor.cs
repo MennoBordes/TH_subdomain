@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Net.Http.Json;
 
 namespace TH2.Client.Components.People
 {
-    using System.Net.Http.Json;
     using TH2.Shared.Modules.People.Entities;
     public partial class PeopleComponent : ComponentBase
     {
