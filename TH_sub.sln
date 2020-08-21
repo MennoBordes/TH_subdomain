@@ -18,6 +18,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TH2.Client", "TH2\Client\TH
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TH2.Shared", "TH2\Shared\TH2.Shared.csproj", "{B5A5E336-91BA-4EBA-A523-A8A55EEF450C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_Core", "Source\TH_Core\TH_Core.csproj", "{B76F7B0E-033C-473D-A989-27345CA0A5B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TH_WebUI", "Source\TH_WebUI\TH_WebUI.csproj", "{95CCB4F7-7917-48B9-A68A-38E82C028C5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,14 @@ Global
 		{B5A5E336-91BA-4EBA-A523-A8A55EEF450C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5A5E336-91BA-4EBA-A523-A8A55EEF450C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5A5E336-91BA-4EBA-A523-A8A55EEF450C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B76F7B0E-033C-473D-A989-27345CA0A5B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B76F7B0E-033C-473D-A989-27345CA0A5B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B76F7B0E-033C-473D-A989-27345CA0A5B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B76F7B0E-033C-473D-A989-27345CA0A5B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95CCB4F7-7917-48B9-A68A-38E82C028C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95CCB4F7-7917-48B9-A68A-38E82C028C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95CCB4F7-7917-48B9-A68A-38E82C028C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95CCB4F7-7917-48B9-A68A-38E82C028C5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

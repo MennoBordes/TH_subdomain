@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B76F7B0E-033C-473D-A989-27345CA0A5B7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TH.Core</RootNamespace>
+    <AssemblyName>TH_Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.19.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\MySql.Data\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="THTools.ORM, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\THTools.ORM\THTools.ORM.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\Database\ConnectionProvider.cs" />
+    <Compile Include="Base\Database\Information\DataType.cs" />
+    <Compile Include="Base\Database\Information\KeyWord.cs" />
+    <Compile Include="Base\Database\Repository.cs" />
+    <Compile Include="Base\Exceptions\CoreException.cs" />
+    <Compile Include="Base\Extensions\ConnectionExtensions.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Modules\Connection\ConnectionManager.cs" />
+    <Compile Include="Modules\Connection\Entities\Connection.cs" />
+    <Compile Include="Modules\Connection\Entities\ConnectionCorner.cs" />
+    <Compile Include="Modules\Connection\Entities\ConnectionHinge.cs" />
+    <Compile Include="Modules\Connection\Entities\ConnectionLock.cs" />
+    <Compile Include="Modules\Door\DoorManager.cs" />
+    <Compile Include="Modules\Door\Entities\Door.cs" />
+    <Compile Include="Modules\Door\Entities\DoorGlass.cs" />
+    <Compile Include="Modules\Door\Entities\DoorKind.cs" />
+    <Compile Include="Modules\Door\Entities\DoorWood.cs" />
+    <Compile Include="Modules\Frame\Entities\Frame.cs" />
+    <Compile Include="Modules\Frame\Entities\FrameGlass.cs" />
+    <Compile Include="Modules\Frame\Entities\FrameSill.cs" />
+    <Compile Include="Modules\Frame\Entities\FrameWood.cs" />
+    <Compile Include="Modules\Frame\FrameManager.cs" />
+    <Compile Include="Modules\Glass\Entities\Glass.cs" />
+    <Compile Include="Modules\Glass\Entities\GlassVentilation.cs" />
+    <Compile Include="Modules\Glass\GlassManager.cs" />
+    <Compile Include="Modules\Order\Entities\Order.cs" />
+    <Compile Include="Modules\Order\Entities\OrderData.cs" />
+    <Compile Include="Modules\Order\Getter\GetOrderDatas.cs" />
+    <Compile Include="Modules\Order\OrderManager.cs" />
+    <Compile Include="Modules\People\Entities\People.cs" />
+    <Compile Include="Modules\People\PeopleManager.cs" />
+    <Compile Include="Modules\Window\Entities\Window.cs" />
+    <Compile Include="Modules\Window\Entities\WindowGlass.cs" />
+    <Compile Include="Modules\Window\Entities\WindowKind.cs" />
+    <Compile Include="Modules\Window\Entities\WindowWood.cs" />
+    <Compile Include="Modules\Window\WindowManager.cs" />
+    <Compile Include="Modules\Wood\Entities\Wood.cs" />
+    <Compile Include="Modules\Wood\Entities\WoodGlassSlat.cs" />
+    <Compile Include="Modules\Wood\Entities\WoodKind.cs" />
+    <Compile Include="Modules\Wood\Entities\WoodPaintColor.cs" />
+    <Compile Include="Modules\Wood\WoodManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Base\Database\DB Design\begroting raam kozijn Example.xlsx" />
+    <None Include="Base\Database\DB Design\DB layout.xlsx" />
+    <None Include="Base\Database\DB Design\DB schema_V1.pdf" />
+    <None Include="Base\Database\DB Design\DB schema_V2.pdf" />
+    <None Include="Base\Database\DB Design\DB schema_V3.pdf" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
