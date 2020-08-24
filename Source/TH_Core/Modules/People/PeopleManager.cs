@@ -57,5 +57,19 @@
 
             return person.Id;
         }
+
+        public void DeletePerson(int id)
+        {
+            if (id <= 0)
+                throw new CoreException("Invalid person specified!");
+
+            XQuery q = new XQuery()
+                .Delete()
+                .From<People>()
+                .Where()
+                    .Column<People>(x => x.Id).Equals().Value(id);
+
+            repository.Delete(q);
+        }
     }
 }
