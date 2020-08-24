@@ -15,22 +15,27 @@ namespace TH.WebUI.Modules.People.Controllers
         private string views = "~/modules/people/views/";
         PeopleManager pMan = new PeopleManager();
         
-        public ActionResult Content()        
+        /// <summary> View: render content. </summary>
+        public ActionResult Content()
         {
-            //PeopleManager pMan = new PeopleManager();
-
             List<People> peoples = pMan.GetPeoples();
 
             ViewData["peoples"] = peoples;
             return View(views + "_Content.cshtml");
         }
 
+        /// <summary> View: used to render the create new person view. </summary>
         [ActionName("create-person")]
         public ActionResult Create()
         {
             return View(views + "/Components/_CreateNew.cshtml");
         }
 
+        /// <summary> Save new person. </summary>
+        /// <param name="firstName">The first name.</param>
+        /// <param name="lastName">The last name.</param>
+        /// <param name="email">The email address.</param>
+        /// <param name="birthDate">The birth date.</param>
         [ActionName("save-create-person")]
         [HttpPost]
         public ActionResult Create(string firstName, string lastName, string email, DateTime birthDate)
@@ -47,13 +52,8 @@ namespace TH.WebUI.Modules.People.Controllers
             return Json(new { message = "Saved new person" });
         }
 
-        public ActionResult Edit(int Id)
-        {
-            People person = pMan.GetPerson(Id);
-
-            return View(views + "/Components/_Edit.cshtml", person);
-        }
-
+        /// <summary> Render edit view. </summary>
+        /// <param name="Id">The id of the person to render the view for.</param>
         [ActionName("edit-person")]
         public ActionResult EditPerson(int Id)
         {
@@ -62,6 +62,8 @@ namespace TH.WebUI.Modules.People.Controllers
             return View(views + "/Components/_Edit.cshtml", person);
         }
 
+        /// <summary> Save the editted person. </summary>
+        /// <param name="people">The updated person.</param>
         [ActionName("save-edit-person")]
         [HttpPost]
         public ActionResult SaveEditPerson(People people)
@@ -71,14 +73,7 @@ namespace TH.WebUI.Modules.People.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public ActionResult Edit(People person)
-        {
-            //pMan.SavePerson(person);
-
-            return RedirectToAction("Index");
-        }
-
+        /// <summary> Render details view. </summary>
         [ActionName("get-details")]
         public ActionResult Details(int Id)
         {
@@ -87,10 +82,14 @@ namespace TH.WebUI.Modules.People.Controllers
             return View(views + "/Components/_Details.cshtml", person);
         }
 
+        /// <summary> Delete person </summary>
         [ActionName("delete-person")]
         [HttpPost]
         public ActionResult DeletePerson(int Id)
         {
+            if (Id < 1)
+                return Json(new { message = "Invalid person!" });
+
             pMan.DeletePerson(Id);
 
             return Json(new { message = "Succesfully deleted" });
