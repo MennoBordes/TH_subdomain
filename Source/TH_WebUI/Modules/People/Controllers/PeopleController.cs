@@ -15,14 +15,14 @@ namespace TH.WebUI.Modules.People.Controllers
         private string views = "~/modules/people/views/";
         PeopleManager pMan = new PeopleManager();
         
-        public ActionResult Index()        
+        public ActionResult Content()        
         {
             //PeopleManager pMan = new PeopleManager();
 
             List<People> peoples = pMan.GetPeoples();
 
             ViewData["peoples"] = peoples;
-            return View(views + "_Index.cshtml");
+            return View(views + "_Content.cshtml");
         }
 
         [ActionName("create-person")]
