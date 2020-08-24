@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Styles/th/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/th")
+    @*@Html.THScript("th.feedback")
+    @Html.THScript("th")
+    @Html.THScript("th.dialog")*@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -30,6 +36,11 @@
         </div>
     </div>
     <div class="container body-content">
+        <!-- Feedback -->
+        <div class="ui-feedback_container"></div>
+        <div class="ui-feedback_background"></div>
+        <!-- //Feedback-->
+
         @RenderBody()
         <hr />
         <footer>
@@ -37,7 +48,7 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    
     @RenderSection("scripts", required: false)
+</body>
 </html>

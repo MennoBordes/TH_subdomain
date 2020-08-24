@@ -1,0 +1,52 @@
+﻿@using TH.Core.Modules.People.Entities;
+@model People
+
+@{ 
+    //ViewBag.Title = "Details";
+    Layout = null;
+}
+
+@Html.DialogSettings(title: "Details Title")
+
+<div class="">
+    <h4>Person</h4>
+    <hr/>
+
+    <div class="">
+        <label for="fname">First Name:</label>
+        <label id="fname">@Model.FirstName</label>
+    </div>
+
+    <div class="">
+        <label>Last Name:</label>
+        <label>@Model.LastName</label>
+    </div>
+
+    <div class="">
+        <label>Birth Date:</label>
+        <label>@Model.DateOfBirth</label>
+    </div>
+    
+    <div class="">
+        <label>Email Address:</label>
+        <label>@Model.EmailAddress</label>
+    </div>
+</div>
+
+<div class="buttonRow" data-ds-buttons>
+    <input type="button" class="button" data-button="btn-cancel" value="Cancel" />
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Selectors
+        var sCancel = '[data-button=btn-cancel]';
+
+        // Bind => cancel
+        $(document).off('click', sCancel);
+        $(document).on('click', sCancel, function () {
+            //debugger;
+            DialogSystem.done({ action: 'cancel' });
+        });
+    });
+</script>

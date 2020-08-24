@@ -125,6 +125,10 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Base\Controllers\CoreController.cs" />
     <Compile Include="Base\Controllers\PageController.cs" />
+    <Compile Include="Base\HtmlHelpers\DialogHelper.cs" />
+    <Compile Include="Base\HtmlHelpers\EnumHelper.cs" />
+    <Compile Include="Base\HtmlHelpers\JsonHelper.cs" />
+    <Compile Include="Base\HtmlHelpers\ResourceFactory.cs" />
     <Compile Include="Base\Models\MimeType.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Gateway\Controllers\ErrorController.cs" />
@@ -137,14 +141,16 @@
   <ItemGroup>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Resources\Content\bootstrap-theme.css" />
-    <Content Include="Resources\Content\bootstrap-theme.min.css" />
-    <Content Include="Resources\Content\bootstrap.css" />
-    <Content Include="Resources\Content\bootstrap.min.css" />
-    <Content Include="Resources\Content\Site.css" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\css\bootstrap-theme.css" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\css\bootstrap-theme.min.css" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\css\bootstrap.css" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\css\bootstrap.min.css" />
+    <Content Include="Resources\Scripts\th.dialog.js" />
+    <Content Include="Resources\Scripts\th.js" />
+    <Content Include="Resources\Styles\Site.css" />
     <Content Include="Resources\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Resources\Scripts\bootstrap.js" />
-    <Content Include="Resources\Scripts\bootstrap.min.js" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\js\bootstrap.js" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\js\bootstrap.min.js" />
     <Content Include="Base\Views\Shared\404.cshtml" />
     <Content Include="Base\Views\Shared\Error.cshtml" />
     <Content Include="Base\Views\Shared\_Layout.cshtml" />
@@ -152,28 +158,32 @@
     <Content Include="Modules\People\Views\_Index.cshtml" />
     <Content Include="Modules\_ViewStart.cshtml" />
     <Content Include="Modules\Web.config" />
-    <Content Include="Modules\People\Views\_Edit.cshtml" />
-    <None Include="Resources\Scripts\jquery-3.4.1.intellisense.js" />
-    <Content Include="Resources\Scripts\jquery-3.4.1.js" />
-    <Content Include="Resources\Scripts\jquery-3.4.1.min.js" />
-    <Content Include="Resources\Scripts\jquery-3.4.1.slim.js" />
-    <Content Include="Resources\Scripts\jquery-3.4.1.slim.min.js" />
-    <None Include="Resources\Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Resources\Scripts\jquery.validate.js" />
-    <Content Include="Resources\Scripts\jquery.validate.min.js" />
-    <Content Include="Resources\Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Resources\Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Resources\Scripts\modernizr-2.8.3.js" />
-    <Content Include="Resources\Content\bootstrap-theme.css.map" />
-    <Content Include="Resources\Content\bootstrap-theme.min.css.map" />
-    <Content Include="Resources\Content\bootstrap.css.map" />
-    <Content Include="Resources\Content\bootstrap.min.css.map" />
+    <Content Include="Modules\People\Views\Components\_Edit.cshtml" />
+    <Content Include="Modules\People\Views\Components\_Details.cshtml" />
+    <Content Include="Modules\People\Views\Components\_Delete.cshtml" />
+    <Content Include="Modules\People\Views\Components\_CreateNew.cshtml" />
+    <None Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.intellisense.js" />
+    <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.js" />
+    <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.js" />
+    <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.slim.js" />
+    <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.slim.min.js" />
+    <None Include="Resources\Libraries\jquery-validate\jquery.validate-vsdoc.js" />
+    <Content Include="Resources\Libraries\jquery-validate\jquery.validate.js" />
+    <Content Include="Resources\Libraries\jquery-validate\jquery.validate.min.js" />
+    <Content Include="Resources\Libraries\jquery-validate\jquery.validate.unobtrusive.js" />
+    <Content Include="Resources\Libraries\jquery-validate\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Resources\Libraries\modernizr-2.8.3\modernizr-2.8.3.js" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\css\bootstrap-theme.css.map" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\css\bootstrap-theme.min.css.map" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\css\bootstrap.css.map" />
+    <Content Include="Resources\Libraries\bootstrap-3.4.1\css\bootstrap.min.css.map" />
     <Content Include="Resources\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Resources\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Resources\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Resources\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Resources\Scripts\jquery-3.4.1.min.map" />
-    <Content Include="Resources\Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.map" />
+    <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.slim.min.map" />
+    <Content Include="Resources\Styles\th.ui.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -188,10 +198,12 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Resources\Scripts\th.feedback.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Modules\Order\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

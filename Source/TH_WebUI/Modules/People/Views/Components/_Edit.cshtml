@@ -1,0 +1,85 @@
+﻿@using TH.Core.Modules.People.Entities;
+@model People
+
+@{ 
+    //ViewBag.Title = "Edit";
+    Layout = null;
+}
+
+@Html.DialogSettings(title: "Edit Title")
+<div>    
+    <div class="container">
+        <div class="container-fluid">
+            <label>First Name</label>
+            <input type="text" data-hook="fname" value="@Model.FirstName" />
+        </div>
+        <div class="container-fluid">
+            <label>Last Name</label>
+            <input type="text" data-hook="lname" value="@Model.LastName" />
+        </div>
+        <div class="container-fluid">
+            <label>Email Address</label>
+            <input type="email" data-hook="email" value="@Model.EmailAddress" />
+        </div>
+        <div class="container-fluid">
+            <label>Birth Date</label>
+            <input type="datetime" data-hook="birthdate" value="@Model.DateOfBirth" />
+        </div>
+    </div>
+
+
+    <div data-ds-buttons class="buttonRow">
+        <input type="button" class="button" data-button="btn-cancel" value="Cancel" />
+        <input type="button" class="button-create" data-button="btn-save" value="Save"/>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Urls
+        var uSavePerson = '@Url.Content("~/modules/people/save-edit-person")';
+
+        // Selectors
+        var sCancel = '[data-button=btn-cancel]';
+        var sSave = '[data-button=btn-save]';
+        var sFName = '[data-hook=fname]';
+        var sLName = '[data-hook=lname]';
+        var sEmail = '[data-hook=email]';
+        var sBirth = '[data-hook=birthdate]';
+
+        // Vars
+        var model = @Html.Json(Model);
+
+        // Bind => Save
+        $(document).off('click', sSave);
+        $(document).on('click', sSave, function () {
+            var firstName = $(sFName).val();
+            var lastName = $(sLName).val();
+            var email = $(sEmail).val();
+            var birth = $(sBirth).val();
+            model.FirstName = firstName;
+            model.LastName = lastName;
+            model.EmailAddress = email;
+            model.DateOfBirth = birth;
+            TH.ajax.postJSON({
+                url: uSavePerson,
+                data: { people: model },
+                success: function () {
+                    DialogSystem.done({ action: 'save' });
+                },
+                error: function (response) {
+                    Feedback.error({ message: response });
+                    debugger;
+                }
+            })
+        });
+
+        // Bind => cancel
+        $(document).off('click', sCancel);
+        $(document).on('click', sCancel, function () {
+            //debugger;
+            DialogSystem.done({ action: 'cancel' });
+        });
+    });
+</script>

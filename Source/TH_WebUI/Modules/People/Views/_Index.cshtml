@@ -5,15 +5,16 @@
 }
 
 <h1>Peoples</h1>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<div>
+    <input type="button" data-hook="btn-new" value="Create New" />
+</div>
 <table class="table table-striped">
     <thead>
         <tr>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email Address</th>
+            <th>Date of Birth</th>
         </tr>
     </thead>
     <tbody>
@@ -23,13 +24,117 @@
                 <td>@person.FirstName</td>
                 <td>@person.LastName</td>
                 <td>@person.EmailAddress</td>
+                <td>@person.DateOfBirth</td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { id=person.Id}) |
-                    @Html.ActionLink("Details", "Details", new { id=person.Id}) |
-                    @Html.ActionLink("Delete", "Delete", new { id=person.Id}) 
-
+                    <input type="button" class="button" data-hook="btn-edit" data-person-id="@person.Id" value="Edit"/> |
+                    <input type="button" class="button" data-hook="btn-details" data-person-id="@person.Id" value="Details"/> |
+                    <input type="button" class="button" data-hook="btn-delete-feedback" data-person-id="@person.Id" value="Delete"/> 
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Urls
+        var uReload = '@Url.Content("~/modules/people/index")';
+        var uEdit = '@Url.Content("~/modules/people/edit-person")';
+        var uDetails = '@Url.Content("~/modules/people/get-details")';
+        var uDelete = '@Url.Content("~/modules/people/delete-person")';
+        var uCreate = '@Url.Content("~/modules/people/create-person")';
+
+
+        // Selectors
+        var sBtnEdit = '[data-hook=btn-edit]';
+        var sBtnDetails = '[data-hook=btn-details]';
+        var sBtnCreate = '[data-hook=btn-new]';
+        var sBtnDelete = '[data-hook=btn-delete-feedback]';
+
+        // Bind => Create new
+        $(document).off('click', sBtnCreate);
+        $(document).on('click', sBtnCreate, function () {
+            DialogSystem.open({
+                ajax: {
+                    url: uCreate
+                },
+                dimension: { full: false, width: '75%', height: '75%' },
+                environment: 'page',
+                callback: function (e) {
+                    if (e.action !== "cancel") {
+                        Reload();
+                    }
+                }
+            });
+        });
+
+        // Bind => Details
+        $(document).off('click', sBtnDetails);
+        $(document).on('click', sBtnDetails, function () {
+            var Id = $(this).data('person-id');
+
+            DialogSystem.open({
+                ajax: {
+                    url: uDetails,
+                    data: { Id: Id }
+                },
+                dimension: { full: false, width: '50%', height: '50%' },
+                environment: 'portal',
+                callback: function (e) {
+                    if (e.action !== "cancel") {
+                        Reload();
+                    }
+                }
+            });
+        });
+
+        // Bind => Delete
+        $(document).off('click', sBtnDelete);
+        $(document).on('click', sBtnDelete, function () {
+            var id = $(this).data('person-id');
+            Feedback.confirm({
+                title: 'Are you sure you want to delete?',
+                cancelButtonText: 'cancel',
+                proceedButtonText: 'confirm',
+                confirm: function () {
+                    TH.ajax.postJSON({
+                        url: uDelete,
+                        data: { Id: id },
+                        success: function (response) {
+                            debugger;
+                            Feedback.success({ message: response.message });
+                            reload();
+                        }
+                    })
+                }
+            });
+        });
+
+        // Bind => Edit
+        $(document).off('click', sBtnEdit);
+        $(document).on('click', sBtnEdit, function () {
+            var Id = $(this).data('person-id');
+
+            DialogSystem.open({
+                ajax: {
+                    url: uEdit,
+                    data: { Id: Id }
+                },
+                dimension: { full: false, width: '75%', height: '75%' },
+                environment: 'portal',
+                callback: function (e) {
+                    if (e.action !== "cancel") {
+                        Reload();
+                    }
+                }
+            });
+        });
+
+        function Reload() {
+            location.reload(true);
+        }
+    });
+</script>    
+

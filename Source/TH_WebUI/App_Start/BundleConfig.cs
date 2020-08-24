@@ -9,22 +9,31 @@ namespace TH.WebUI
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Resources/Scripts/jquery-{version}.js"));
+                        "~/Resources/Libraries/jquery-3.4.1/jquery-{version}.js",
+                        "~/Resources/Libraries/jquery-3.4.1/jquery-3.4.1.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Resources/Scripts/jquery.validate*"));
+                        "~/Resources/Libraries/jquery-validate/jquery.validate*"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                        "~/Resources/Scripts/modernizr-*"));
+                        "~/Resources/Libraries/modernizr-2.8.3/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Resources/Scripts/bootstrap.js"));
+                      "~/Resources/Libraries/bootstrap-3.4.1/js/bootstrap.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/th").Include(
+                      "~/Resources/Scripts/th.feedback.js",
+                      "~/Resources/Scripts/th.js",
+                      "~/Resources/Scripts/th.dialog.js"));
+
+            bundles.Add(new StyleBundle("~/Styles/th/css").Include(
+                      "~/Resources/Styles/th.ui.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Resources/Content/bootstrap.css",
-                      "~/Resources/Content/site.css"));
+                      "~/Resources/Libraries/bootstrap-3.4.1/css/bootstrap.css",
+                      "~/Resources/Styles/site.css"));
         }
     }
 }
