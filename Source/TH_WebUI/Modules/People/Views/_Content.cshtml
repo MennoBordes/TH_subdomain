@@ -103,9 +103,13 @@
                         url: uDelete,
                         data: { Id: id },
                         success: function (response) {
-                            debugger;
-                            Feedback.success({ message: response.message });
-                            reload();
+                            if (response.success === true) {
+                                Feedback.success({ message: response.message });
+                                Reload();
+                            }
+                            else {
+                                Feedback.error({ message: response.message });
+                            }
                         }
                     })
                 }

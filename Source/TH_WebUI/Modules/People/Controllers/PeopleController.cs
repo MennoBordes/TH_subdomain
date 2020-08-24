@@ -48,8 +48,8 @@ namespace TH.WebUI.Modules.People.Controllers
                 DateOfBirth = birthDate
             };
             pMan.SavePerson(people);
-            //return RedirectToAction("Index");
-            return Json(new { message = "Saved new person" });
+
+            return Json(new { message = "Saved new person." });
         }
 
         /// <summary> Render edit view. </summary>
@@ -70,7 +70,7 @@ namespace TH.WebUI.Modules.People.Controllers
         {
             pMan.SavePerson(people);
 
-            return Ok();
+            return Json(new { success = true, message = "Successfully saved." });
         }
 
         /// <summary> Render details view. </summary>
@@ -88,11 +88,11 @@ namespace TH.WebUI.Modules.People.Controllers
         public ActionResult DeletePerson(int Id)
         {
             if (Id < 1)
-                return Json(new { message = "Invalid person!" });
+                return Json(new { success = false, message = "Invalid person!" });
 
             pMan.DeletePerson(Id);
 
-            return Json(new { message = "Succesfully deleted" });
+            return Json(new { success = true, message = "Succesfully deleted" });
         }
     }
 }

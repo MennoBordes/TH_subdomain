@@ -65,12 +65,12 @@
             TH.ajax.postJSON({
                 url: uSavePerson,
                 data: { people: model },
-                success: function () {
+                success: function (response) {
+                    Feedback.success({ message: response.message });
                     DialogSystem.done({ action: 'save' });
                 },
                 error: function (response) {
-                    Feedback.error({ message: response });
-                    debugger;
+                    Feedback.error({ message: response.message });
                 }
             })
         });
@@ -78,7 +78,6 @@
         // Bind => cancel
         $(document).off('click', sCancel);
         $(document).on('click', sCancel, function () {
-            //debugger;
             DialogSystem.done({ action: 'cancel' });
         });
     });
