@@ -167,6 +167,7 @@
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
+    <Content Include="Modules\Order\Views\_OrderDetails.cshtml" />
     <None Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.intellisense.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.js" />

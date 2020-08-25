@@ -6,6 +6,7 @@
 
 <h1>Orders</h1>
 
+<!-- Order cards -->
 <div id="cards">
     @foreach (Order order in orders)
     {
@@ -14,45 +15,70 @@
                 <h1 class="card__name">@order.ProjectName</h1>
                 <h4 class="card__date">@order.GetDate()</h4>
 
-                <div>
-                    <span>#Doors   = @order.GetDoorsCount()</span>
-                    <span>#Windows = @order.GetWindowsCount()</span>
-                    <span>#Frames  = @order.GetFrameCount()</span>
-                </div>
-
                 <table class="card__stats">
 
                     <tbody>
-                        @if(order.OrderDatas != null && order.OrderDatas.Count > 0)
-                        {
-                            foreach (OrderData data in order.OrderDatas)
-                            {
-                                <tr>
-                                    <th>ID</th>
-                                    <td>@data.Id</td>
-                                </tr>
-                            }
-                        }
+                        <tr>
+                            <th># Doors</th>
+                            <td>@order.GetDoorsCount()</td>
+                        </tr>
+                        <tr>
+                            <th># Windows</th>
+                            <td>@order.GetWindowsCount()</td>
+                        </tr>
+                        <tr>
+                            <th># Frames</th>
+                            <td>@order.GetFrameCount()</td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="card__footer">
                     <input type="button" data-hook="btn-details" data-id="@order.Id" value="Details" />
+                    @*<a href="/order/order-details?id=@order.Id" target="_self">Details</a>
+                    <div class="button">
+                        @Html.ActionLink(
+                            linkText: "Details",
+                            actionName: "order-details",
+                            controllerName: "Order",
+                            routeValues: new
+                            {
+                                id = order.Id
+                            },
+                            htmlAttributes: null
+                        )
+                    </div>*@
                 </div>
             </figcaption>
         </figure>
     }
 </div>
+<!-- //Order cards -->
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        // Urls
+        var uOrderDetails = '@Url.Content("~/modules/Order/order-details")';
+        
         // Selectors
         var sBtnDetails = '[data-hook=btn-details]';
+
 
         $(document).off('click', sBtnDetails);
         $(document).on('click', sBtnDetails, function () {
             id = $(this).data('id');
-
             // Open details screen for selected order
+            window.location.href = uOrderDetails + "?id=" + id;
+
+            //TH.ajax.postJSON({
+            //    url: uOrderDetails,
+            //    data: { id: id }
+            //    //success: function (response) {
+            //    //    debugger;
+            //    //},
+            //    //error: function (response) {
+            //    //}
+            //});
         });
     });
 </script>

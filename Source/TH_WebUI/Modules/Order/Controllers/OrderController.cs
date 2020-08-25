@@ -24,14 +24,15 @@ namespace TH.WebUI.Modules.Order.Controllers
             return View(views + "_Content.cshtml");
         }
 
-        [ActionName("get-orders")]
-        public ActionResult GetOrders()
+        [ActionName("order-details")]
+        public ActionResult OrderDetails(int id)
         {
-            List<Order> orders = oMan.GetOrders();
+            Order order = oMan.GetOrder(id);
 
-            oMan.MergeOrderDataIntoOrder(orders);
+            oMan.MergeOrderDataIntoOrder(new List<Order>() { order });
 
-            return Json(new { orders = orders});
+            ViewData["order"] = order;
+            return View(views + "_OrderDetails.cshtml");
         }
 
     }

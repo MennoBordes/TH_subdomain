@@ -13,12 +13,23 @@ namespace TH.WebUI
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            #region Modules
+
             routes.MapRoute(
                 name: "modules/people",
                 url: "modules/people/{action}",
                 defaults: new { controller = "People" },
                 namespaces: new string[] { "TH.WebUI.Modules.People.Controllers" }
             );
+
+            routes.MapRoute(
+                name: "modules/order",
+                url: "modules/order/{action}",
+                defaults: new { controller = "Order" },
+                namespaces: new string[] { "TH.WebUI.Modules.Order.Controllers" }
+            );
+
+            #endregion
 
 
             #region Info
