@@ -140,7 +140,6 @@ var DialogSystem = (function ($) {
             e.stopPropagation();
 
             $a = $(this);
-            //console.log('breadcrumb_click', $a.parent().attr('data-ds-key'));
         });
     }
 
