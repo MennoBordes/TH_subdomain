@@ -34,7 +34,7 @@ namespace TH.Core.Modules.Order.Entities
             if (OrderDatas == null || OrderDatas.Count < 1)
                 return 0;
 
-            int doors = OrderDatas.Where(x => x.IdDoor != null).Count();
+            int doors = OrderDatas.Where(x => x.IdDoor != null && x.IdDoor > 0).Count();
 
             return doors;
         }
@@ -44,7 +44,7 @@ namespace TH.Core.Modules.Order.Entities
             if (OrderDatas == null || OrderDatas.Count < 1)
                 return 0;
 
-            int windows = OrderDatas.Where(x => x.IdWindow != null).Count();
+            int windows = OrderDatas.Where(x => x.IdWindow != null && x.IdWindow > 0).Count();
 
             return windows;
         }
@@ -54,7 +54,7 @@ namespace TH.Core.Modules.Order.Entities
             if (OrderDatas == null || OrderDatas.Count < 1)
                 return 0;
 
-            int frames = OrderDatas.Where(x => x.IdFrame != null).Count();
+            int frames = OrderDatas.Where(x => x.IdFrame != null && x.IdFrame > 0).Count();
 
             return frames;
         }
