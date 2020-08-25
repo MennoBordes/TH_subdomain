@@ -135,6 +135,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Order\Controllers\OrderController.cs" />
     <Compile Include="Modules\People\Controllers\PeopleController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -147,7 +148,6 @@
     <Content Include="Resources\Libraries\bootstrap-3.4.1\css\bootstrap.min.css" />
     <Content Include="Resources\Scripts\th.dialog.js" />
     <Content Include="Resources\Scripts\th.js" />
-    <Content Include="Resources\Styles\Site.css" />
     <Content Include="Resources\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Resources\Libraries\bootstrap-3.4.1\js\bootstrap.js" />
     <Content Include="Resources\Libraries\bootstrap-3.4.1\js\bootstrap.min.js" />
@@ -162,6 +162,11 @@
     <Content Include="Modules\People\Views\Components\_Details.cshtml" />
     <Content Include="Modules\People\Views\Components\_Delete.cshtml" />
     <Content Include="Modules\People\Views\Components\_CreateNew.cshtml" />
+    <Content Include="Modules\Order\Views\_Content.cshtml" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.intellisense.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.js" />
@@ -183,6 +188,18 @@
     <Content Include="Resources\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.map" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.slim.min.map" />
+    <Content Include="Resources\Styles\Site.css">
+      <DependentUpon>Site.scss</DependentUpon>
+    </Content>
+    <Content Include="Resources\Styles\Site.min.css">
+      <DependentUpon>Site.css</DependentUpon>
+    </Content>
+    <Content Include="Resources\Styles\th.cards.css">
+      <DependentUpon>th.cards.scss</DependentUpon>
+    </Content>
+    <Content Include="Resources\Styles\th.cards.min.css">
+      <DependentUpon>th.cards.css</DependentUpon>
+    </Content>
     <Content Include="Resources\Styles\th.ui.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -199,13 +216,14 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Resources\Scripts\th.feedback.js" />
+    <Content Include="Resources\Styles\Site.scss" />
+    <Content Include="Resources\Styles\th.cards.scss" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Modules\Order\Controllers\" />
-    <Folder Include="Modules\Order\Views\" />
-    <Folder Include="Views\Order\" />
+    <Folder Include="Modules\Glass\Controllers\" />
+    <Folder Include="Modules\Glass\Views\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

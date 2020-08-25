@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using THTools.ORM;
 using THTools.ORM.Common;
 
@@ -20,5 +21,42 @@ namespace TH.Core.Modules.Order.Entities
         // Helpers
 
         public List<OrderData> OrderDatas { get; set; }
+
+        /// <summary> Get Date without time. </summary>
+        public string GetDate() 
+        {
+            return CreationDate.ToShortDateString();    
+        }
+
+        /// <summary> Get the amount of doors in this order. </summary>
+        public int GetDoorsCount()
+        {
+            if (OrderDatas == null || OrderDatas.Count < 1)
+                return 0;
+
+            int doors = OrderDatas.Where(x => x.IdDoor != null).Count();
+
+            return doors;
+        }
+        /// <summary> Get the amount of Windows in this order. </summary>
+        public int GetWindowsCount()
+        {
+            if (OrderDatas == null || OrderDatas.Count < 1)
+                return 0;
+
+            int windows = OrderDatas.Where(x => x.IdWindow != null).Count();
+
+            return windows;
+        }
+        /// <summary> Get the amount of doors in this order. </summary>
+        public int GetFrameCount()
+        {
+            if (OrderDatas == null || OrderDatas.Count < 1)
+                return 0;
+
+            int frames = OrderDatas.Where(x => x.IdFrame != null).Count();
+
+            return frames;
+        }
     }
 }

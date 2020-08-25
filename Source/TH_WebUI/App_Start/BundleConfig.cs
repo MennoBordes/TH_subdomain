@@ -29,7 +29,8 @@ namespace TH.WebUI
                       "~/Resources/Scripts/th.dialog.js"));
 
             bundles.Add(new StyleBundle("~/Styles/th/css").Include(
-                      "~/Resources/Styles/th.ui.css"));
+                      "~/Resources/Styles/th.ui.css",
+                      "~/Resources/Styles/th.cards.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Resources/Libraries/bootstrap-3.4.1/css/bootstrap.css",

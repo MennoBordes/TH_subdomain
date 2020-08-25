@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "Resources/Styles/Site.css",
+    "inputFile": "Resources/Styles/Site.scss"
+  },
+  {
+    "outputFile": "Resources/Styles/th.cards.css",
+    "inputFile": "Resources/Styles/th.cards.scss"
+  }
+]

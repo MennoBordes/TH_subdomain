@@ -1,0 +1,58 @@
+﻿@using TH.Core.Modules.Order.Entities;
+
+@{ 
+    List<Order> orders = (List<Order>)ViewData["orders"];
+}
+
+<h1>Orders</h1>
+
+<div id="cards">
+    @foreach (Order order in orders)
+    {
+        <figure class="card" data-id="@order.Id">
+            <figcaption class="card__caption">
+                <h1 class="card__name">@order.ProjectName</h1>
+                <h4 class="card__date">@order.GetDate()</h4>
+
+                <div>
+                    <span>#Doors   = @order.GetDoorsCount()</span>
+                    <span>#Windows = @order.GetWindowsCount()</span>
+                    <span>#Frames  = @order.GetFrameCount()</span>
+                </div>
+
+                <table class="card__stats">
+
+                    <tbody>
+                        @if(order.OrderDatas != null && order.OrderDatas.Count > 0)
+                        {
+                            foreach (OrderData data in order.OrderDatas)
+                            {
+                                <tr>
+                                    <th>ID</th>
+                                    <td>@data.Id</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+                <div class="card__footer">
+                    <input type="button" data-hook="btn-details" data-id="@order.Id" value="Details" />
+                </div>
+            </figcaption>
+        </figure>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Selectors
+        var sBtnDetails = '[data-hook=btn-details]';
+
+        $(document).off('click', sBtnDetails);
+        $(document).on('click', sBtnDetails, function () {
+            id = $(this).data('id');
+
+            // Open details screen for selected order
+        });
+    });
+</script>

@@ -34,6 +34,19 @@ namespace TH.Core.Modules.Order
 
         //=== Manage: Order
 
+        /// <summary> Get all orders. </summary>
+        public List<Order> GetOrders()
+        {
+            XQuery q = new XQuery()
+                .From<Order>()
+                .Where()
+                    .Column<Order>(x => x.Id).GreaterThan().Value(0);
+
+            List<Order> orders = repository.GetEntities<Order>(q).ToList();
+
+            return orders;
+        }
+
         /// <summary> Get Order. </summary>
         public Order GetOrder(int id)
         {
