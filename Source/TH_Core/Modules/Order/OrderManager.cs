@@ -57,26 +57,7 @@ namespace TH.Core.Modules.Order
 
             return order;
         }
-
-        /// <summary> Adds OrderData into the orders. </summary>
-        /// <param name="orders">The orders to add Data into.</param>
-        public void MergeOrderDataIntoOrder(List<Order> orders)
-        {
-            if (orders.IsNullOrEmpty())
-                return;
-
-            // Get Data
-            List<OrderData> datas = GetOrderData(ids: orders.Select(x => x.Id).ToArray());
-            if (datas.IsNullOrEmpty())
-                return;
-
-            foreach(Order order in orders)
-            {
-                if (!datas.Any(x => x.IdOrder == order.Id)) continue;
-
-                order.OrderDatas = datas.Where(x => x.IdOrder == order.Id).ToList();
-            }
-        }
+                
 
         /// <summary>Save or update a order. </summary>
         /// <returns>The index in the DB.</returns>
@@ -134,15 +115,27 @@ namespace TH.Core.Modules.Order
             return orderData;            
         }
 
-        public List<OrderData> GetOrderData(int[] ids)
+        public List<OrderData> GetOrderData(int[] ids = null, int[] orderIds = null)
         {
-            if (ids.Length < 1)
+            if (ids != null && orderIds != null)
                 throw new CoreException("No Ids specified!");
 
             XQuery q = new XQuery()
                 .From<OrderData>()
-                .Where()
-                    .Column<OrderData>(x => x.Id).In(ids);
+                .Where();
+
+            bool whereset = false;
+            if (ids != null)
+            {
+                q.Column<OrderData>(x => x.Id).In(ids);
+                whereset = true;
+            }
+
+            if (orderIds != null)
+            {
+                if (whereset) q.And();
+                q.Column<OrderData>(x => x.IdOrder).In(orderIds);
+            }
 
             return repository.GetEntities<OrderData>(q).ToList();
         }
@@ -201,6 +194,120 @@ namespace TH.Core.Modules.Order
             }
 
             return orderData.Id;
+        }
+
+        //=== Mergers
+
+        /// <summary> Adds OrderData into the orders. </summary>
+        /// <param name="orders">The orders to add Data into.</param>
+        public void MergeOrderDataIntoOrder(List<Order> orders)
+        {
+            if (orders.IsNullOrEmpty())
+                return;
+
+            // Get Data
+            List<OrderData> datas = GetOrderData(orderIds: orders.Select(x => x.Id).ToArray());
+            if (datas.IsNullOrEmpty())
+                return;
+
+            foreach (Order order in orders)
+            {
+                if (!datas.Any(x => x.IdOrder == order.Id))
+                    continue;
+
+                order.OrderDatas = datas.Where(x => x.IdOrder == order.Id).ToList();
+            }
+        }
+
+        /// <summary> Merge orderData into orders. </summary>
+        public void MergeAllIntoOrderData(List<Order> orders)
+        {
+            if (orders.IsNullOrEmpty())
+                return;
+
+            List<OrderData> orderDatas = orders.Where(x => x.OrderDatas != null).SelectMany(x => x.OrderDatas).ToList();
+
+            MergeAllIntoOrderData(orderDatas);
+        }
+
+        /// <summary> Merge childs into orderdata. </summary>
+        public void MergeAllIntoOrderData(List<OrderData> orderDatas)
+        {
+            if (orderDatas.IsNullOrEmpty())
+                return;
+
+            MergeDoorsIntoOrderData(orderDatas);
+            MergeWindowsIntoOrderData(orderDatas);
+            MergeFramesIntoOrderData(orderDatas);
+        }
+
+        /// <summary> Merge door into orderdata. </summary>
+        public void MergeDoorsIntoOrderData(List<OrderData> orderDatas)
+        {
+            if (orderDatas.IsNullOrEmpty())
+                return;
+
+            DoorManager dMan = new DoorManager();
+            
+            // Single DB query
+            //// Get Doors for orders
+            //int[] doorIds = orderDatas.Select(x => x.IdDoor).Where(x => x.HasValue).Select(x => x.Value).ToArray();
+            //List<Door> doors = dMan.GetDoor(doorIds);
+
+            //// Merge data into doors
+            //dMan.MergeAllIntoDoors(doors);
+
+            //// Merge doors into orderdata
+            //foreach (OrderData data in orderDatas)
+            //{
+            //    if (!doors.Any(x => x.Id == data.IdDoor))
+            //        continue;
+
+            //    data.Door = doors.FirstOrDefault(x => x.Id == data.IdDoor);
+            //}
+
+            // Multiple DB queries
+            foreach (OrderData data in orderDatas)
+            {
+                if (!data.IdDoor.HasValue || data.IdDoor.Value <= 0)
+                    continue;
+
+                data.Door = dMan.GetDoor(data.IdDoor.Value, kind: true, connection: true, glass: true);
+            }
+        }
+
+        /// <summary> Merge window into orderdata. </summary>
+        public void MergeWindowsIntoOrderData(List<OrderData> orderDatas)
+        {
+            if (orderDatas.IsNullOrEmpty())
+                return;
+
+            WindowManager wMan = new WindowManager();
+
+            foreach (OrderData data in orderDatas)
+            {
+                if (!data.IdWindow.HasValue || data.IdWindow.Value <= 0)
+                    continue;
+
+                data.Window = wMan.GetWindow(data.IdWindow.Value, kind: true, connection: true, glass: true);
+            }
+        }
+
+        /// <summary> Merge frame into orderdata. </summary>
+        public void MergeFramesIntoOrderData(List<OrderData> orderDatas)
+        {
+            if (orderDatas.IsNullOrEmpty())
+                return;
+
+            FrameManager fMan = new FrameManager();
+
+            foreach (OrderData data in orderDatas)
+            {
+                if (!data.IdFrame.HasValue || data.IdFrame.Value <= 0)
+                    continue;
+
+                data.Frame = fMan.GetFrame(data.IdFrame.Value, sill: true, connection: true, glass: true);
+            }
         }
     }
 }
