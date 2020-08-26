@@ -68,6 +68,23 @@ namespace TH.Core.Modules.Door
             return door;
         }
 
+        /// <summary> Get Doors. </summary>
+        /// <param name="ids">The ids of the doors to retrieve.</param>
+        public List<Door> GetDoor(int[] ids)
+        {
+            if (ids.IsNullOrEmpty())
+                return null;
+
+            XQuery q = new XQuery()
+                .From<Door>()
+                .Where()
+                    .Column<Door>(x => x.Id).In(ids);
+
+            List<Door> doors = repository.GetEntities<Door>(q).ToList();
+
+            return doors;
+        }
+
         /// <summary> Save Door (new or existing). </summary>
         public int SaveDoor(Door door)
         {
@@ -149,7 +166,7 @@ namespace TH.Core.Modules.Door
         }
 
         /// <summary> Get DoorKinds. </summary>
-        /// <param name="ids">The Id of the doorKind to retrieve.</param>
+        /// <param name="ids">The ids of the doorKind to retrieve.</param>
         public List<DoorKind> GetDoorKinds(int[] ids)
         {
             if (ids.IsNullOrEmpty())
@@ -333,6 +350,9 @@ namespace TH.Core.Modules.Door
             return doorGlass.Id;
         }
 
+        /// <summary> Deletes the DoorGlass. </summary>
+        /// <param name="ids">Ids of doorglass to delete.</param>
+        /// <param name="doorIds">DoorIds of doorglass to delete.</param>
         public void DeleteDoorGlass(int[] ids = null, int[] doorIds = null)
         {
             if (ids.IsNullOrEmpty() && doorIds.IsNullOrEmpty())
@@ -500,6 +520,21 @@ namespace TH.Core.Modules.Door
 
 
         //=== Mergers
+
+        /// <summary>Merge all available childs into doors. </summary>
+        public void MergeAllIntoDoors(List<Door> doors)
+        {
+            if (doors.IsNullOrEmpty())
+                return;
+
+            MergeKindIntoDoors(doors);
+            MergeGlassIntoDoors(doors);
+            MergeWoodIntoDoors(doors);
+            List<DoorGlass> doorGlasses = doors.Where(x => x.DoorGlasses != null).SelectMany(x => x.DoorGlasses).ToList();
+            MergeGlassIntoDoorGlass(doorGlasses);
+            List<DoorWood> doorWoods = doors.Where(x => x.DoorWoods != null).SelectMany(x => x.DoorWoods).ToList();
+            MergeWoodIntoDoorWood(doorWoods);
+        }
         
         /// <summary> Merge Kind into Door. </summary>
         /// <param name="doors">The doors to merge a kind into.</param>
