@@ -10,8 +10,12 @@
 <div id="cards">
     @foreach (Order order in orders)
     {
-        <figure class="card" data-id="@order.Id">
-            <figcaption class="card__caption">
+        int numDoors = order.GetDoorsCount();
+        int numWindows = order.GetWindowsCount();
+        int numFrames = order.GetFrameCount();
+        bool hasChilds = numFrames > 0 || numWindows > 0 || numDoors > 0;
+        <figure class="card">
+            <figcaption class="card__caption @(hasChilds ? "card__pointer" : null)" data-hook="@(hasChilds ? "btn-details" : null)" data-id="@order.Id">
                 <h1 class="card__name">@order.ProjectName</h1>
                 <h4 class="card__date">@order.GetDate()</h4>
 
@@ -20,15 +24,15 @@
                     <tbody>
                         <tr>
                             <th># Doors</th>
-                            <td>@order.GetDoorsCount()</td>
+                            <td>@numDoors</td>
                         </tr>
                         <tr>
                             <th># Windows</th>
-                            <td>@order.GetWindowsCount()</td>
+                            <td>@numWindows</td>
                         </tr>
                         <tr>
                             <th># Frames</th>
-                            <td>@order.GetFrameCount()</td>
+                            <td>@numFrames</td>
                         </tr>
                     </tbody>
                 </table>
