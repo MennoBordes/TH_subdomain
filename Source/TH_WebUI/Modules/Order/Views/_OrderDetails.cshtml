@@ -4,7 +4,7 @@
 }
 
 <h1>Order <span>details</span></h1>
-<h3>@order.ProjectName</h3>
+<h3>Order Name: @order.ProjectName</h3>
 
 <div>
     @if (order.OrderDatas == null || order.OrderDatas.Count < 1)
@@ -15,39 +15,41 @@
     {
         foreach (OrderData data in order.OrderDatas)
         {
-            <h2>Order @data.Id</h2>
-            <div>
-                <h2>Frames</h2>
-                @if(data.Frame == null)
-                {
-                    <p>No frames</p>
-                }
-                else
-                {
-                    <p>@data.Frame.Id</p>
-                }
-            </div>
-            <div>
-                <h2>Doors</h2>
-                @if (data.Door == null)
-                {
-                    <p>No doors</p>
-                }
-                else
-                {
-                    <p>@data.Door.Id</p>
-                }
-            </div>
-            <div>
-                <h2>Windows</h2>
-                @if (data.Window == null)
-                {
-                    <p>No windows</p>
-                }
-                else
-                {
-                    <p>@data.Window.Id</p>
-                }
+            <div class="card">
+                <h2>Order @data.Id</h2>
+                <div>
+                    <h2>Frames</h2>
+                    @if(data.Frame == null)
+                    {
+                        <p>No frames</p>
+                    }
+                    else
+                    {
+                        <p># Frames: @data.Frame.Id</p>
+                    }
+                </div>
+                <div>
+                    <h2>Doors</h2>
+                    @if (data.Door == null)
+                    {
+                        <p>No doors</p>
+                    }
+                    else
+                    {
+                        <p># Doors: @data.Door.Id</p>
+                    }
+                </div>
+                <div>
+                    <h2>Windows</h2>
+                    @if (data.Window == null)
+                    {
+                        <p>No windows</p>
+                    }
+                    else
+                    {
+                        <p># Windows: @data.Window.Id</p>
+                    }
+                </div>
             </div>
         }
     }
