@@ -30,6 +30,7 @@ namespace TH.WebUI.Modules.Order.Controllers
             Order order = oMan.GetOrder(id);
 
             oMan.MergeOrderDataIntoOrder(new List<Order>() { order });
+            oMan.MergeAllIntoOrderData(new List<Order>() { order });
 
             ViewData["order"] = order;
             return View(views + "_OrderDetails.cshtml");
