@@ -15,6 +15,9 @@ namespace TH.Core.Modules.Order.Entities
         [DbColumn("Project_Name")]
         public string ProjectName { get; set; }
 
+        [DbColumn("Description")]
+        public string Description { get; set; }
+
         [DbColumn("Created_Date")]
         public DateTime CreationDate { get; set; }
 

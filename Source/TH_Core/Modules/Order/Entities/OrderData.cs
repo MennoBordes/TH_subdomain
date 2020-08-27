@@ -25,6 +25,9 @@ namespace TH.Core.Modules.Order.Entities
         [DbColumn("Id_Frame")]
         public int? IdFrame { get; set; }
 
+        [DbColumn("Description")]
+        public string Description { get; set; }
+
         //=== Helpers
         public Order Order { get; set; }
 
