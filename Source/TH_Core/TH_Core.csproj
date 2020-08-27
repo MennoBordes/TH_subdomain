@@ -119,5 +119,8 @@
     <None Include="Base\Database\DB Design\DB schema_V3.pdf" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="DBChangeLog.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
