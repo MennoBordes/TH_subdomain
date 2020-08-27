@@ -19,8 +19,8 @@
                 <h1 class="card__name">@order.ProjectName</h1>
                 <h4 class="card__date">@order.GetDate()</h4>
 
+                <!-- Stats -->
                 <table class="card__stats">
-
                     <tbody>
                         <tr>
                             <th># Doors</th>
@@ -36,21 +36,11 @@
                         </tr>
                     </tbody>
                 </table>
+                <!-- //Stats -->
+                <p class="card__description">@order.Description</p>
+
                 <div class="card__footer">
                     <input type="button" data-hook="btn-details" data-id="@order.Id" value="Details" />
-                    @*<a href="/order/order-details?id=@order.Id" target="_self">Details</a>
-                    <div class="button">
-                        @Html.ActionLink(
-                            linkText: "Details",
-                            actionName: "order-details",
-                            controllerName: "Order",
-                            routeValues: new
-                            {
-                                id = order.Id
-                            },
-                            htmlAttributes: null
-                        )
-                    </div>*@
                 </div>
             </figcaption>
         </figure>
@@ -62,7 +52,7 @@
     $(document).ready(function () {
 
         // Urls
-        var uOrderDetails = '@Url.Content("~/modules/Order/order-details")';
+        var uOrderDetails = '@Url.Content("~/modules/order/order-details")';
         
         // Selectors
         var sBtnDetails = '[data-hook=btn-details]';
