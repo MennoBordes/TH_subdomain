@@ -2,20 +2,20 @@
 #cards{
     text-align: center;
 }
-.card {
+
+.card, .detail-card {
     display: inline-grid;
     width: 300px;
     padding: 1em;
     margin: 10px;
     border-radius: 15px;
     text-align: left;
-    background: #999999;
     position: relative;
     min-height: 300px;
     box-shadow: 0px 5px 20px -10px #111;
 
 
-    h1, h2, h3, h4, h5{
+    h1, h2, h3, h4, h5 {
         margin: 0;
         font-weight: 400;
     }
@@ -23,8 +23,13 @@
     &__caption {
         padding: 1em;
         position: relative;
-        background-color: rgba(#fff, 0.65);
+        background-color: rgba(#cacccc, 1);
         border-radius: 3px;
+    }
+
+    &__description {
+        overflow-y: hidden;
+        text-align: center;
     }
 
     &__footer {
@@ -40,7 +45,7 @@
         letter-spacing: 0.02em;
     }
 
-    &__date{
+    &__date {
         position: absolute;
         top: 0;
         right: 1em;
@@ -57,11 +62,13 @@
     &__stats {
         margin: 1em 0;
         width: 100%;
-        th{
+
+        th {
             text-align: right;
             font-weight: 300;
         }
-        th, td{
+
+        th, td {
             width: 50%;
             padding: 0.25em 0.5em 0;
         }
@@ -69,5 +76,17 @@
 
     &__pointer {
         cursor: pointer;
+    }
+}
+
+.detail-card {
+    background: #999999;
+}
+
+.card {
+    background: #03cafc;
+
+    &__description {
+        max-height: 50px;
     }
 }
