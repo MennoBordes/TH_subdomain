@@ -16,7 +16,7 @@ namespace TH.WebUI.Modules.Order.Controllers
 
         public ActionResult Content()
         {
-            List<Order> orders = oMan.GetOrders();
+            List<Order> orders = oMan.GetOrders(orderByDecending: true);
 
             oMan.MergeOrderDataIntoOrder(orders);
 
@@ -34,6 +34,12 @@ namespace TH.WebUI.Modules.Order.Controllers
 
             ViewData["order"] = order;
             return View(views + "_OrderDetails.cshtml");
+        }
+
+        [ActionName("new-order")]
+        public ActionResult CreateNewOrder()
+        {
+            return View(views + "Components/_CreateNewOrder.cshtml");
         }
 
     }

@@ -35,12 +35,14 @@ namespace TH.Core.Modules.Order
         //=== Manage: Order
 
         /// <summary> Get all orders. </summary>
-        public List<Order> GetOrders()
+        public List<Order> GetOrders(bool orderByDecending = false)
         {
             XQuery q = new XQuery()
                 .From<Order>()
                 .Where()
                     .Column<Order>(x => x.Id).GreaterThan().Value(0);
+
+            if (orderByDecending) q.OrderByDescending<Order>(x => x.Id);
 
             List<Order> orders = repository.GetEntities<Order>(q).ToList();
 
