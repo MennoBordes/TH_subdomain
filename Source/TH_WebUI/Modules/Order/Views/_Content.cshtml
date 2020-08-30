@@ -6,6 +6,8 @@
 
 <h1>Orders</h1>
 
+<input type="button" data-hook="btn-new-order" value="Create New Order"/>
+
 <!-- Order cards -->
 <div id="cards">
     @foreach (Order order in orders)
@@ -15,7 +17,7 @@
         int numFrames = order.GetFrameCount();
         bool hasChilds = numFrames > 0 || numWindows > 0 || numDoors > 0;
         <figure class="card">
-            <figcaption class="card__caption @(hasChilds ? "card__pointer" : null)" data-hook="@(hasChilds ? "btn-details" : null)" data-id="@order.Id">
+            <figcaption class="card__caption @(hasChilds ? "card__pointer" : null)" data-hook="@(hasChilds ? "btn-order-details" : null)" data-id="@order.Id">
                 <h1 class="card__name">@order.ProjectName</h1>
                 <h4 class="card__date">@order.GetDate()</h4>
 
@@ -40,7 +42,7 @@
                 <p class="card__description">@order.Description</p>
 
                 <div class="card__footer">
-                    <input type="button" data-hook="btn-details" data-id="@order.Id" value="Details" />
+                    @*<input type="button" data-hook="btn-details" data-id="@order.Id" value="Details" />*@
                 </div>
             </figcaption>
         </figure>
@@ -53,13 +55,32 @@
 
         // Urls
         var uOrderDetails = '@Url.Content("~/modules/order/order-details")';
+        var uNewOrder = '@Url.Content("~/modules/order/new-order")';
         
         // Selectors
-        var sBtnDetails = '[data-hook=btn-details]';
+        var sBtnOrderDetails = '[data-hook=btn-order-details]';
+        var sBtnNewOrder = '[data-hook=btn-new-order]';
 
+        // Bind => New Order
+        $(document).off('click', sBtnNewOrder);
+        $(document).on('click', sBtnNewOrder, function () {
+            DialogSystem.open({
+                ajax: {
+                    url: uNewOrder
+                },
+                dimension: { full: false, width: '80%', height: '80%' },
+                environment: 'page',
+                callback: function (e) {
+                    if (e.action !== "cancel") {
+                        Reload();
+                    }
+                }
+            });
+        });
 
-        $(document).off('click', sBtnDetails);
-        $(document).on('click', sBtnDetails, function () {
+        // Bind => Order Details
+        $(document).off('click', sBtnOrderDetails);
+        $(document).on('click', sBtnOrderDetails, function () {
             id = $(this).data('id');
             // Open details screen for selected order
             window.location.href = uOrderDetails + "?id=" + id;
@@ -74,5 +95,9 @@
             //    //}
             //});
         });
+
+        function Reload() {
+            location.reload(true);
+        }
     });
 </script>

@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+@Html.DialogSettings(title: "Create New Order")
+<div class="container">
+    <div class="container-fluid">
+        <label>Naam</label>
+        <input type="text" data-hook="i-name" />
+    </div>
+
+    <div class="container-fluid">
+        <label>Beschrijving</label>
+        <input type="text" data-hook="i-description" />
+    </div>
+
+    <div>
+        <h3>Deuren</h3>
+    </div>
+    <div>
+        <h3>Ramen</h3>
+    </div>
+    <div>
+        <h3>Kozijnen</h3>
+    </div>
+
+    <div data-ds-buttons class="buttonRow">
+        <input type="button" class="button" data-button="btn-cancel" value="Cancel" />
+        <input type="button" class="button-create" data-button="btn-save" value="Save" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Urls
+
+        // Selectors
+        var sCancel = '[data-button=btn-cancel]';
+        var sSave = '[data-button=btn-save]';
+
+        // Bind => Save
+        $(document).off('click', sSave);
+        $(document).on('click', sSave, function () {
+           
+        });
+
+        // Bind => cancel
+        $(document).off('click', sCancel);
+        $(document).on('click', sCancel, function () {
+            //debugger;
+            DialogSystem.done({ action: 'cancel' });
+        });
+    });
+</script>

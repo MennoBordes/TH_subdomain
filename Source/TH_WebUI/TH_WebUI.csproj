@@ -135,6 +135,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Door\Controllers\DoorController.cs" />
     <Compile Include="Modules\Order\Controllers\OrderController.cs" />
     <Compile Include="Modules\People\Controllers\PeopleController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -168,6 +169,7 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="Modules\Order\Views\_OrderDetails.cshtml" />
+    <Content Include="Modules\Order\Views\Components\_CreateNewOrder.cshtml" />
     <None Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.intellisense.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.js" />
@@ -223,8 +225,10 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Modules\Door\Views\Components\" />
     <Folder Include="Modules\Glass\Controllers\" />
     <Folder Include="Modules\Glass\Views\" />
+    <Folder Include="Views\Door\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
