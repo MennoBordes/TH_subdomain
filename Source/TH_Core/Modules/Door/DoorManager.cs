@@ -90,6 +90,8 @@ namespace TH.Core.Modules.Door
         {
             if (door == null)
                 throw new CoreException("No Door Specified!");
+            if (door.Connection == null || door.DoorKind == null)
+                throw new CoreException("Invalid Door Speicified!");
 
             // Save Connection
             door.IdConnection = cMan.SaveConnection(door.Connection);
