@@ -17,7 +17,7 @@
         int numFrames = order.GetFrameCount();
         bool hasChilds = numFrames > 0 || numWindows > 0 || numDoors > 0;
         <figure class="card">
-            <figcaption class="card__caption @(hasChilds ? "card__pointer" : null)" data-hook="@(hasChilds ? "btn-order-details" : null)" data-id="@order.Id">
+            <figcaption class="card__caption card__pointer" data-hook="btn-order-details" data-id="@order.Id">
                 <h1 class="card__name">@order.ProjectName</h1>
                 <h4 class="card__date">@order.GetDate()</h4>
 
@@ -42,7 +42,7 @@
                 <p class="card__description">@order.Description</p>
 
                 <div class="card__footer">
-                    @*<input type="button" data-hook="btn-details" data-id="@order.Id" value="Details" />*@
+                    @*<input type="button" data-hook="btn-order-details" data-id="@order.Id" value="Details" />*@
                 </div>
             </figcaption>
         </figure>

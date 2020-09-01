@@ -28,6 +28,8 @@ namespace TH.WebUI.Modules.Order.Controllers
         public ActionResult OrderDetails(int id)
         {
             Order order = oMan.GetOrder(id);
+            if (order == null)
+                return BadRequest();
 
             oMan.MergeOrderDataIntoOrder(new List<Order>() { order });
             oMan.MergeAllIntoOrderData(new List<Order>() { order });
@@ -39,7 +41,23 @@ namespace TH.WebUI.Modules.Order.Controllers
         [ActionName("new-order")]
         public ActionResult CreateNewOrder()
         {
-            return View(views + "Components/_CreateNewOrder.cshtml");
+            Order order = new Order();
+            return View(views + "Components/_CreateNewOrder.cshtml", order);
+        }
+
+        [ActionName("save-new-order")]
+        public ActionResult SaveCreateNewOrder(Order order)
+        {
+            if (order == null || order.ProjectName == null)
+                return Json(new { success = false, message = "Invalid order!" });
+
+            // Set date to today
+            order.CreationDate = DateTime.Now;
+
+
+            oMan.SaveNewOrder(order);
+
+            return Json(new { success = true, message = "Saved succesfully!" });
         }
 
     }

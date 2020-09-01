@@ -1,4 +1,5 @@
-﻿@{
+﻿@model TH.Core.Modules.Order.Entities.Order
+@{
     Layout = null;
 }
 
@@ -33,15 +34,39 @@
 <script type="text/javascript">
     $(document).ready(function () {
         // Urls
+        var uSaveNewOrder = '@Url.Content("~/modules/order/save-new-order")';
 
         // Selectors
         var sCancel = '[data-button=btn-cancel]';
         var sSave = '[data-button=btn-save]';
+        var sPName = '[data-hook=i-name]';
+        var sPDesc = '[data-hook=i-description]';
+
+        // Vars
+        var order = @Html.Json(Model);
 
         // Bind => Save
         $(document).off('click', sSave);
         $(document).on('click', sSave, function () {
-           
+            debugger;
+            order["ProjectName"] = $(sPName).val();
+            order["Description"] = $(sPDesc).val();
+
+            TH.ajax.postJSON({
+                url: uSaveNewOrder,
+                data: order,
+                success: function (response) {
+                    debugger;
+                    if (response.success == true) {
+                        Feedback.success({ message: response.message });
+                    } else {
+                        Feedback.error({ message: response.message });
+                    }
+                },
+                error: function (response) {
+                    debugger;
+                }
+            });
         });
 
         // Bind => cancel

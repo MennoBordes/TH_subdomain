@@ -56,3 +56,26 @@
         }
     }
 </div>
+
+<div>
+    <input type="button" data-hook="btn-edit-order" value="Order bewerken" />
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Urls
+        var uEditOrder = '@Url.Content("~/modules/order/edit-order")';
+
+        // Selectors
+        var sEditOrder = '[data-hook=btn-edit-order]';
+
+        // Vars
+        var orderId = @(order.Id);
+
+        // Bind => Edit order
+        $(document).off('click', sEditOrder);
+        $(document).on('click', sEditOrder, function () {
+            Feedback.success({ message: "CREATE VIEW FOR EDDITING ORDER " + orderId });
+        });
+    });
+</script>

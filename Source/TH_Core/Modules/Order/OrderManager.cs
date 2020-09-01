@@ -59,7 +59,6 @@ namespace TH.Core.Modules.Order
 
             return order;
         }
-                
 
         /// <summary>Save or update a order. </summary>
         /// <returns>The index in the DB.</returns>
@@ -82,6 +81,22 @@ namespace TH.Core.Modules.Order
             return order.Id;
         }
 
+        public int SaveNewOrder(Order order)
+        {
+            // Check
+            if (order == null)
+                throw new CoreException("No Order Specified!");
+
+            // Insert
+            order.Id = repository.Insert(order).InsertId.Value;
+
+            foreach (OrderData data in order.OrderDatas)
+            {
+                this.SaveOrderData(data);
+            }            
+
+            return order.Id;
+        }
 
         //=== Manage: Order Data
 
@@ -228,6 +243,9 @@ namespace TH.Core.Modules.Order
                 return;
 
             List<OrderData> orderDatas = orders.Where(x => x.OrderDatas != null).SelectMany(x => x.OrderDatas).ToList();
+
+            if (orderDatas.IsNullOrEmpty())
+                return;
 
             MergeAllIntoOrderData(orderDatas);
         }
