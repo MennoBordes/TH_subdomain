@@ -170,6 +170,8 @@
     </None>
     <Content Include="Modules\Order\Views\_OrderDetails.cshtml" />
     <Content Include="Modules\Order\Views\Components\_CreateNewOrder.cshtml" />
+    <Content Include="Modules\Door\Views\Components\_CreateNewDoor.cshtml" />
+    <Content Include="Modules\Door\Views\_DoorDetails.cshtml" />
     <None Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.intellisense.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.js" />
@@ -225,7 +227,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="Modules\Door\Views\Components\" />
     <Folder Include="Modules\Glass\Controllers\" />
     <Folder Include="Modules\Glass\Views\" />
     <Folder Include="Views\Door\" />
