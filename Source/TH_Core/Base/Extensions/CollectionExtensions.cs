@@ -45,8 +45,7 @@ namespace TH.Core.Base.Extensions
         /// <summary> Safe ForEach method for IEnumerable collections. </summary>
         public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
-            if (collection == null)
-                return;
+            if (collection == null) return;
 
             IEnumerator<T> enumerator = collection.GetEnumerator();
             while (enumerator.MoveNext())
@@ -58,8 +57,7 @@ namespace TH.Core.Base.Extensions
         /// <summary> Safe ForEach method for ICollection collections. </summary>
         public static void ForEach<T>(this ICollection<T> collection, Action<T> action)
         {
-            if (collection == null)
-                return;
+            if (collection == null) return;
 
             IEnumerator<T> enumerator = collection.GetEnumerator();
             while (enumerator.MoveNext())
@@ -71,8 +69,7 @@ namespace TH.Core.Base.Extensions
         /// <summary> Safe ForEach method for InternalDataCollectionBase collections. </summary>
         public static void ForEach(this InternalDataCollectionBase collection, Action<DataColumn> action)
         {
-            if (collection == null)
-                return;
+            if (collection == null) return;
 
             IEnumerator enumerator = collection.GetEnumerator();
             while (enumerator.MoveNext())
@@ -84,10 +81,8 @@ namespace TH.Core.Base.Extensions
         /// <summary> Concats this array with specified array into a new array. </summary>
         public static T[] Concat<T>(this T[] x, T[] y)
         {
-            if (x == null)
-                throw new ArgumentNullException("x");
-            if (y == null)
-                throw new ArgumentNullException("y");
+            if (x == null) throw new ArgumentNullException("x");
+            if (y == null) throw new ArgumentNullException("y");
 
             int oldLen = x.Length;
             Array.Resize<T>(ref x, x.Length + y.Length);
@@ -104,8 +99,7 @@ namespace TH.Core.Base.Extensions
         /// <summary> Indicator if specified key is present. </summary>
         public static bool HasKey(this NameValueCollection collection, string key)
         {
-            if (collection == null)
-                return false;
+            if (collection == null) return false;
 
             return collection.AllKeys.Contains(key);
         }
@@ -113,8 +107,8 @@ namespace TH.Core.Base.Extensions
 
         /// <summary> Clone list using serialization. </summary>
         public static List<T> CloneList<T>(this List<T> oldList)
-        {
-            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+        {            
+            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();            
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
 
             formatter.Serialize(stream, oldList);

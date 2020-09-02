@@ -11,5 +11,7 @@
 #endif
 
 
+        /// <summary> The timezone used by the platform, all database times are stored in this timezone. When using it will be converted to the timezone of the user. </summary>
+        public const string TH_PLATFORM_TIMEZONE_ID = "W. Europe Standard Time";
     }
 }
