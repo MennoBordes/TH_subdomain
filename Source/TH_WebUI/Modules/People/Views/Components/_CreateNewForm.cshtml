@@ -36,7 +36,6 @@
         // Bind => Save
         $(document).off('click', sSave);
         $(document).on('click', sSave, function () {
-            debugger;
             var formData = FormManager.data(formName)
             TH.ajax.postJSON({
                 url: uSave,
@@ -44,7 +43,6 @@
                     postData: formData
                 },
                 success: function (response) {
-                    debugger;
                     if (response.success == false) {
                         Feedback.error({ message: response.message });
                     }

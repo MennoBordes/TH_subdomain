@@ -47,16 +47,23 @@ namespace TH.WebUI.Modules.People.Controllers
             }
 
             People person = new People();
+            if (postData.Metadata.HasKey("edit") && postData.Metadata.Value<bool>("edit"))
+            {
+                int personId = postData.Metadata.Value<int>("personId");
+                person = pMan.GetPerson(personId);
+            }
+
             person.FirstName = form.Element<Input>(1).Value;
             person.LastName = form.Element<Input>(2).Value;
-            var res = form.Element<Calendar>(3).Value;
-            person.EmailAddress = form.Element<Input>(4).Value;
+            person.EmailAddress = form.Element<Input>(3).Value;
+            person.DateOfBirth = DateTime.Parse(form.Element<Input>(4).Value);
 
+            pMan.SavePerson(person);
 
             return Json(new { success = true, message = "saved person" });
         }
 
-        private Form GetCreatePeopleForm()
+        private Form GetCreatePeopleForm(People person = null)
         {
             Form form = new Form();
             form.Name = "create-person-form";
@@ -65,59 +72,76 @@ namespace TH.WebUI.Modules.People.Controllers
             Block block = new Block(Core.Tools.Form.Enums.FormColumnLayout.Split2);
             form.Blocks.Add(block);
 
-            Input i1 = Input.Init(id: 1, label: "First Name", required: true, col: 1);
-            block.AddFormElement(i1);
+            Input f1 = Input.Init(id: 1, label: "First Name", required: true, col: 1);
+            f1.Placeholder = "Johan";
+            block.AddFormElement(f1);
 
-            Input i2 = Input.Init(id: 2, label: "Last Name", required: false, col: 2);
-            block.AddFormElement(i2);
+            Input f2 = Input.Init(id: 2, label: "Last Name", required: false, col: 2);
+            f2.Placeholder = "Pieterssen";
+            block.AddFormElement(f2);
 
-            Calendar c1 = Calendar.Init(id: 3, label: "Birth Date", required: true, col: 1);
-            //block.AddFormElement(c1);
+            Input f3 = Input.Init(id: 3, label: "Email Address", required: true, col: 1);
+            f3.Placeholder = "jpietersen@gmail.com";
+            block.AddFormElement(f3);
 
-            Input i3 = Input.Init(id: 4, label: "Email Address", required: true, col: 2);
-            block.AddFormElement(i3);
+            Input f4 = Input.Init(id: 4, label: "Birth Date", required: true, col: 2);
+            f4.MaskPattern = Input.MASK_PRESET_DATE_TIME;
+            f4.Placeholder = DateTime.Now.ToString();
+            block.AddFormElement(f4);
 
-            RadiobuttonItem ri1 = new RadiobuttonItem() { Id = 1, Label = "r1 label", Value = "r1", Selected = true };
-            RadiobuttonItem ri2 = new RadiobuttonItem() { Id = 2, Label = "r2 label", Value = "r2", Selected = false };
-            List<RadiobuttonItem> rbiList = new List<RadiobuttonItem>();
-            rbiList.Add(ri1);
-            rbiList.Add(ri2);
+            if (person != null)
+            {                
+                f1.Value = person.FirstName;
+                f2.Value = person.LastName;
+                f3.Value = person.EmailAddress;
+                f4.Value = person.DateOfBirth.ToString();
+                form.Metadata["personId"] = person.Id;
+                form.Metadata["edit"] = true;
+            }
 
-            Radiobutton r1 = Radiobutton.Init(id: 5, label: "radio button test", items: rbiList, col: 1);
-            block.AddFormElement(r1);
+            
 
-            CheckboxItem ch1 = new CheckboxItem() { Id = 1, Label = "ch1 label", Value = "ch1", Selected = true };
-            CheckboxItem ch2 = new CheckboxItem() { Id = 2, Label = "ch2 label", Value = "ch2", Selected = false };
+            //RadiobuttonItem ri1 = new RadiobuttonItem() { Id = 1, Label = "r1 label", Value = "r1", Selected = true };
+            //RadiobuttonItem ri2 = new RadiobuttonItem() { Id = 2, Label = "r2 label", Value = "r2", Selected = false };
+            //List<RadiobuttonItem> rbiList = new List<RadiobuttonItem>();
+            //rbiList.Add(ri1);
+            //rbiList.Add(ri2);
 
-            Checkbox cb1 = Checkbox.Init(id: 6, label: "checkbox switch test", @switch: true);
-            block.AddFormElement(cb1);
+            ////Radiobutton r1 = Radiobutton.Init(id: 5, label: "radio button test", items: rbiList, col: 1);
+            ////block.AddFormElement(r1);
 
-            Checkbox cb2 = Checkbox.Init(id: 7, label: "checkbox test");
-            block.AddFormElement(cb2);
+            //CheckboxItem ch1 = new CheckboxItem() { Id = 1, Label = "ch1 label", Value = "ch1", Selected = true };
+            //CheckboxItem ch2 = new CheckboxItem() { Id = 2, Label = "ch2 label", Value = "ch2", Selected = false };
 
-            cb2.Items.Add(new CheckboxItem { Id = 1, Value = bool.TrueString });
-            cb2.Items.Add(new CheckboxItem { Id = 2, Value = bool.FalseString });
+            //Checkbox cb1 = Checkbox.Init(id: 6, label: "checkbox switch test", @switch: true);
+            //block.AddFormElement(cb1);
 
-            Dropdown d1 = Dropdown.Init(id: 8, label: "Dropdown test", col: 2);
-            block.AddFormElement(d1);
-            d1.Items.Add(new DropdownItem()
-            {
-                Id = 1,
-                Value = "d1",
-                Label = "dropdown 1"
-            });
-            d1.Items.Add(new DropdownItem()
-            {
-                Id = 2,
-                Value = "d2",
-                Label = "dropdown 2"
-            });
-            d1.Items.Add(new DropdownItem()
-            {
-                Id = 3,
-                Value = "d3",
-                Label = "dropdown 3"
-            });
+            //Checkbox cb2 = Checkbox.Init(id: 7, label: "checkbox test");
+            //block.AddFormElement(cb2);
+
+            //cb2.Items.Add(new CheckboxItem { Id = 1, Value = bool.TrueString, Label = bool.TrueString });
+            //cb2.Items.Add(new CheckboxItem { Id = 2, Value = bool.FalseString, Label = bool.FalseString });
+
+            //Dropdown d1 = Dropdown.Init(id: 8, label: "Dropdown test", col: 2);
+            //block.AddFormElement(d1);
+            //d1.Items.Add(new DropdownItem()
+            //{
+            //    Id = 1,
+            //    Value = "d1",
+            //    Label = "dropdown 1"
+            //});
+            //d1.Items.Add(new DropdownItem()
+            //{
+            //    Id = 2,
+            //    Value = "d2",
+            //    Label = "dropdown 2"
+            //});
+            //d1.Items.Add(new DropdownItem()
+            //{
+            //    Id = 3,
+            //    Value = "d3",
+            //    Label = "dropdown 3"
+            //});
 
             return form;
         }
@@ -148,6 +172,17 @@ namespace TH.WebUI.Modules.People.Controllers
             pMan.SavePerson(people);
 
             return Json(new { message = "Saved new person." });
+        }
+
+        [ActionName("edit-person-form")]
+        public ActionResult EditPersonForm(int Id)
+        {
+            People person = pMan.GetPerson(Id);
+
+            Form form = this.GetCreatePeopleForm(person);
+
+            ViewData["Form"] = form;
+            return View(views + "/Components/_CreateNewForm.cshtml");
         }
 
         /// <summary> Render edit view. </summary>
