@@ -29,9 +29,15 @@ namespace TH.WebUI
                       "~/Resources/Scripts/th.dialog.js",
                       "~/Resources/Scripts/th.utils.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/select2/js").Include(
+                      "~/Resources/Plugins/Select2/select2.min.js"));
+
             bundles.Add(new StyleBundle("~/Styles/th/css").Include(
                       "~/Resources/Styles/th.ui.css",
                       "~/Resources/Styles/th.cards.css"));
+
+            bundles.Add(new StyleBundle("~/Styles/select2/css").Include(
+                      "~/Resources/Plugins/Select2/select2.css"));
 
             bundles.Add(new StyleBundle("~/Styles/test/css").Include(
                       "~/Resources/Styles/normalize.css",
