@@ -26,11 +26,18 @@ namespace TH.WebUI
             bundles.Add(new ScriptBundle("~/bundles/th").Include(
                       "~/Resources/Scripts/th.feedback.js",
                       "~/Resources/Scripts/th.js",
-                      "~/Resources/Scripts/th.dialog.js"));
+                      "~/Resources/Scripts/th.dialog.js",
+                      "~/Resources/Scripts/th.utils.js"));
 
             bundles.Add(new StyleBundle("~/Styles/th/css").Include(
                       "~/Resources/Styles/th.ui.css",
                       "~/Resources/Styles/th.cards.css"));
+
+            bundles.Add(new StyleBundle("~/Styles/test/css").Include(
+                      "~/Resources/Styles/normalize.css",
+                      "~/Resources/Styles/th.normalize.css",
+                      "~/Resources/Styles/root.css",
+                      "~/Resources/Styles/th.tools.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Resources/Libraries/bootstrap-3.4.1/css/bootstrap.css",

@@ -1,0 +1,65 @@
+﻿@using TH.WebUI.Tools.Form.HtmlHelpers
+@using TH.Core.Tools.Form.Models
+
+@model Field
+
+@{ 
+    Checkbox element = (Checkbox)Model.Element;
+
+    string direction = null;
+
+    if (element.Direction == TH.Core.Base.Database.Enums.RepeatDirection.Vertical)
+    {
+        direction = "vertical";
+    }
+    if (element.Direction == TH.Core.Base.Database.Enums.RepeatDirection.Horizontal)
+    {
+        direction = "horizontal";
+    }
+
+    string inlineStyle = (element.InlineMode == true) ? "inlineMode inlineModeTitle" : "";
+    if (element.Description != null) { inlineStyle += " hasDescription"; }
+}
+
+<div class="formRow checkbox @(inlineStyle)" style="@Html.Raw(element.InlineCss)">
+    @Html.FormFieldLabel(element)
+    @Html.FormFieldError(element)
+    @Html.FormFieldDescription(element.Description)
+
+    <div class="form-input @(direction)">
+        @{
+            foreach (CheckboxItem item in element.Items)
+            {
+                string id = string.Format("{0}_{1}", element.Name, item.Id);
+
+                TagBuilder tin = new TagBuilder("input");
+                tin.Attributes.Add("type", "checkbox");
+                tin.Attributes.Add("name", id);
+                tin.Attributes.Add("id", id);
+                tin.Attributes.Add("value", item.Value);
+                if (item.Selected)
+                { tin.Attributes.Add("checked", "checked"); }
+                if (element.Disabled || item.Disabled)
+                { tin.Attributes.Add("disabled", "disabled"); }
+
+                TagBuilder tl = new TagBuilder("label");
+                if (element.Rendering == null)
+                { tl.AddCssClass("radioLabel"); }
+                tl.AddCssClass("no-user-select");
+                tl.Attributes["for"] = id;
+                tl.SetInnerText(item.Label);
+
+                TagBuilder ti = new TagBuilder("div");
+                ti.AddCssClass("item");
+                if (element.Rendering == Checkbox.Option.Switch)
+                { ti.AddCssClass("switch"); }
+                if (element.Disabled || item.Disabled)
+                { ti.AddCssClass("disabled"); }
+                ti.InnerHtml = tin.ToString() + tl.ToString();
+
+                Html.Write(ti);
+            }
+        }
+    </div>
+
+</div>

@@ -1,0 +1,189 @@
+﻿@using TH.WebUI.Tools.Form.HtmlHelpers
+@using System.Globalization;
+@using TH.Core.Tools.Form.Models;
+@using TH.Core.Base.Extensions;
+
+@model Field
+
+@{ 
+    Input element = (Input)Model.Element;
+
+    IDictionary<string, object> attributes = element.Attributes;
+
+    if (!string.IsNullOrEmpty(element.Placeholder)) { attributes["placeholder"] = element.Placeholder; }
+    if (element.Required) { attributes["required"] = "required"; }
+    if (element.Disabled) { attributes["disabled"] = "disabled"; }
+    if (element.MaxLength != 0) { attributes["maxlength"] = element.MaxLength.ToString(CultureInfo.InvariantCulture); }
+    if (element.FieldSize.HasValue) { attributes["style"] = string.Format("width: {0}px;", element.FieldSize); }
+    if (element.CharCounter) { attributes["data-func-charcount"] = "true"; }
+    if (element.ColorPicker) { attributes["data-func-color-picker"] = "true"; }
+    if (element.TabIndex != null) { attributes["tabindex"] = element.TabIndex.ToString(); }
+
+    bool maskNegative = false;
+
+    // Mask
+    if (!string.IsNullOrEmpty(element.MaskPattern))
+    {
+        attributes.Add("data-mask", element.MaskPattern);
+
+        if (element.MaskReversed)
+        {
+            attributes.Add("data-mask-reverse", "true");
+        }
+
+        if (element.MaskPattern.ToLower() == "iban")
+        {
+            if (element.Errors.IsNullOrEmpty())
+            {
+                element.Errors = new string[] { "ERROR" };
+            }
+        }
+
+        if (element.MaskPattern == Input.MASK_PRESET_NEGATIVE_NUMBER || element.MaskPattern == Input.MASK_PRESET_NEGATIVE_VALUTA_EU)
+        {
+            maskNegative = true;
+        }
+
+    }
+
+    // Password
+    if (element.Rendering != null && element.Rendering == Input.ERenderType.Password)
+    {
+        // Add attribute
+        attributes["type"] = "password";
+    }
+    // Password
+    if (element.Rendering != null && element.Rendering == Input.ERenderType.Email)
+    {
+        // Add attribute
+        attributes["type"] = "email";
+        attributes["class"] = "form-control";
+    }
+
+    // Value
+    string value = (string.IsNullOrEmpty(element.Value)) ? element.DefaultValue : element.Value;
+
+    //// Personalization
+    //bool hasPersonalization = element.PersonalizationOptions != null && element.PersonalizationOptions.Any();
+
+    // Style
+    string inlineStyle = (element.InlineMode == true) ? "inlineMode" : "";
+    if (element.Description != null)
+    { inlineStyle += " hasDescription"; }
+}
+
+<div class="formRow @(inlineStyle)" style="@Html.Raw(element.InlineCss)">
+    @Html.FormFieldLabel(element, element.Required)
+    @Html.FormFieldError(element, visible: false)
+    @Html.FormFieldDescription(element.Description)
+
+    <div class="form-input@(element.Disabled ? " disabled" : null) @(element.ColorPicker ? "color-picker-input" : null)" @(element.ColorPicker ? "data-hook=init-color-picker" : null)>
+        @Html.TextBox(element.Name, value, attributes)
+
+        <!-- Displays password as * or as text -->
+        @if(element.Rendering != null && element.Rendering == Input.ERenderType.Password)
+        {
+            <i class="fa fa-eye show-password" aria-hidden="true" data-show-password="@element.Name"></i>
+        }
+    </div>
+
+    @if (element.CharCounter)
+    {
+        @Html.FormCharCount(element.Name, element.Value, element.MaxLength)
+    }
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Vars
+        var maskPattern = '@(element.MaskPattern)';
+        var maskNegative = @Html.Json(maskNegative);
+        var maskReversed = @(element.MaskReversed.ToString().ToLower());
+        var formName = '@(Model.Form != null ? Model.Form.Name.ToString() : null)';
+        var colorPickerEnabled = @Html.Json(element.ColorPicker);
+
+        // selectors
+        var sInput = '#@(element.Name)';
+
+        // bind: mask        
+        if ((typeof $.fn.mask !== 'undefined') && maskPattern.length > 0) {
+
+            var input = $(sInput);
+            var mask = input.attr('data-mask');
+            if (mask != undefined) {
+
+                if (mask.toLowerCase() == "iban") {
+
+                    var ibanElementName = input.attr("name");
+                    // to make sure that the iban number entered is valid
+
+                    if (!input.is(':hidden')) { // make sure the form is beeing used
+                        input.searchDelay({
+                            delay: 200,
+                            callback: function (text, data) {
+                                var ibanInput = data.element;
+                                var formData = null;
+                                var fMan = window.FormManager;
+
+                                // check if form exists
+                                if (fMan != null || formName != null) {
+                                    if (fMan.collection != null && fMan.collection.length > 0) {
+                                        formData = fMan.form(formName);
+                                    }
+                                }
+
+                                // check if iban is valid
+                                if (IBAN.isValid(ibanInput.val())) {
+                                    // correct
+                                    $('[data-iban-error=' + ibanElementName + ']').addClass("hidden");
+
+                                    if (formData != null) {
+                                        var field = linq(formData.fields).where({ id: ibanElementName }).firstOrDefault();
+                                        var index = formData.fields.indexOf(field);
+                                        field.isValid = true;
+                                        fMan.field(index, field);
+                                    }
+                                } else {
+                                    // incorrect
+                                    $('[data-iban-error=' + ibanElementName + ']').removeClass("hidden");
+
+                                    if (formData != null) {
+                                        var field = linq(formData.fields).where({ id: ibanElementName }).firstOrDefault();
+                                        var index = formData.fields.indexOf(field);
+                                        field.isValid = false;
+                                        fMan.field(index, field);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+                else if (maskNegative) {
+                    // For negative values
+                    input.mask(mask, { translation: { 'N': { pattern: /[-]/, optional: true } } });
+                }
+                else {
+                    // normal mask
+                    input.mask(mask, { reverse: maskReversed });
+                }
+            }
+        }
+
+        // Init color picker when it's enabled.
+        if (colorPickerEnabled) {
+            // Default
+            var lang = 'nl';
+
+            $('#' + formName + ' [data-hook=init-color-picker] ' + '[data-func-color-picker=true]').colorpicker({
+                parts: 'full',
+                alpha: true,
+                showOn: 'both',
+                buttonColorize: true,
+                colorFormat: '#HEX',
+                regional: lang
+            });
+        }
+
+        // initialize char counters
+        $('.formRow ' + sInput + '[data-func-charcount=true]').formCharCount();     
+    });
+</script>

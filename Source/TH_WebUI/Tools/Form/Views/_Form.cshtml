@@ -1,0 +1,134 @@
+﻿@using TH.Core.Tools.Form.Enums
+@using TH.Core.Tools.Form.Models
+@using TH.WebUI.Tools.Form.HtmlHelpers
+@using TH.WebUI.Tools.Form.Extensions
+@using System.Text
+
+@model Form
+
+@{ 
+    bool modeMobile = this.Request.Browser.IsMobileDevice;
+
+    // Language
+    int _languageId = Model.LanguageId;
+
+    // Attributes
+    string sAttrs = null;
+    if (Model.Attributes.Count > 0)
+    {
+        sAttrs = string.Empty;
+        foreach (KeyValuePair<string, object> attr in Model.Attributes)
+        {
+            sAttrs += attr.Key + "=\"" + attr.Value + "\" ";
+        }
+    }
+
+    // Elements
+    List<FormElement> elements = Model.GetAllElements();
+    bool hasCalendar = elements.Any(x => x.Type == FormElementType.Calendar);
+}
+<script type="text/javascript" src="@Url.Content("~/Tools/Form/Scripts/widget.form.js")"></script>
+@if (hasCalendar)
+{
+    @Html.Plugins().Moment()
+    <script type="text/javascript" src="@Url.Content("~/resources/scripts/th.ui.daterangepicker.js")"></script>
+}
+
+<!-- Form -->
+<div data-area="form-generated" class="form generated" @(Html.Raw(sAttrs))>
+    <form method="post" action="@Model.Action" id="@Model.Name">
+        @if (modeMobile)
+        {
+            <input type="hidden" name="disable_autocomplete" autocomplete="off" />
+        }
+
+        @Html.AntiForgeryToken()
+        @foreach (Block block in Model.Blocks)
+        {
+            StringBuilder blockAttrs = null;
+            if (block.Attributes != null && block.Attributes.Count > 0)
+            {
+                blockAttrs = new StringBuilder();
+                foreach (var item in block.Attributes)
+                {
+                    blockAttrs.AppendFormat(" {0}=\"{1}\"", item.Key, item.Value);
+                }
+            }
+
+            string blockCssClass = block.BlockCssClass;
+            if (block.CssClass != null) { blockCssClass += " " + block.CssClass; }
+
+            @* Start: Block *@
+            @:<div id="@block.Name" class="form-block fieldset cols @(blockCssClass)" @Html.Raw(block.InlineCss) @(Html.Raw(blockAttrs != null ? blockAttrs.ToString() : null))>
+                foreach (Column column in block.Columns)
+            {
+                // Start: Column
+                if(block.FormColumnLayout != FormColumnLayout.NoSplit)
+                {
+                    Html.ViewContext.Writer.Write("<div class=\"form-column col {0}\">", column.ColumnCssClass);
+                }
+
+                // Fields
+                foreach (FormElement element in column.Elements.OrderBy(x => x.Index))
+                {
+                    Field field = new Field { Form = Model, Element = element };
+                    Html.RenderField(field);
+                }
+                // End: Column
+                if (block.FormColumnLayout != FormColumnLayout.NoSplit)
+                {
+                    Html.ViewContext.Writer.Write("</div>");
+                }
+            }
+            @:</div>
+            @* End: Block *@
+        }
+        @if (Model.HasButtons)
+        {
+            <div class="fieldset cols split2">
+                <div class="col col1">
+                    <div class="formRow buttonRow">
+                        <div class="cols split3">
+                            @foreach (var button in Model.LinkButtons)
+                            {
+                                <div class="col col1">
+                                    @Html.FormSchemaButton(button)
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col col2">
+                    <div class="formRow buttonRow">
+                        <div class="cols split2">
+                            <div class="col col1">
+                                @if (Model.CancelButton != null && Model.SaveButton != null)
+                                {
+                                    @Html.FormSchemaButton(Model.CancelButton)
+                                }
+                                else
+                                {
+                                    @:&nbsp
+                                }
+                            </div>
+                            <div class="col col2">
+                                @Html.FormSchemaButton(Model.SaveButton ?? Model.CancelButton)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </form>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Vars
+            var sFormNode = '#@(Model.Name)';
+
+            // Register form
+            FormManager.register(@Html.Raw(Model.JsonRegistration()));
+        });
+    </script>
+</div>
+<!-- //Form -->

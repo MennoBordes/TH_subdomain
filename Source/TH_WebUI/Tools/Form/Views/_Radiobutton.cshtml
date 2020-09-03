@@ -1,0 +1,199 @@
+﻿@using TH.Core.Tools.Form.Models
+@using TH.WebUI.Tools.Form.HtmlHelpers
+
+@model Field
+
+@{
+    Radiobutton element = Model.Element as Radiobutton;
+
+    List<string> values = new List<string>();
+
+    string direction = null;
+
+    if (element.Direction == TH.Core.Base.Database.Enums.RepeatDirection.Vertical)
+    {
+        direction = "vertical";
+    }
+    if (element.Direction == TH.Core.Base.Database.Enums.RepeatDirection.Horizontal)
+    {
+        direction = "horizontal";
+    }
+
+    string sliderExtraStyle = (element.SliderDisplayIntervalDots) ? "interval-dots" : "";
+    string showHandle = element.SliderDisplayHandleDot ? "" : "no-handle";
+
+    string inlineStyle = (element.InlineMode == true) ? "inlineMode inlineModeTitle" : "";
+    if (element.Description != null)
+    { inlineStyle += " hasDescription"; }
+    if (element.SliderMode)
+    { inlineStyle += " hasSlider"; }
+}
+
+<div class="formRow @(inlineStyle)" style="@Html.Raw(element.InlineCss)">
+    @Html.FormFieldLabel(element, element.Required)
+    @Html.FormFieldError(element)
+    @Html.FormFieldDescription(element.Description)
+
+    <div class="form-input @(direction)">
+        @foreach (RadiobuttonItem item in element.Items)
+        {
+            string id = string.Format("{0}_{1}", element.Name, item.Id);
+            string name = string.Format("{0}", element.Name);
+
+            TagBuilder input = new TagBuilder("input");
+            input.Attributes.Add("type", "radio");
+            input.Attributes.Add("name", name);
+            input.Attributes.Add("id", id);
+            input.Attributes.Add("value", item.Value);
+            if (item.Selected)
+            { input.Attributes.Add("checked", "checked"); }
+            if (element.Disabled || item.Disabled)
+            { input.Attributes.Add("disabled", "disabled"); }
+            if (element.SliderMode)
+            { input.Attributes.Add("style", "display:none;"); }
+
+            TagBuilder label = new TagBuilder("label");
+            label.AddCssClass("radioLabel");
+            label.AddCssClass("no-user-select");
+            label.Attributes["for"] = id;
+            label.SetInnerText(item.Label);
+
+            TagBuilder wItem = new TagBuilder("div");
+            if (item.ItemAttributes != null)
+            {
+                foreach (KeyValuePair<string, object> itemAttr in item.ItemAttributes)
+                {
+                    wItem.Attributes[itemAttr.Key] = Convert.ToString(itemAttr.Value);
+                }
+            }
+
+            wItem.AddCssClass("item");
+            if (element.Disabled || item.Disabled)
+            { wItem.AddCssClass("disabled"); }
+            wItem.InnerHtml += input.ToString();
+            if (!element.SliderMode)
+            { wItem.InnerHtml += label.ToString(); }
+            Html.Write(wItem);
+        }
+
+        @if (element.SliderMode)
+        {
+            <div id="@(element.Name)_slider" class="radio-slider @(sliderExtraStyle) @(showHandle)" style="padding: 0 20px 0 20px;">
+                <input id="@(element.Name)_slider_input" type="hidden" class="irs-hidden-input">
+                @if (!string.IsNullOrEmpty(element.SliderCustomMaxValue) || !string.IsNullOrEmpty(element.SliderCustomMinValue))
+                {
+                    <div class="minmax">
+                        <span class="min">@(element.SliderCustomMinValue)</span>
+                        <span class="max">@(element.SliderCustomMaxValue)</span>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@if (element.SliderMode)
+{
+    string selectorPrefix = (Model.Form != null ? "#" + Model.Form.Name + " " : null);
+
+    @*@:@Html.Resources().Bundle_IonRangeSlider()*@
+
+
+    <text>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                // vars
+                var name = '@(element.Name)';
+                var items = @(Html.Json(element.Items, camelCase: true));
+                var hideMinMax = @(element.SliderHideMinMax.ToString().ToLower());
+                var hideCurrentVal = @(element.SliderHideValue.ToString().ToLower());
+                var showIntervalDots = @(element.SliderDisplayIntervalDots.ToString().ToLower());
+                var sliderDisabled = @(element.Disabled.ToString().ToLower());
+
+                // selectors
+                var sSliderContainer = '@(selectorPrefix)#@(element.Name)_slider';
+                var sSlider = '@(selectorPrefix)#@(element.Name)_slider_input';
+
+
+                // Note: when using this scenario with more than 1 slider, resource manager gets confused and fires one callback multiple times?!
+                //Resources.require('ionrangeslider', function () {
+                //console.log('loaded1', {element: sSlider, values: values, selectedIndex: selectedIndex });
+
+                var values = [];
+                var selectedIndex = 0;
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    values.push(item.label);
+                    if(item.selected) { selectedIndex = i; }
+                }
+
+                // Update the dots, on every change
+                var updateDots = function(data) {
+
+                    // Update?
+                    if (showIntervalDots === false) return;
+
+                    // Get new value
+                    var atValue = data['from'];
+
+                    // Remove active
+                    $($(sSliderContainer).find('.irs-grid').children('.irs-grid-text')).removeClass('active');
+                    $($(sSliderContainer).find('.irs-grid').children('.irs-grid-text')).removeClass('transparant');
+
+                    // Loop over all enabled dots
+                    for (var i = 0; i <= atValue; i++) {
+                        var addClass = (i == atValue) ? 'transparant' : 'active';
+                        $($(sSliderContainer).find('.irs-grid').children('.irs-grid-text')[i]).addClass(addClass);
+                    }
+
+                }
+
+                // Init slider
+                $(sSlider).ionRangeSlider({
+                    //type: "single",
+                    grid: (showIntervalDots === true),
+                    //min: 0,
+                    //max: 100,
+                    from: selectedIndex,
+                    from_fixed: (sliderDisabled),
+                    //keyboard: true,
+                    hide_min_max: hideMinMax,
+                    hide_from_to: hideCurrentVal,
+                    values: values,
+                    onStart: function (data) {
+                        updateDots(data);
+                    },
+                    onChange: function (data) {
+                        updateDots(data);
+                    },
+                    onFinish: function (data) {
+
+                        updateDots(data);
+
+                        var index = data.from;
+                        var rb = $(sSliderContainer).siblings().find('input[name=' + name + ']').eq(index);
+                        rb.prop('checked', true);
+                    },
+                    onUpdate: function (data) {
+                        updateDots(data);
+                    }
+                });
+
+                // Hide slider handle when you can't change it.
+                if ($(sSliderContainer).hasClass('no-handle')) {
+                    $(sSliderContainer).find('.irs-slider').addClass('hidden');
+                    setSliderWidth();
+                }
+
+                // Add full class to slider
+                function setSliderWidth() {
+                    var value = $(sSlider).attr('value');
+                    $(sSliderContainer).find('.irs-bar').attr('style', 'border-radius: 8px; width: ' + value + ';');
+                }
+
+                //});
+            });
+        </script>
+    </text>
+}

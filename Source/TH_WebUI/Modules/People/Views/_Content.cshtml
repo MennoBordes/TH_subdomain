@@ -7,6 +7,7 @@
 <h1>Peoples</h1>
 <div>
     <input type="button" data-hook="btn-new" value="Create New" />
+    <input type="button" data-hook="btn-new-form" value="Create New with Form" />
 </div>
 <table class="table table-striped">
     <thead>
@@ -46,12 +47,33 @@
         var uDelete = '@Url.Content("~/modules/people/delete-person")';
         var uCreate = '@Url.Content("~/modules/people/create-person")';
 
+        var uNewForm = '@Url.Content("~/modules/people/create-person-form")';
+
 
         // Selectors
         var sBtnEdit = '[data-hook=btn-edit]';
         var sBtnDetails = '[data-hook=btn-details]';
         var sBtnCreate = '[data-hook=btn-new]';
         var sBtnDelete = '[data-hook=btn-delete-feedback]';
+
+        var sBtnNewForm = '[data-hook=btn-new-form]'
+
+        // Bind => Create new Form
+        $(document).off('click', sBtnNewForm);
+        $(document).on('click', sBtnNewForm, function () {
+            DialogSystem.open({
+                ajax: {
+                    url: uNewForm
+                },
+                dimension: { full: false, width: '75%', height: '75%' },
+                environment: 'page',
+                callback: function (e) {
+                    if (e.action !== "cancel") {
+                        Reload();
+                    }
+                }
+            });
+        });
 
         // Bind => Create new
         $(document).off('click', sBtnCreate);

@@ -9,6 +9,7 @@ namespace TH.WebUI.Modules.People.Controllers
     using Base.Controllers;
     using TH.Core.Modules.People;
     using TH.Core.Modules.People.Entities;
+    using TH.Core.Tools.Form.Models;
 
     public class PeopleController : CoreController
     {
@@ -22,6 +23,103 @@ namespace TH.WebUI.Modules.People.Controllers
 
             ViewData["peoples"] = peoples;
             return View(views + "_Content.cshtml");
+        }
+
+        [ActionName("create-person-form")]
+        public ActionResult CreateForm()
+        {
+            Form form = GetCreatePeopleForm();
+
+            ViewData["Form"] = form;
+            return View(views + "/Components/_CreateNewForm.cshtml");
+        }
+
+        [ActionName("save-person-form")]
+        public ActionResult SavePersonForm(FormPost postData)
+        {
+            Form form = this.GetCreatePeopleForm();
+            form.InjectFormData(postData.Data);
+
+            FormValidator fv = new FormValidator();
+            if (!fv.Validate(form))
+            {
+                return Json(new { success = false, message = string.Join("<br/>", fv.Results.Select(x => x.Message)) });
+            }
+
+            People person = new People();
+            person.FirstName = form.Element<Input>(1).Value;
+            person.LastName = form.Element<Input>(2).Value;
+            var res = form.Element<Calendar>(3).Value;
+            person.EmailAddress = form.Element<Input>(4).Value;
+
+
+            return Json(new { success = true, message = "saved person" });
+        }
+
+        private Form GetCreatePeopleForm()
+        {
+            Form form = new Form();
+            form.Name = "create-person-form";
+            form.Blocks = new List<Block>();
+
+            Block block = new Block(Core.Tools.Form.Enums.FormColumnLayout.Split2);
+            form.Blocks.Add(block);
+
+            Input i1 = Input.Init(id: 1, label: "First Name", required: true, col: 1);
+            block.AddFormElement(i1);
+
+            Input i2 = Input.Init(id: 2, label: "Last Name", required: false, col: 2);
+            block.AddFormElement(i2);
+
+            Calendar c1 = Calendar.Init(id: 3, label: "Birth Date", required: true, col: 1);
+            //block.AddFormElement(c1);
+
+            Input i3 = Input.Init(id: 4, label: "Email Address", required: true, col: 2);
+            block.AddFormElement(i3);
+
+            RadiobuttonItem ri1 = new RadiobuttonItem() { Id = 1, Label = "r1 label", Value = "r1", Selected = true };
+            RadiobuttonItem ri2 = new RadiobuttonItem() { Id = 2, Label = "r2 label", Value = "r2", Selected = false };
+            List<RadiobuttonItem> rbiList = new List<RadiobuttonItem>();
+            rbiList.Add(ri1);
+            rbiList.Add(ri2);
+
+            Radiobutton r1 = Radiobutton.Init(id: 5, label: "radio button test", items: rbiList, col: 1);
+            block.AddFormElement(r1);
+
+            CheckboxItem ch1 = new CheckboxItem() { Id = 1, Label = "ch1 label", Value = "ch1", Selected = true };
+            CheckboxItem ch2 = new CheckboxItem() { Id = 2, Label = "ch2 label", Value = "ch2", Selected = false };
+
+            Checkbox cb1 = Checkbox.Init(id: 6, label: "checkbox switch test", @switch: true);
+            block.AddFormElement(cb1);
+
+            Checkbox cb2 = Checkbox.Init(id: 7, label: "checkbox test");
+            block.AddFormElement(cb2);
+
+            cb2.Items.Add(new CheckboxItem { Id = 1, Value = bool.TrueString });
+            cb2.Items.Add(new CheckboxItem { Id = 2, Value = bool.FalseString });
+
+            Dropdown d1 = Dropdown.Init(id: 8, label: "Dropdown test", col: 2);
+            block.AddFormElement(d1);
+            d1.Items.Add(new DropdownItem()
+            {
+                Id = 1,
+                Value = "d1",
+                Label = "dropdown 1"
+            });
+            d1.Items.Add(new DropdownItem()
+            {
+                Id = 2,
+                Value = "d2",
+                Label = "dropdown 2"
+            });
+            d1.Items.Add(new DropdownItem()
+            {
+                Id = 3,
+                Value = "d3",
+                Label = "dropdown 3"
+            });
+
+            return form;
         }
 
         /// <summary> View: used to render the create new person view. </summary>
