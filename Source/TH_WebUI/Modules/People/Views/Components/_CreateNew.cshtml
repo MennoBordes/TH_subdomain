@@ -1,0 +1,77 @@
+﻿@{
+    Layout = null;
+}
+
+@Html.DialogSettings(title: "Create new person")
+<div>
+    <div class="container">
+        <div class="container-fluid">
+            <label>First Name</label>
+            <input type="text" data-hook="fname" placeholder="Jan" />
+        </div>
+        <div class="container-fluid">
+            <label>Last Name</label>
+            <input type="text" data-hook="lname" placeholder="Bergsma" />
+        </div>
+        <div class="container-fluid">
+            <label>Email Address</label>
+            <input type="email" data-hook="email" placeholder="JanBergsma@gmail.com"/>
+        </div>
+        <div class="container-fluid">
+            <label>Birth Date</label>
+            <input type="datetime" data-hook="birthdate" placeholder="21-8-1959 00:00:00"/>
+        </div>
+    </div>
+
+
+    <div data-ds-buttons class="buttonRow">
+        <input type="button" class="button" data-button="btn-cancel" value="Cancel" />
+        <input type="button" class="button-create" data-button="btn-save" value="Save" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Urls
+        var uSavePerson = '@Url.Content("~/modules/people/save-create-person")';
+
+        // Selectors
+        var sCancel = '[data-button=btn-cancel]';
+        var sSave = '[data-button=btn-save]';
+        var sFName = '[data-hook=fname]';
+        var sLName = '[data-hook=lname]';
+        var sEmail = '[data-hook=email]';
+        var sBirth = '[data-hook=birthdate]';
+
+        // Bind => Save
+        $(document).off('click', sSave);
+        $(document).on('click', sSave, function () {
+            var firstName = $(sFName).val();
+            var lastName = $(sLName).val();
+            var email = $(sEmail).val();
+            var birth = $(sBirth).val();
+            TH.ajax.postJSON({
+                url: uSavePerson,
+                data: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    birthDate: birth
+                },
+                success: function (response) {
+                    Feedback.success({ message: "opgeslagen" });
+                    DialogSystem.done({ action: 'save' });
+                },
+                error: function (response) {
+                    Feedback.error({ message: response });
+                }
+            })
+        });
+
+        // Bind => cancel
+        $(document).off('click', sCancel);
+        $(document).on('click', sCancel, function () {
+            DialogSystem.done({ action: 'cancel' });
+        });
+    });
+</script>

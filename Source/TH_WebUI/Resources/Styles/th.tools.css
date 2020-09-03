@@ -1,0 +1,97 @@
+﻿/*****************
+ * Form element: Range
+ *****************/
+
+.formRow.range-element .range-container .range {
+    padding: 10px 5px;
+    border-bottom: 1px solid #D4D8D9;
+}
+
+    .formRow.range-element .range-container .range:last-child {
+        border-bottom: 0px;
+    }
+
+    .formRow.range-element .range-container .range .range-label {
+        font-size: 12px;
+    }
+
+    .formRow.range-element .range-container .range .range-settings-label {
+        margin-top: 5px;
+    }
+
+    .formRow.range-element .range-container .range .indicator-wrapper {
+        display: flex;
+        margin-bottom: 5px;
+    }
+
+        .formRow.range-element .range-container .range .indicator-wrapper .indicator-icon {
+            flex: 10%;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+            .formRow.range-element .range-container .range .indicator-wrapper .indicator-icon .indicator {
+                width: 10px;
+                height: 10px;
+                vertical-align: middle;
+                border-radius: 50%;
+            }
+
+        .formRow.range-element .range-container .range .indicator-wrapper .indicator-label {
+            flex: 90%;
+        }
+
+            .formRow.range-element .range-container .range .indicator-wrapper .indicator-label .label {
+                display: inline-block;
+                width: 100%;
+                font-size: 12px;
+            }
+
+    .formRow.range-element .range-container .range .range-settings {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .formRow.range-element .range-container .range .range-settings .between {
+            flex: 20%;
+        }
+
+        .formRow.range-element .range-container .range .range-settings .min-value {
+            display: inline-block;
+            flex: 35%;
+            font-size: 12px;
+        }
+
+        .formRow.range-element .range-container .range .range-settings .and {
+            text-align: center;
+            flex: 10%;
+        }
+
+        .formRow.range-element .range-container .range .range-settings .max-value {
+            display: inline-block;
+            flex: 35%;
+            font-size: 12px;
+        }
+
+    .formRow.range-element .range-container .range .percentage-label {
+        display: none;
+        margin-top: 5px;
+    }
+
+    .formRow.range-element .range-container .range .percentage-icon {
+        display: none;
+        flex: 5%;
+        text-align: center;
+    }
+
+.formRow.range-element .range-container.percentage .range .percentage-label, .formRow.range-element .range-container.percentage .range .percentage-icon {
+    display: block;
+}
+
+.formRow.range-element .range-container.percentage .range .range-settings .min-value, .formRow.range-element .range-container.percentage .range .range-settings .max-value {
+    flex: 30%;
+}

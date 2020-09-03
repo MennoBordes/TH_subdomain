@@ -1,0 +1,566 @@
+﻿@using TH.Core.Tools.Form.Models
+@using TH.Core.Base.Extensions
+@using TH.WebUI.Tools.Form.HtmlHelpers
+@using Newtonsoft.Json.Linq
+
+@model Field
+    
+@{ 
+    Dropdown element = Model.Element as Dropdown;
+    bool isMobileDevice = this.Request != null ? this.Request.Browser.IsMobileDevice : false;
+
+    bool hasPlaceHolder = !string.IsNullOrEmpty(element.Placeholder);
+    if (element.AjaxSource != null && element.AjaxSource.Url != null)
+    {
+        element.AjaxSource.Url = Url.Content(element.AjaxSource.Url);
+    }
+
+    // Tag
+    TagBuilder tag = new TagBuilder(element.PluginSelect2 ? "input" : "select");
+
+    // Attributes
+    tag.Attributes["id"] = element.Name;
+    tag.Attributes["name"] = element.Name;
+
+    if (element.Disabled) { tag.Attributes.Add("disabled", "disabled"); }
+    if (element.ClientSideEvents != null) { element.ClientSideEvents.ForEach(x => tag.Attributes.Add(x.Key, x.Value)); }
+
+    if (!element.PluginSelect2)
+    {
+        if (element.Required) { tag.Attributes.Add("required", "required"); }
+        if (element.Multiple) { tag.Attributes.Add("multiple", "multiple"); }
+    }
+
+    if (element.Attributes != null)
+    {
+        foreach (KeyValuePair<string, object> attr in element.Attributes)
+        {
+            tag.Attributes[attr.Key] = Convert.ToString(attr.Value);
+        }
+    }
+
+    // Groups
+    IEnumerable<string> optGroups = element.Items.Where(x => !string.IsNullOrWhiteSpace(x.OptionGroupName)).Select(x => x.OptionGroupName).Distinct();
+    bool hasGroups = optGroups != null && optGroups.Any();
+
+    JArray s2Data = new JArray();
+
+    // Items
+    if (element.PluginSelect2)
+    {
+        //=== Mode => Select2
+
+        // Set elements value
+        string csv = null;
+        if (element.Value != null && element.Value.Any(x => !string.IsNullOrWhiteSpace(x)))
+        {
+            csv = string.Join(",", element.Value);
+        }
+        else
+        {
+            IEnumerable<string> selectedValues = element.Items.Where(x => x.Selected).Select(x => x.Value);
+            if (selectedValues.Any())
+            {
+                csv = string.Join(",", selectedValues);
+            }
+        }
+        tag.Attributes["value"] = csv;
+
+        if (hasGroups)
+        {
+            // Add items without group
+            foreach (DropdownItem item in element.Items.Where(x => string.IsNullOrWhiteSpace(x.OptionGroupName)))
+            {
+                s2Data.Add(new JObject(
+                    new JProperty("id", item.Value),
+                    new JProperty("text", item.Label),
+                    new JProperty("locked", item.Locked),
+                    new JProperty("disabled", item.Disabled)
+                ));
+            }
+
+            // Add groups and items
+            foreach (string optGroup in optGroups)
+            {
+                JArray jc = new JArray();
+
+                foreach (DropdownItem item in element.Items.Where(x => !string.IsNullOrWhiteSpace(x.OptionGroupName) && x.OptionGroupName.Equals(optGroup, StringComparison.OrdinalIgnoreCase)))
+                {
+                    jc.Add(new JObject(
+                        new JProperty("id", item.Value),
+                        new JProperty("text", item.Label),
+                        new JProperty("locked", item.Locked),
+                        new JProperty("disabled", item.Disabled),
+                        new JProperty("groupText", optGroup)
+                    ));
+                }
+
+                s2Data.Add(new JObject(
+                    new JProperty("text", optGroup),
+                    new JProperty("children", jc)
+                ));
+            }
+        }
+        else
+        {
+            // Add items
+            foreach (DropdownItem item in element.Items)
+            {
+                s2Data.Add(new JObject(
+                    new JProperty("id", item.Value),
+                    new JProperty("text", item.Label),
+                    new JProperty("locked", item.Locked),
+                    new JProperty("disabled", item.Disabled)
+                ));
+            }
+        }
+    }
+    else
+    {
+        //=== Mode => dropdown
+        if (hasGroups)
+        {
+            // Placeholder => Add empty item if placeholder is set
+            if (hasPlaceHolder && !element.Required && !element.Multiple)
+            {
+                TagBuilder emptyOptionTAG = new TagBuilder("option");
+                emptyOptionTAG.Attributes.Add("selected", "selected");
+                emptyOptionTAG.Attributes.Add("value", string.Empty);
+
+                tag.InnerHtml += emptyOptionTAG.ToString();
+            }
+
+            // Add items without optGroup
+            foreach (DropdownItem item in element.Items.Where(x => string.IsNullOrWhiteSpace(x.OptionGroupName)))
+            {
+                TagBuilder optionTAG = new TagBuilder("option");
+                if (item.Selected){ optionTAG.Attributes.Add("selected", "selected"); }
+                if (item.Locked){ optionTAG.Attributes.Add("locked", "locked"); }
+                if (item.Disabled) { optionTAG.Attributes.Add("disabled", "disabled"); }
+                optionTAG.Attributes.Add("value", (!string.IsNullOrWhiteSpace(item.Value)) ? item.Value.Trim() : string.Empty);
+                if (!string.IsNullOrEmpty(item.Label)) { optionTAG.SetInnerText(item.Label.Trim()); }
+
+                tag.InnerHtml += optionTAG.ToString();
+            }
+
+            // Add items without optGroup
+            foreach (string optGroup in optGroups)
+            {
+                TagBuilder optgroupTAG = new TagBuilder("optgroup");
+                optgroupTAG.Attributes.Add("label", optGroup);
+
+                foreach (DropdownItem item in element.Items.Where(x => !string.IsNullOrWhiteSpace(x.OptionGroupName) && x.OptionGroupName.Equals(optGroup, StringComparison.OrdinalIgnoreCase)))
+                {
+                    TagBuilder optionTAG = new TagBuilder("option");
+                    if (item.Selected) { optionTAG.Attributes.Add("selected", "selected"); }
+                    if (item.Locked) { optionTAG.Attributes.Add("locked", "locked"); }
+                    if (item.Disabled) { optionTAG.Attributes.Add("disabled", "disabled"); }
+                    optionTAG.Attributes.Add("value", (!string.IsNullOrWhiteSpace(item.Value)) ? item.Value.Trim() : string.Empty);
+                    if (!string.IsNullOrEmpty(item.Label)) { optionTAG.SetInnerText(item.Label.Trim()); }
+
+                    optgroupTAG.InnerHtml += optionTAG.ToString();
+                }
+
+                tag.InnerHtml += optgroupTAG.ToString();
+            }
+        }
+        else
+        {
+            // Placeholder
+            if (hasPlaceHolder && !element.Required && !element.Multiple)
+            {
+                TagBuilder optionTAG = new TagBuilder("option");
+                optionTAG.Attributes.Add("selected", "selected");
+                optionTAG.Attributes.Add("value", string.Empty);
+                optionTAG.SetInnerText(element.Placeholder);
+
+                tag.InnerHtml += optionTAG.ToString();
+            }
+
+            // Items
+            if (!element.Items.IsNullOrEmpty())
+            {
+                foreach (DropdownItem item in element.Items.OrderBy(gs => gs.OptionGroupIndex).ThenBy(gs => gs.Index))
+                {
+                    TagBuilder optionTAG = new TagBuilder("option");
+                    if (item.Selected) { optionTAG.Attributes.Add("selected", "selected"); }
+                    if (item.Locked) { optionTAG.Attributes.Add("locked", "locked"); }
+                    if (item.Disabled) { optionTAG.Attributes.Add("disabled", "disabled"); }
+                    optionTAG.Attributes.Add("value", (!string.IsNullOrWhiteSpace(item.Value)) ? item.Value.Trim() : string.Empty);
+                    if (!string.IsNullOrEmpty(item.Label)) { optionTAG.SetInnerText(item.Label.Trim()); }
+
+                    tag.InnerHtml += optionTAG.ToString();
+                }
+            }
+        }
+    }
+
+    string cssClasses = (element.InlineMode) ? "inlineMode" : "";
+    if (element.Description != null) { cssClasses += " hasDescription"; }
+    if (element.AddButton != null) { cssClasses += " has-buttons"; }
+    if (element.CssClass != null) { cssClasses += " " + element.CssClass; }
+
+    string id_Main = Model.CreateUniqueId();
+    string id_Data = id_Main + "_data";
+}
+
+<div class="formRow @(cssClasses)" style="@Html.Raw(element.InlineCss)">
+    @Html.FormFieldLabel(element, element.Required)
+    @Html.FormFieldError(element)
+    @Html.FormFieldDescription(element.Description)
+
+    <div class="form-input@(element.Disabled ? " disabled" : null)">
+        @Html.Raw(tag.ToString())
+    </div>
+    @if (element.AddButton != null)
+    {
+        <div id="@(element.Name)_add_button" class="add-button">
+            <i class="fa fa-plus-circle"></i>
+        </div>
+    }
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Vars
+        var globalId = '@(id_Main)';
+        var elementId = '@(element.Name)';
+        var useSelect2 = @(element.PluginSelect2.ToString().ToLower());
+        var hasGroups = @(hasGroups.ToString().ToLower());
+        var multiple = @(element.Multiple.ToString().ToLower());
+        var s2Data = @(Html.Json(s2Data));
+        var ajaxSource = @(Html.Json(element.AjaxSource, camelCase: true));
+        var placeholder = '@Html.Raw(string.IsNullOrEmpty(element.Placeholder) ? " " : element.Placeholder.Replace("'", "\\'"))';
+        var allowNew = @(element.AllowNew.ToString().ToLower());
+        var allowClear = @(element.AllowClear.ToString().ToLower());
+        var filterOptions = null;
+        var overwriteValue = false;
+        var isMobileDevice = @(Html.Json(isMobileDevice));
+
+        var tNoMatches = 'No matches found';
+        var tSearching = 'Searching...';
+        var tLoadingMore = 'Loading more results...';
+        var tNew = 'New';
+        var paging = { size: 20 };
+
+        var addButtonFunc = @(element.AddButton != null && element.AddButton.OnClick != null ? element.AddButton.OnClick : "null");
+
+        // Selectors
+        var sElement = '@(Model.Form != null ? "#" + Model.Form.Name + " ":"")#@(element.Name)';
+        var sAddButton = '#@(element.Name)_add_button';
+
+        // Execute
+        var _fm = window['FormMaNAGER'];
+
+        // Field: dropdown
+        var field = _fm.construct('dropdown');
+
+        // init
+        if (useSelect2) {
+            // Select2
+            var format = function (entry) {
+                var html = '<span data-id="' + entry.id + '">';
+
+                if (entry.group != null) {
+                    html += entry.group + ' - ' + entry.text;
+                } else {
+                    html += entry.text;
+                }
+                html += '</span>';
+                return html;
+            };
+
+            // options
+            var s2o = {
+                minimumResultsForSearch: 6,
+                placeholder: placeholder,
+                allowClear: allowClear,
+                multiple: multiple,
+                matcher: function (term, text, opt) {
+                    return text === true ||
+                        text.toLowerCase().indexOf(term.toLowerCase()) >= 0 ||
+                        (
+                            opt.hasOwnProperty('groupText') && opt.groupText.length > 0 && opt.groupText.toLowerCase().indexOf(term.toLowerCase()) >= 0
+                        )
+                        ||
+                        (
+                            false &&
+                            opt != undefined &&
+                            opt[0] != undefined &&
+                            opt[0].tagName.toLowerCase() == "option" &&
+                            opt.parent('optgroup').length > 0 &&
+                            opt.parent('optgroup').attr('label').toLowerCase().indexOf(term.toLowerCase()) >= 0
+                        );
+                },
+                formatSelection: format,
+                formatResult: format,
+                formatNoMatches: function () { return tNoMatches; },
+                formatLoadMore: function () { return tLoadingMore; },
+                formatSearching: function () { return tSearching; }
+            };
+
+            if (isMobileDevice) {
+                s2o.minimumResultsForSearch = -1;
+            }
+
+            if (allowNew) {
+                s2o.data = s2Data;
+
+                // Allow manually entered text in drop down
+                s2o.createSearchChoice = function (term, data) {
+                    var _filter = $(data).filter(function () {
+                        return this.text.localCompare(term) === 0;
+                    });
+
+                    if (_filter.length === 0) {
+                        return { id: term, text: '&lt;' + tNew + '&gt; ' + term };
+                    }
+                };
+            } else {
+                s2o.data = s2Data;
+            }
+
+            if (ajaxSource != null) {
+                s2o.initSelection = function (element, callback) {
+
+                    // check
+                    var value = element.val();
+                    if (value.length < 1) callback([]);
+
+                    // call server
+                    MX.ajax.postJSON({
+                        url: ajaxSource.url,
+                        data: {
+                            meta: ajaxSource.meta,
+                            query: {
+                                'resolve': value
+                            }
+                        },
+                        success: function (response) {
+
+                            var items = response.items;
+                            if (items == null) items = [];
+                            if (multiple) {
+                                callback(items);
+                            } else {
+                                callback(items.length > 0 ? items[0] : null);
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            callback([]);
+                        }
+                    });
+                };
+                s2o.query = function (options) {
+
+                    var query = {
+                        term: options.term,
+                        'page-index': options.page - 1,
+                        'page-size': paging.size
+                    }
+                    if (filterOptions != null) {
+                        for (var prop in filterOptions) {
+                            if (filterOptions.hasOwnProperty(prop)) {
+                                query[prop] = filterOptions[prop];
+                            }
+                        }
+                    }
+
+                    // call server
+                    MX.ajax.postJSON({
+                        url: ajaxSource.url,
+                        data: {
+                            meta: ajaxSource.meta,
+                            query: query
+                        },
+                        success: function (response) {
+                            var items = response.items;
+                            if (items == null) items = [];
+                            options.callback({ results: items, more: response.more, context: null });
+                            //options.callback({ results: items, more: (items.length >= paging.size), context: null});
+
+                            // Auto select if option has been defined
+                            if (items.length > 0) {
+                                for (i = 0; i < items.length; i++) {
+                                    if (items[i].selected) {
+                                        if ($(sElement).val().length < 1 || overwriteValue) {
+                                            $(sElement).val(items[i].id).trigger('change.select2');
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        error: function (xhr, status, error) {
+
+                            options.callback({ results: [], more: false, context: null });
+                        }
+                    });
+
+                };
+            }
+
+            // init
+            var s2 = $(sElement).select2(s2o);
+
+            if (multiple) {
+                $(sElement).select2("container").find("ul.select2-choices").sortable({
+                    containment: 'parent',
+                    start: function () { $(sElement).select2("onSortStart"); },
+                    update: function () { $(sElement).select2("onSortEnd"); }
+                });
+            }
+
+            // set selection in attribute
+            $(sElement).attr('data-selection', JSON.stringify($(sElement).select2('data')));
+            $(sElement).on("change", function (e) {
+
+                // store value
+                var data = $(sElement).select2('data');
+                $(sElement).attr('data-selection', JSON.stringify(data));
+
+
+                // execute bindings
+                field._execute('change', { value: data }, null);
+            });
+
+
+            // field: interface
+            field['_component'] = s2;
+
+            // function: value
+            field['_getters'] = {
+                'value': function (opt) {
+
+                    // data: { id: 'x', text: 'y' };
+                    var _raw = $(sElement).attr('data-selection');
+                    if (_raw.length > 0) {
+                        return JSON.parse(_raw);
+                    } else {
+                        return null;
+                    }
+                }
+            }
+            field['_setters'] = {
+                'value': function (data, opt) {
+                    //console.log('set:value', data, opt);
+
+                    if (data != null) {
+                        $(sElement).attr('data-selection', JSON.stringify(data));
+                    } else {
+                        $(sElement).attr('data-selection', '');
+                    }
+
+                    var _opt = $.extend({ reflect: null }, opt);
+
+                    if (_opt.reflect) {
+                        $(sElement).val("").trigger("change.select2");
+                    }
+
+                },
+                'filter': function (opt) {
+                    filterOptions = opt;
+                },
+                'reloadData': function (shouldOverwrite) {
+                    overwriteValue = shouldOverwrite;
+                    $(sElement).select2('open');
+                    $(sElement).select2('close');
+                }
+            }
+
+        } else {
+
+            // field: interface
+            field['_component'] = null;
+
+            // function: value
+            field['_getters'] = {
+                'value': function (opt) {
+
+                    var _raw = $(sElement).val();
+                    if (_raw.length > 0) {
+                        return _raw;
+                        //return JSON.parse(_raw);
+                    } else {
+                        return null;
+                    }
+                }
+            }
+            field['_setters'] = {
+                'value': function (data, opt) {
+                    //console.log('set:value', data, opt);
+
+                    if (data != null) {
+                        $(sElement).val(JSON.stringify(data));
+                    } else {
+                        $(sElement).val('');
+                    }
+
+                    //var _opt = $.extend({ reflect: null }, opt);
+                }
+            }
+
+            // bind: change
+            $(sElement).on("change", function (e) {
+                var data = $(this).val();
+
+                // execute bindings
+                field._execute('change', { value: data }, null);
+            });
+        }
+
+        // register
+        if (_fm != null) { _fm.field(globalId, field); }
+
+        // bind: add function
+        if (addButtonFunc != null) {
+            $(sAddButton).click(function () {
+
+                // call with data and callback
+                addButtonFunc(null, function (response) {
+
+                    var options = [];
+
+                    if ($.isArray(response)) {
+                        options = response;
+                    } else {
+                        options.push(response);
+                    }
+
+                    for (var i = 0; i < options.length; i++) {
+                        var option = options[i];
+
+                        var el = $(sElement);
+                        if (el[0].tagName == 'INPUT') {
+
+                            // add data to input element
+                            el.select2('data', { id: option.id, text: option.text });
+
+                            if (option.selected === true) {
+
+                                if (multiple) {
+
+                                    var newSelection = [];
+                                    $('#s2id_' + elementId).find('.select2-choices span[data-id]').each(function (index) {
+                                        newSelection.push($(this).attr('data-id'));
+                                    });
+                                    newSelection.push('' + option.id);
+
+                                    // NOT WORKING ...
+                                    el.select2('val', newSelection);
+                                } else {
+                                    el.select2('val', option.id);
+                                }
+                            }
+
+                        } else if (el[0].tagName == 'SELECT') {
+
+                            // add data to select element
+                            var html = '<option value="' + option.id + '" ' + (option.selected === true ? 'selected="selected"' : '') + '>' + option.text + '</option>';
+                            $(sElement).append(html);
+                        }
+                    }
+                });
+            });
+        }
+    });
+</script>

@@ -1,0 +1,66 @@
+﻿@using TH.Core.Tools.Form.Models
+
+@{
+    Layout = null;
+    Form form = (Form)ViewData["Form"];
+}
+
+@Html.DialogSettings(title: "Create new with form")
+
+<!-- Dialog -->
+<div id="dialog">
+    <div class="templates-form">
+        @{Html.RenderForm(form); }
+    </div>
+</div>
+
+<div data-ds-buttons>
+    <input type="button" class="button" data-button="btn-cancel" value="Cancel" />
+    <input type="button" class="button-create" data-button="btn-save" value="Save" />
+</div>
+<!-- //Dialog -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Urls
+        var uSave = '@Url.Content("~/modules/people/save-person-form")';
+
+        // Selectors
+        var sCancel = '[data-button=btn-cancel]';
+        var sSave = '[data-button=btn-save]';
+
+        // Vars
+        var formName = @Html.Json(form.Name);
+
+        // Bind => Save
+        $(document).off('click', sSave);
+        $(document).on('click', sSave, function () {
+            var formData = FormManager.data(formName)
+            TH.ajax.postJSON({
+                url: uSave,
+                data: {
+                    postData: formData
+                },
+                success: function (response) {
+                    if (response.success == false) {
+                        Feedback.error({ message: response.message });
+                    }
+                    else {
+                        Feedback.success({ message: response.message });
+                        DialogSystem.done({ action: 'save' });
+                    }
+                },
+                error: function (response) {
+                    Feedback.error({ message: response });
+                }
+            })
+        });
+
+        // Bind => cancel
+        $(document).off('click', sCancel);
+        $(document).on('click', sCancel, function () {
+            DialogSystem.done({ action: 'cancel' });
+        });
+    });
+</script>

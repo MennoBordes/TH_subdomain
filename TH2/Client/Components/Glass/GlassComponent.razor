@@ -1,0 +1,36 @@
+﻿@inject HttpClient Http
+
+<h3>GlassComponent</h3>
+
+@if (glass is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Ventilation ID?</th>
+                <th>Type</th>
+                <th>Width</th>
+                <th>Height</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@foreach (var person in Peoples)
+            {*@
+            <tr>
+                <td>@glass.Id</td>
+                <td>@glass.IdGlassVentilation</td>
+                <td>@glass.Type</td>@*<td>@Glass.GlasType(glass.Type)</td>*@
+                <td>@glass.Width</td>
+                <td>@glass.Height</td>
+                <td>@glass.Price</td>
+            </tr>
+            @*}*@
+        </tbody>
+    </table>
+}

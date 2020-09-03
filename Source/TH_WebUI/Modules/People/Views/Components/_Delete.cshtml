@@ -1,0 +1,58 @@
+﻿@using TH.Core.Modules.People.Entities;
+@model People
+
+@{
+    //ViewBag.Title = "Delete";
+    Layout = null;
+}
+
+@Html.DialogSettings(title: "Delete Title")
+<h2>Delete</h2>
+
+<div>
+    <p>
+        Are you sure you want to delete 
+        <bold>@Model.FirstName @Model.LastName</bold>?
+    </p>
+</div>
+
+<div class="buttonRow" data-ds-buttons>
+    <input type="button" class="button" data-button="btn-cancel" value="Cancel" />
+    <input type="button" class="button button-edit" data-button="btn-delete" value="Delete" />
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Urls
+        var uDeletePerson = '@Url.Content("~/modules/people/delete-person")';
+
+        // Selectors
+        var sCancel = '[data-button=btn-cancel]';
+        var sDelete = '[data-button=btn-delete]';
+
+        var id = @Html.Json(Model.Id);
+
+        // Bind => Delete
+        $(document).off('click', sDelete);
+        $(document).on('click', sDelete, function () {
+            TH.ajax.postJSON({
+                url: uDeletePerson,
+                data: { Id: id },
+                success: function (response) {
+                    DialogSystem.done({ action: 'delete' });
+                },
+                error: function (response) {
+                }
+            })
+        });
+
+
+        // Bind => cancel
+        $(document).off('click', sCancel);
+        $(document).on('click', sCancel, function () {
+            //debugger;
+            DialogSystem.done({ action: 'cancel' });
+        });
+    });
+</script>

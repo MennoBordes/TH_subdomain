@@ -1,0 +1,372 @@
+﻿@using TH.WebUI.Tools.Form.HtmlHelpers
+@using TH.Core.Tools.Form.Models
+@using TH.Core.Base.Extensions
+
+@model Field
+
+@{ 
+    Calendar element = Model.Element as Calendar;
+    string displayFormat = element.DisplayFormat;
+
+    string dtValue = element.DefaultDate;
+    if (!string.IsNullOrWhiteSpace(element.Value))
+    {
+        dtValue = element.Value;
+        if (dtValue.Contains("-"))
+        {
+            dtValue = dtValue.Replace("-", "/");
+        }
+    }
+
+    if (element.Placeholder == "*|DATETIME:NOW|*" && string.IsNullOrWhiteSpace(dtValue))
+    {
+        dtValue = DateTime.Now.ToString(displayFormat);
+    }
+
+    if (!string.IsNullOrWhiteSpace(element.MinDate))
+    {
+        if (element.MinDate.Contains("-")) { element.MinDate = element.MinDate.Replace("-","/"); }
+        DateTime minDate = DateTime.ParseExact(element.MinDate, Calendar.format, null);
+        element.MinDate = minDate.ToString(displayFormat);
+    }
+
+    if (!string.IsNullOrWhiteSpace(element.MaxDate))
+    {
+        if (element.MaxDate.Contains("-"))
+        { element.MaxDate = element.MaxDate.Replace("-", "/"); }
+        DateTime maxDate = DateTime.ParseExact(element.MaxDate, Calendar.format, null);
+        element.MaxDate = maxDate.ToString(displayFormat);
+    }
+
+
+    TagBuilder tag = new TagBuilder("input");
+    tag.Attributes["id"] = element.Name;
+    tag.Attributes["name"] = element.Name;
+    tag.Attributes["type"] = "text";
+
+    tag.Attributes.Add("data-hook", "plugin");
+    tag.Attributes.Add("data-min-date", element.MinDate);
+    tag.Attributes.Add("data-max-date", element.MaxDate);
+    tag.Attributes.Add("data-number-of-months", element.NumberOfMonths.ToString());
+    tag.Attributes.Add("data-change-month", element.ChangeMonth.ToString());
+    tag.Attributes.Add("data-change-year", element.ChangeYear.ToString());
+    tag.Attributes.Add("data-calendar-id", (Model.Form != null ? Model.Form.Name : null) + element.Name);
+
+    if (element.Placeholder != null)
+    { tag.Attributes.Add("placeholder", element.Placeholder); }
+
+    if (element.Required)
+    { tag.Attributes.Add("required", "required"); }
+
+    if (element.Disabled)
+    { tag.Attributes.Add("disabled", "disabled"); }
+
+    tag.Attributes["value"] = dtValue;
+
+
+
+    string cssClasses = (element.InlineMode == true) ? "inlineMode" : "";
+    if (element.Description != null)
+    { cssClasses += " hasDescription"; }
+    if (element.CssClass != null)
+    { cssClasses += " " + element.CssClass; }
+
+    // translations
+    string dayNamesMin = "['Z','M','D','W','D','V','Z']";
+    string dayNamesShort = "['Zo', 'Ma', 'Di', 'Wo', 'Do', 'Vr', 'Za']";
+    string dayNames = "['Zondag', 'Maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag']";
+    string monthNames = "['Januari','Februari','Maart','April','Mei','Juni', 'Juli','Augustus','September','Oktober','November','December']";
+    string monthNamesShort = "['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec']";
+    
+
+    // Advanced
+    TagBuilder tagHidden = null;
+    if (element.AdvancedMode)
+    {
+        tagHidden = new TagBuilder("input");
+        tagHidden.Attributes["id"] = element.Name + "_data";
+        tagHidden.Attributes["name"] = element.Name + "_data";
+        tagHidden.Attributes["type"] = "hidden";
+        tagHidden.Attributes.Add("data-hook", "data");
+        tagHidden.Attributes["data-calendar-id"] = (Model.Form != null ? Model.Form.Name : null) + element.Name + "_data";
+
+        if (element.ObjValue is Calendar.AdvancedValue)
+        {
+            tagHidden.Attributes["value"] = ((Calendar.AdvancedValue)element.ObjValue).ToJson();
+        }
+    }
+
+    string id_main = (Model.Form != null ? Model.Form.Name : null) + element.Name;
+    string id_data = (Model.Form != null ? Model.Form.Name : null) + element.Name + "_data";
+}
+
+<div class="formRow formrow-calendar @(cssClasses)" style="@Html.Raw(element.InlineCss)">
+    @Html.FormFieldLabel(element, element.Required)
+    @Html.FormFieldError(element)
+    @Html.FormFieldDescription(element.Description)
+    <div class="form-input@(element.Disabled ? " disabled" : null)">
+        @if(tagHidden != null)
+        {
+            Html.Write(tagHidden);
+        }
+        @Html.Raw(tag.ToString())
+        <i class="input-calendar fas fa-calendar-alt" data-hook="trigger-calendar"></i>
+    </div>
+    <div data-hook="caption" class="caption"></div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        // vars
+        var globalId = '@(id_main)';
+        var sElement = '[data-calendar-id=@(id_main)]';
+        var sElementHidden = '[data-calendar-id=@(id_data)]';
+        var minDate = '@(element.MinDate)';
+        var maxDate = '@(element.MaxDate)';
+        var numberOfMonths = '@(element.NumberOfMonths.ToString().ToLower())';
+        var changeMonth = @(element.ChangeMonth.ToString().ToLower());
+        var changeYear = @(element.ChangeYear.ToString().ToLower());
+        var fieldId = '@(element.Name)';
+        var formId = @Html.Json(Model.Form != null ? Model.Form.Name : null);
+        var languageId = 2; @*@(Html.Json(Model.Translator != null ? Model.Translator.LanguageId : (int?)null));*@
+        var advancedMode = @(Html.Json(element.AdvancedMode));
+        var advancedUrl = @(Html.Json(element.AdvancedUrl));
+        var fieldMeta = @(Html.Json(element.FieldMeta));
+        var displayFormat = @Html.Json(element.DisplayFormat);
+
+        // Convert format (The plugin does not use the normal format variants)
+        displayFormat = displayFormat.replace('yyyy', 'yy').toLowerCase();
+
+        // defaults
+        var _dayNamesMin = @Html.Raw(dayNamesMin);
+        var _dayNamesShort = @Html.Raw(dayNamesShort);
+        var _dayNames = @Html.Raw(dayNames);
+        var _monthNamesShort = @Html.Raw(monthNamesShort);
+        var _monthNames = @Html.Raw(monthNames);
+
+        // Set input fields css (Datepicker z-index fix)
+        $(sElement).css('position', 'relative');
+        $(sElement).css('z-index', 1000);
+        $('[data-hook=trigger-calendar]').css('z-index', 1001);
+
+
+        // execute
+        var _fm = window['FormManager'];
+
+        // field: calendar
+        var field = _fm.construct('calendar');
+
+        if(advancedMode){
+
+            var _element = $(sElement);
+            var _elementHidden = $(sElementHidden);
+            var _caption = _element.parent('.form-input').siblings('[data-hook=caption]');
+
+            // initialize daterangepicker
+            var picker = _element.daterangepicker({
+                time: true,
+                range: null,
+                enableEmpty: false,
+                enableCancel: true,
+                enableSelect: false,
+                mirrorOnCollision:false,
+                positionFrom: _element,
+                verticalOffset: 16,
+                dateFormat: displayFormat,
+                language: languageId,
+                onChange: function (selection) {
+                    //console.log('onChange', selection);
+                    if(selection != null){
+
+                        var data = { start: null, end: null, time: null };
+                        if(selection.start != null){
+                            //data.start = { day: selection.start.day, month: selection.start.month, year: selection.start.year };
+                            data.start = { date: selection.start.key };
+                        }
+                        if(selection.end != null){
+                            //data.end = { day: selection.end.day, month: selection.end.month, year: selection.end.year };
+                            data.end = { date: selection.end.key };
+                        }
+                        if(selection.time != null){
+                            data.time = { start: selection.time.start, end: selection.time.end };
+                        }
+                        //_element.attr('data-selection', JSON.stringify(data));
+                        _elementHidden.val(JSON.stringify(data));
+                        _elementHidden.change();
+
+                        _element.val(selection.label);
+                        _caption.text(selection.time != null ? selection.time.label : '');
+
+
+                        // execute bindings
+                        field._execute('change', { value: data }, null);
+
+                    } else {
+                        //_element.attr('data-selection', '');
+                        _elementHidden.val('');
+                        _elementHidden.change();
+                        _element.val('');
+                        _caption.text('');
+
+                        // execute bindings
+                        field._execute('change', { value: null }, null);
+                    }
+
+
+                },
+                //onOpen: function(){
+
+                //    if(advancedUrl != null){
+
+                //        var postData = $.extend({}, fieldMeta);
+                //        postData.startData = null;
+                //        postData.endData = null;
+
+                //        // load times
+                //        MX.ajax.postJSON({
+                //            url: advancedUrl,
+                //            data: postData,
+                //            success: function(response){
+
+                //                console.log('response', response);
+
+                //            }
+                //        });
+                //    }
+
+
+                //    console.log('onOpen', {a:a, b: b, c:c });
+                //}
+            });
+            //console.log('picker', picker);
+            _element.focus(function () {
+                //console.log('focus', picker);
+                _element.daterangepicker('open');
+            });
+
+            field['_jquery.ui.widget'] = picker;
+            field['_component'] = _element.daterangepicker('component');
+
+            // function: value
+            field['_getters'] = {
+                'value': function(opt){
+
+                    var _raw = _elementHidden.val();
+                    if(_raw.length > 0){
+                        return JSON.parse(_raw);
+                    } else {
+                        return null;
+                    }
+                }
+            }
+            field['_setters'] = {
+                'value': function(data, opt){
+                    //console.log('set:value', data, opt);
+
+                    if(data != null){
+                        _elementHidden.val(JSON.stringify(data));
+                    } else {
+                        _elementHidden.val('');
+                    }
+
+                    var _opt = $.extend({ reflect: null }, opt);
+
+                    if(_opt.reflect == true){
+
+                        // convert
+                        var selection = {
+                            start:{
+                                o: null,
+                                day: null,
+                                month: null,
+                                year:null,
+                                key: data['start']['date']
+                            },
+                            end:{
+                                o: null,
+                                day: null,
+                                month: null,
+                                year:null,
+                                key: data['end']['date']
+                            },
+                            time: {
+                                start: data['time']['start'],
+                                end: data['time']['end'],
+                                label: null
+                            },
+                            label: null
+                        };
+
+                        var comp = field['_component'];
+                        comp.setRange(selection);
+                    }
+                }
+            }
+
+        } else {
+
+                // initialize calendar
+                var picker = $(sElement).datepicker({
+                    dayNamesMin: _dayNamesMin,
+                    dayNamesShort: _dayNamesShort,
+                    dayNames: _dayNames,
+                    monthNamesShort: _monthNamesShort,
+                    monthNames: _monthNames,
+
+                    classes: { 'ui-datepicker': 'mxui-datepicker' }, // not working
+
+                    dateFormat: displayFormat,
+                    minDate: minDate,
+                    maxDate: maxDate,
+                    numberOfMonths: parseInt(numberOfMonths) || 1,
+                    changeMonth: changeMonth,
+                    changeYear: changeYear,
+                    showOtherMonths: true,
+                    selectOtherMonths: true,
+                    defaultDate: '0',
+                    firstDay: 1, // monday
+                    beforeShow: function(input, instance){
+
+                        var element = $(input);
+                        if(element.val().length > 0) return null;
+
+                        //form
+                        if(formId != null){
+                            var form = FormManager.form(formId);
+                            if(form != null){
+
+                                var thisField = form.getField(fieldId);
+
+                                if(thisField != null && thisField.isEndDate && thisField.refStart != null){
+
+                                    //opposition
+                                    var startField = form.getField(thisField.refStart);
+                                    if(startField != null){
+
+                                        var startFieldValue = startField.val();
+                                        if(startFieldValue != null && startFieldValue.raw.length > 0){
+
+                                            return { defaultDate: startFieldValue.raw };
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    return { defaultDate: '0' };
+                    }
+                });
+
+                field['_jquery.ui.widget'] = picker;
+                field['_component'] = null;
+        }
+
+        // register
+        if(_fm != null){ _fm.field(globalId, field); }
+
+        // bind: trigger
+        $(document).off('click', '[data-hook=trigger-calendar]');
+        $(document).on('click', '[data-hook=trigger-calendar]', function () {
+
+            $(this).prev('input').focus();
+        });
+    });
+</script>

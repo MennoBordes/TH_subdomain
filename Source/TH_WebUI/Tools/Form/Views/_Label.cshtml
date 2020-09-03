@@ -1,0 +1,31 @@
+﻿@using TH.Core.Tools.Form.Models
+@using TH.WebUI.Tools.Form.HtmlHelpers
+
+@model Field
+
+@{ 
+    Label element = (Label)Model.Element;
+
+    string inlineStyle = (element.InlineMode == true) ? "inlineMode" : "";
+    if (element.Description != null) { inlineStyle += " hasDescription"; }
+
+    string sAttrs = null;
+    if (element.Attributes != null)
+    {
+        foreach (KeyValuePair<string, object> attr in element.Attributes)
+        {
+            sAttrs += " " + attr.Key + "\"" + attr.Value + "\"";
+        }
+    }
+}
+
+<div class="formRow label @(inlineStyle)" style="@Html.Raw(element.InlineCss)">
+    @Html.FormFieldLabel(element)
+    @Html.FormFieldError(element)
+
+    <div id="@(element.Name)" class="value" @(Html.Raw(sAttrs))>
+        @(element.Value)
+    </div>
+
+    @Html.FormFieldDescription(element.Description)
+</div>

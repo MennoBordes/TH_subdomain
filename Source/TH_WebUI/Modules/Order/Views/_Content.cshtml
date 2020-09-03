@@ -1,0 +1,103 @@
+﻿@using TH.Core.Modules.Order.Entities;
+
+@{ 
+    List<Order> orders = (List<Order>)ViewData["orders"];
+}
+
+<h1>Orders</h1>
+
+<input type="button" data-hook="btn-new-order" value="Create New Order"/>
+
+<!-- Order cards -->
+<div id="cards">
+    @foreach (Order order in orders)
+    {
+        int numDoors = order.GetDoorsCount();
+        int numWindows = order.GetWindowsCount();
+        int numFrames = order.GetFrameCount();
+        bool hasChilds = numFrames > 0 || numWindows > 0 || numDoors > 0;
+        <figure class="card">
+            <figcaption class="card__caption card__pointer" data-hook="btn-order-details" data-id="@order.Id">
+                <h1 class="card__name">@order.ProjectName</h1>
+                <h4 class="card__date">@order.GetDate()</h4>
+
+                <!-- Stats -->
+                <table class="card__stats">
+                    <tbody>
+                        <tr>
+                            <th># Doors</th>
+                            <td>@numDoors</td>
+                        </tr>
+                        <tr>
+                            <th># Windows</th>
+                            <td>@numWindows</td>
+                        </tr>
+                        <tr>
+                            <th># Frames</th>
+                            <td>@numFrames</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- //Stats -->
+                <p class="card__description">@order.Description</p>
+
+                <div class="card__footer">
+                    @*<input type="button" data-hook="btn-order-details" data-id="@order.Id" value="Details" />*@
+                </div>
+            </figcaption>
+        </figure>
+    }
+</div>
+<!-- //Order cards -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Urls
+        var uOrderDetails = '@Url.Content("~/modules/order/order-details")';
+        var uNewOrder = '@Url.Content("~/modules/order/new-order")';
+        
+        // Selectors
+        var sBtnOrderDetails = '[data-hook=btn-order-details]';
+        var sBtnNewOrder = '[data-hook=btn-new-order]';
+
+        // Bind => New Order
+        $(document).off('click', sBtnNewOrder);
+        $(document).on('click', sBtnNewOrder, function () {
+            DialogSystem.open({
+                ajax: {
+                    url: uNewOrder
+                },
+                dimension: { full: false, width: '80%', height: '80%' },
+                environment: 'page',
+                callback: function (e) {
+                    if (e.action !== "cancel") {
+                        Reload();
+                    }
+                }
+            });
+        });
+
+        // Bind => Order Details
+        $(document).off('click', sBtnOrderDetails);
+        $(document).on('click', sBtnOrderDetails, function () {
+            id = $(this).data('id');
+            // Open details screen for selected order
+            window.location.href = uOrderDetails + "?id=" + id;
+
+            //TH.ajax.postJSON({
+            //    url: uOrderDetails,
+            //    data: { id: id }
+            //    //success: function (response) {
+            //    //    debugger;
+            //    //},
+            //    //error: function (response) {
+            //    //}
+            //});
+        });
+
+        function Reload() {
+            location.reload(true);
+        }
+    });
+</script>

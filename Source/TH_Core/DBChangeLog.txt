@@ -1,0 +1,13 @@
+﻿==============================
+Database changelog
+==============================
+
+# 27-8-2020 Order description
+
+ALTER TABLE `order`
+	ADD COLUMN `Description` TEXT NULL DEFAULT NULL AFTER `Project_Name`;
+
+# 27-8-2020 OrderData description
+
+ALTER TABLE `order_data`
+	ADD COLUMN `Description` TEXT NULL DEFAULT NULL AFTER `Id_Frame`;

@@ -1,0 +1,92 @@
+﻿@import url('https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300,700');
+#cards{
+    text-align: center;
+}
+
+.card, .detail-card {
+    display: inline-grid;
+    width: 300px;
+    padding: 1em;
+    margin: 10px;
+    border-radius: 15px;
+    text-align: left;
+    position: relative;
+    min-height: 300px;
+    box-shadow: 0px 5px 20px -10px #111;
+
+
+    h1, h2, h3, h4, h5 {
+        margin: 0;
+        font-weight: 400;
+    }
+
+    &__caption {
+        padding: 1em;
+        position: relative;
+        background-color: rgba(#cacccc, 1);
+        border-radius: 3px;
+    }
+
+    &__description {
+        overflow-y: hidden;
+        text-align: center;
+    }
+
+    &__footer {
+        position: absolute;
+        bottom: 15px;
+        left: 15px;
+    }
+
+    &__name {
+        text-align: center;
+        font-size: 1.5em;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+    }
+
+    &__date {
+        position: absolute;
+        top: 0;
+        right: 1em;
+        transform: translateY(-50%);
+        color: #fff;
+        font-family: "Open Sans Condensed", "Open Sans", helvetica, sans-serif;
+        letter-spacing: 0.1em;
+        padding: 0.25em;
+        line-height: 1;
+        border-radius: 2px;
+        background: #bbb;
+    }
+
+    &__stats {
+        margin: 1em 0;
+        width: 100%;
+
+        th {
+            text-align: right;
+            font-weight: 300;
+        }
+
+        th, td {
+            width: 50%;
+            padding: 0.25em 0.5em 0;
+        }
+    }
+
+    &__pointer {
+        cursor: pointer;
+    }
+}
+
+.detail-card {
+    background: #999999;
+}
+
+.card {
+    background: #03cafc;
+
+    &__description {
+        max-height: 50px;
+    }
+}
