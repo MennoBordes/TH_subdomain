@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web.Mvc;
 
 namespace TH.WebUI.Base.HtmlHelpers
 {
-    using System.Web.Mvc;
-    public class PluginHelper
+    public class LibraryHelper
     {
         private const string FORMAT_SCRIPT = "<script type=\"text/javascript\" src=\"{0}\"></script>";
         private const string FORMAT_STYLE = "<link rel=\"stylesheet\" href=\"{0}\" />";
@@ -14,26 +10,32 @@ namespace TH.WebUI.Base.HtmlHelpers
         private HtmlHelper htmlHelper;
         private UrlHelper urlHelper;
 
-        public PluginHelper(HtmlHelper helper)
+        public LibraryHelper(HtmlHelper helper)
         {
             this.htmlHelper = helper;
             this.urlHelper = new UrlHelper(this.htmlHelper.ViewContext.RequestContext);
         }
 
-        public MvcHtmlString MomentJS()
+        public MvcHtmlString Bootstrap()
         {
-            string ref1 = Script("~/Resources/Plugins/momentjs-2.12.0/moment.min.js");
-            string ref2 = Script("~/Resources/Plugins/momentjs-2.12.0/moment-with-locales.min.js");
+            string ref1 = Style("~/resources/Libraries/bootstrap-3.4.1/css/bootstrap.min.css");
+            string ref2 = Script("~/Resources/Libraries/bootstrap-3.4.1/js/bootstrap.js");
 
             return new MvcHtmlString(ref1 + ref2);
         }
 
-        public MvcHtmlString Select2()
+        public MvcHtmlString JQuery()
         {
-            string ref1 = Style("~/resources/Plugins/Select2/Select2.css");
-            string ref2 = Script("~/resources/Plugins/Select2/select2.min.js");
+            string ref1 = Script("~/Resources/Libraries/jquery-3.4.1/jquery-3.4.1.js");
 
-            return new MvcHtmlString(ref1 + ref2);
+            return new MvcHtmlString(ref1);
+        }
+
+        public MvcHtmlString Modernizr()
+        {
+            string ref1 = Script("~/Resources/Libraries/modernizr-2.8.3/modernizr-2.8.3.js");
+
+            return new MvcHtmlString(ref1);
         }
 
         /// <summary> Script reference. </summary>

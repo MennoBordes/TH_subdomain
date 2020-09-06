@@ -10,5 +10,10 @@
         {
             return new PluginHelper(htmlHelper);
         }
+
+        public static LibraryHelper Libraries(this HtmlHelper htmlHelper)
+        {
+            return new LibraryHelper(htmlHelper);
+        }
     }
 }
