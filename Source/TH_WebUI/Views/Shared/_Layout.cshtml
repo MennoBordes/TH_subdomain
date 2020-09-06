@@ -4,20 +4,55 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Tas Houttechniek</title>
-    @Styles.Render("~/Content/css")
-    @Styles.Render("~/Styles/th/css")
-    @Styles.Render("~/Styles/test/css")
-    @Scripts.Render("~/bundles/jquery")
-    @*<script type="text/javascript" src="~/Resources/Scripts/_main.js"></script>*@
-    @Scripts.Render("~/bundles/modernizr")
-    @*@Styles.Render("~/Styles/select2/css")*@
-    @*@Scripts.Render("~/bundles/select2/js")*@
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/th")
-    @*@Html.THScript("th.feedback")
-        @Html.THScript("th")
-        @Html.THScript("th.dialog")*@
+    <!-- Libraries -->
+
+    <!-- Libraries: JQuery -->
+    @Html.Libraries().JQuery()
+    @*@Scripts.Render("~/bundles/jquery")*@
+    <!-- //Libraries: JQuery -->
+
+    <!-- Libraries: Bootstrap -->
+    @Html.Libraries().Bootstrap()
+    @*@Styles.Render("~/Styles/bootstrap")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    <!-- //Libraries: Bootstrap -->
+
+    <!-- Libraries: Modernizr -->
+    @Html.Libraries().Modernizr()
+    @*@Scripts.Render("~/bundles/modernizr")*@
+    <!-- //Libraries: Modernizr -->
+    <!-- //Libraries -->
+
+    <!-- Plugins -->
+    <!-- Plugins: Select2 -->
+    @Html.Plugins().Select2()
     @*@Html.Plugins().Select2()*@
+    @*@Styles.Render("~/Styles/select2/css")*@
+    <!-- //Plugins: Select2 -->
+
+    <!-- Plugins: MomentJS -->
+    @Html.Plugins().MomentJS()
+    <!-- //Plugins: MomentJS -->    
+    <!-- //Plugins -->
+
+    <!-- Styles-->
+    @Html.Style("~/Resources/Styles/Root.css")
+    @Html.Style("~/Resources/Styles/normalize.css")
+    @*@Html.Style("~/Resources/Styles/th.normalize.css")*@
+    @Html.Style("~/Resources/Styles/Site.css")
+    @Html.Style("~/Resources/Styles/th.ui.css")
+    @Html.Style("~/Resources/Styles/th.cards.css")
+    @Html.Style("~/Resources/Styles/th.tools.css")
+    <!-- //Styles-->
+
+    <!-- Scripts -->
+    @*@Html.Script("~/resources/scripts/_main.js")*@
+    @Html.Script("~/resources/scripts/th.feedback.js")
+    @Html.Script("~/resources/scripts/th.js")
+    @Html.Script("~/resources/scripts/th.dialog.js")
+    @Html.Script("~/resources/scripts/th.utils.js")
+    @*@Html.Script("~/resources/scripts/th.ui.daterangepicker.js")*@
+    <!-- //Scripts -->
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">

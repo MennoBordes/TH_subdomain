@@ -130,6 +130,7 @@
     <Compile Include="Base\HtmlHelpers\EnumHelper.cs" />
     <Compile Include="Base\HtmlHelpers\HelperFactory.cs" />
     <Compile Include="Base\HtmlHelpers\JsonHelper.cs" />
+    <Compile Include="Base\HtmlHelpers\LibraryHelper.cs" />
     <Compile Include="Base\HtmlHelpers\PluginHelper.cs" />
     <Compile Include="Base\HtmlHelpers\RenderHelper.cs" />
     <Compile Include="Base\HtmlHelpers\ResourceFactory.cs" />
