@@ -1,0 +1,83 @@
+﻿@using TH.Core.Tools.Form.Models
+
+@{ 
+    Form orderForm = (Form)ViewData["OrderForm"];
+}
+
+<h1>Create new order</h1>
+
+<div id="order-container">
+    <h2 id="order-name" data-hook="order-name"></h2>
+    <h3 id="order-description" data-hook="order-description"></h3>
+    <h4 id="order-data" data-hook="order-date"></h4>
+</div>
+
+<div>
+    @*@{ Html.RenderForm(orderForm); }*@
+</div>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Urls
+        var uLoad = '@Url.Content("~/modules/order/load")';
+
+
+        // Selectors
+        var sOrderName = '[data-hook=order-name]';
+        var sOrderDescription = '[data-hook=order-description]';
+        var sOrderDate = '[data-hook=order-date]';
+        var placeholder = '[data-hook=placeholder]';
+        var plId = 'placeholder';
+
+        RenderInitial();
+
+        function RenderInitial() {
+            DialogSystem.open({
+                ajax: {
+                    url: uLoad
+                },
+                dimension: { full: false, width: '50%', height: '50%' },
+                callback: function (e, data) {
+                    //debugger;
+                    if (e.action === 'cancel') {
+                        // Cancel creation
+                        window.location.href = '/modules/order/content';
+                    }
+                    else {
+                        UpdateDomFromOrder(data);
+                    }
+                }
+            });
+        }
+
+
+        function UpdateDomFromOrder(data) {
+            debugger;
+
+            // Display order data
+            if (data.next === 'order' && data.order !== null) {
+                $(sOrderName).html(data.order.ProjectName);
+                $(sOrderDescription).html(data.order.Description);
+                $(sOrderDate).html(data.order.CreationDate);
+
+                // Open new dialog
+                // render create window ? door ? frame dialog
+            }
+
+
+            // if action === 'window' ? 'door' ? 'frame' ? ('child')
+            // Show window ? door ? frame ? in page
+            // Display button for adding / editing / duplicating 
+
+            // if action === ''
+        }
+    });
+</script>

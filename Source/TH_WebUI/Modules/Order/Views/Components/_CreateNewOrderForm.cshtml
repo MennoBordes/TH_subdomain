@@ -1,0 +1,111 @@
+﻿@using TH.Core.Tools.Form.Models
+@using TH.WebUI.Tools.UIComponents
+
+@{ 
+    Layout = null;
+    Form form = (Form)ViewData["Form"];
+}
+
+@Html.DialogSettings(title: "Create order")
+
+<div class="area-tab-content" data-area="tab-content" data-hook="manage-connection-tabs">
+    @{ 
+        Html.RenderTabs(new TabsDisplay
+        {
+            Attributes = new Dictionary<string, object> { { "data-area", "tabs" } },
+            Items = new List<TabsDisplay.Item>
+            {
+                new TabsDisplay.Item { Key = "order", Label = "Order", Active = true },
+                new TabsDisplay.Item { Key = "order-data", Label = "Order Data" }
+            }
+        });
+    }
+
+    <div data-hook="tab-content" @*data-tab="order"*@ data-tab-content="order" class="area-connection-settings tab-content">
+        <h3>Order</h3>
+        @{Html.RenderForm(form);}
+    </div>
+    <div data-hook="tab-content" @*data-tab="order-data"*@ data-tab-content="order-data" class="tab-content area-connection-settings hidden">
+        <h3>Order Data</h3>
+        @{Html.RenderForm(form);}
+    </div>
+
+
+
+    <!-- Tabs -->
+    @*<div class="tab-container area-tabs tool-tabs" data-area="tabs">
+        <ul class="etabs">
+            <li class="tab active" data-hook="tab" data-target="order"><a>Order</a></li>
+            <li class="tab" data-hook="tab" data-target="order-data"><a>Order Data</a></li>
+        </ul>
+    </div>*@
+    <!-- //Tabs -->
+
+    <!-- Tab content -->
+    <!--<div data-area="tab-content" class="area-tab-content" data-hook="manage-feature-tabs">
+        <div data-area="order" class="area-content-start">
+            <h3>Order</h3>
+            @*@{ Html.RenderForm(form); }*@
+        </div>
+
+        <div data-area="order-data" class="area-content-general hidden">
+            <h3>Order Data</h3>
+            @*@{ Html.RenderForm(form); }*@
+        </div>
+    </div>-->
+
+    <!-- //Tab content -->
+
+    
+
+    <div class="buttonRow" data-ds-buttons>
+        <input type="button" class="button" data-button="btn-cancel" value="Cancel" />
+    <input type="button" class="button-create" data-button="btn-save" value="Save" />
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Selectors
+        var sCancel = '[data-button=btn-cancel]';
+        var sSave = '[data-button=btn-save]';
+        var sTabs = '[data-area=tabs]';
+        var sTabContent = '[data-tab-content]'
+        var sAreaTabs = '[data-area=tabs]';
+        var sOrder = '[data-area=order]';
+        var sOrderData = '[data-area=order-data]';
+
+        // Bind => cancel
+        $(document).off('click', sCancel);
+        $(document).on('click', sCancel, function () {
+            DialogSystem.done({ action: 'cancel' });
+        });
+        //debugger;
+        $(sTabs).thTabs({
+            click: function (li) {
+                debugger; 
+                // Step
+                var key = li.attr('data-key');
+
+                var node = $(sTabContent + '[data-tab-content=' + key + ']');
+                node.removeClass('hidden');
+                node.siblings('[data-tab-content]').addClass('hidden');
+            }
+        });
+
+        // Bind: Tabs
+        //$(sAreaTabs).thTabs({
+        //    click: function (li) {
+        //        var target = li.attr('data-target');
+
+        //        if (target == 'order') {
+        //            $(sOrder).addClass('hidden');
+        //            $(sOrderData).removeClass('hidden');
+        //        } else if (target == 'order-data') {
+        //            $(sOrder).removeClass('hidden');
+        //            $(sOrderData).addClass('hidden');
+        //        }
+        //    }
+        //});
+    });
+</script>

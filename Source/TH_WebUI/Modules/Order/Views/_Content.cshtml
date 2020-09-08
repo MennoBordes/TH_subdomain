@@ -7,6 +7,8 @@
 <h1>Orders</h1>
 
 <input type="button" data-hook="btn-new-order" value="Create New Order"/>
+<input type="button" data-hook="btn-new-order-form" value="Create New Order Form"/>
+<input type="button" data-hook="btn-create-order" value="Create Order"/>
 
 <!-- Order cards -->
 <div id="cards">
@@ -56,10 +58,20 @@
         // Urls
         var uOrderDetails = '@Url.Content("~/modules/order/order-details")';
         var uNewOrder = '@Url.Content("~/modules/order/new-order")';
+        var uCreateOrderForm = '@Url.Content("~/modules/order/create-order-form")';
+        var uCreateOrder = '@Url.Content("~/modules/order/create-order")';
         
         // Selectors
         var sBtnOrderDetails = '[data-hook=btn-order-details]';
         var sBtnNewOrder = '[data-hook=btn-new-order]';
+        var sBtnNewOrderForm = '[data-hook=btn-new-order-form]';
+        var sBtnCreateOrder = '[data-hook=btn-create-order]';
+
+        // Bind => Create Order
+        $(document).off('click', sBtnCreateOrder);
+        $(document).on('click', sBtnCreateOrder, function () {
+            window.location.href = uCreateOrder;
+        });
 
         // Bind => New Order
         $(document).off('click', sBtnNewOrder);
@@ -67,6 +79,23 @@
             DialogSystem.open({
                 ajax: {
                     url: uNewOrder
+                },
+                dimension: { full: false, width: '80%', height: '80%' },
+                environment: 'page',
+                callback: function (e) {
+                    if (e.action !== "cancel") {
+                        Reload();
+                    }
+                }
+            });
+        });
+
+        // Bind => New Order
+        $(document).off('click', sBtnNewOrderForm);
+        $(document).on('click', sBtnNewOrderForm, function () {
+            DialogSystem.open({
+                ajax: {
+                    url: uCreateOrderForm
                 },
                 dimension: { full: false, width: '80%', height: '80%' },
                 environment: 'page',
