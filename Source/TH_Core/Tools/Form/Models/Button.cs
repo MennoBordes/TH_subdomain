@@ -38,7 +38,7 @@ namespace TH.Core.Tools.Form.Models
         }
 
         /// <summary> Creates a new instance with the default configuration. </summary>
-        public static Button Init(int? id = null, string label = null, FormButtonType type = FormButtonType.Alternate)
+        public static Button Init(int? id = null, string label = null, int? col = null, FormButtonType type = FormButtonType.Alternate)
         {
             Button obj = new Button();
 
@@ -49,6 +49,8 @@ namespace TH.Core.Tools.Form.Models
             obj.Index = 0;
 
             obj.Label = label;
+
+            obj.Column = col ?? 1;
 
             return obj;
         }
