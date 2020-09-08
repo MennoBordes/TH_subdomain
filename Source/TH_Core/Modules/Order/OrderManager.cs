@@ -88,7 +88,7 @@ namespace TH.Core.Modules.Order
                 throw new CoreException("No Order Specified!");
 
             // Insert
-            order.Id = repository.Insert(order).InsertId.Value;
+            order.Id = SaveOrder(order);  // repository.Insert(order).InsertId.Value;
 
             foreach (OrderData data in order.OrderDatas)
             {
@@ -180,7 +180,7 @@ namespace TH.Core.Modules.Order
                 throw new CoreException("No OrderData Specified!");
 
             // Save Order
-            orderData.IdOrder = SaveOrder(orderData.Order);
+            //orderData.IdOrder = SaveOrder(orderData.Order);
 
             // Save Window
             if (orderData.Window != null)
