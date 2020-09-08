@@ -152,6 +152,8 @@
     <Compile Include="Tools\Form\ModelBinders\FormPostBinder.cs" />
     <Compile Include="Tools\Form\ModelBinders\MetadataBinder.cs" />
     <Compile Include="Tools\Form\Models\Field.cs" />
+    <Compile Include="Tools\UIComponents\HtmlHelpers\UIComponentHelper.cs" />
+    <Compile Include="Tools\UIComponents\Models\TabsDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\select2.css" />
@@ -191,6 +193,9 @@
     <Content Include="Modules\Door\Views\Components\_CreateNewDoor.cshtml" />
     <Content Include="Modules\Door\Views\_DoorDetails.cshtml" />
     <Content Include="Modules\People\Views\Components\_CreateNewForm.cshtml" />
+    <Content Include="Modules\Order\Views\Components\_CreateNewOrderForm.cshtml" />
+    <Content Include="Modules\Order\Views\_CreateOrder.cshtml" />
+    <Content Include="Modules\Order\Views\Components\_CreateOrder.cshtml" />
     <None Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.intellisense.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.js" />
@@ -213,6 +218,7 @@
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.map" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.slim.min.map" />
     <Content Include="Resources\Scripts\th.ui.daterangepicker.js" />
+    <Content Include="Resources\Scripts\th.ui.js" />
     <Content Include="Resources\Scripts\th.utils.js" />
     <Content Include="Resources\Scripts\_main.js" />
     <Content Include="Resources\Styles\normalize.css" />
@@ -320,6 +326,8 @@
     <Content Include="Tools\Form\Views\_Label.cshtml" />
     <Content Include="Tools\Form\Views\_Dropdown.cshtml" />
     <Content Include="Tools\Form\Views\_Radiobutton.cshtml" />
+    <Content Include="Tools\UIComponents\Views\_Tabs.cshtml" />
+    <Content Include="Tools\UIComponents\Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
