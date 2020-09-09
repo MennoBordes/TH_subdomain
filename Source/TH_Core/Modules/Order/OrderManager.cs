@@ -35,7 +35,7 @@ namespace TH.Core.Modules.Order
         //=== Manage: Order
 
         /// <summary> Get all orders. </summary>
-        public List<Order> GetOrders(bool orderByDecending = false)
+        public List<Order> GetOrders(bool orderByDecending = true)
         {
             XQuery q = new XQuery()
                 .From<Order>()
