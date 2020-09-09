@@ -237,10 +237,12 @@ namespace TH.Core.Modules.Order
         }
 
         /// <summary> Merge orderData into orders. </summary>
-        public void MergeAllIntoOrderData(List<Order> orders)
+        public void MergeAllIntoOrder(List<Order> orders)
         {
             if (orders.IsNullOrEmpty())
                 return;
+
+            MergeOrderDataIntoOrder(orders);
 
             List<OrderData> orderDatas = orders.Where(x => x.OrderDatas != null).SelectMany(x => x.OrderDatas).ToList();
 

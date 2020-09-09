@@ -189,13 +189,12 @@
       <DependentUpon>compilerconfig.json</DependentUpon>
     </None>
     <Content Include="Modules\Order\Views\_OrderDetails.cshtml" />
-    <Content Include="Modules\Order\Views\Components\_CreateNewOrder.cshtml" />
     <Content Include="Modules\Door\Views\Components\_CreateNewDoor.cshtml" />
     <Content Include="Modules\Door\Views\_DoorDetails.cshtml" />
     <Content Include="Modules\People\Views\Components\_CreateNewForm.cshtml" />
     <Content Include="Modules\Order\Views\Components\_CreateNewOrderForm.cshtml" />
-    <Content Include="Modules\Order\Views\_CreateOrder.cshtml" />
-    <Content Include="Modules\Order\Views\Components\_CreateOrder.cshtml" />
+    <Content Include="Modules\Order\Views\_CreateOrUpdateOrder.cshtml" />
+    <Content Include="Modules\Order\Views\Components\_CreateOrderForm.cshtml" />
     <None Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.intellisense.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.js" />
     <Content Include="Resources\Libraries\jquery-3.4.1\jquery-3.4.1.min.js" />

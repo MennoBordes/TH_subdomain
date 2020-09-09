@@ -1,25 +1,32 @@
 ﻿@using TH.Core.Tools.Form.Models
+@using TH.Core.Modules.Order.Entities
 
 @{ 
-    Form orderForm = (Form)ViewData["OrderForm"];
+    //Form orderForm = (Form)ViewData["OrderForm"];
+    Order order = (Order)ViewData["order"];
+    int? id = (int?)ViewData["orderId"];
+    bool createNewOrder = !id.HasValue && order == null;
 }
 
-<h1>Create new order</h1>
+@if (createNewOrder)
+{
+    <h1>Create new order</h1>
 
-<div id="order-container">
-    <h2 id="order-name" data-hook="order-name"></h2>
-    <h3 id="order-description" data-hook="order-description"></h3>
-    <h4 id="order-data" data-hook="order-date"></h4>
-</div>
+    <div id="order-container">
+        <h2 id="order-name" data-hook="order-name"></h2>
+        <h3 id="order-description" data-hook="order-description"></h3>
+        <h4 id="order-data" data-hook="order-date"></h4>
+    </div>
+} else
+{ 
+    <h1>Update order</h1>
+    <div id="order-container">
+        <h2 data-hook="order-name">@order.ProjectName</h2>
+        <h3 id="order-description" data-hook="order-description">@order.Description</h3>
+        <h4 id="order-data" data-hook="order-date">@order.GetDate()</h4>
+    </div>
+}
 
-<div>
-    @*@{ Html.RenderForm(orderForm); }*@
-</div>
-
-<br/>
-<br/>
-<br/>
-<br/>
 
 
 
@@ -27,22 +34,24 @@
     $(document).ready(function () {
 
         // Urls
-        var uLoad = '@Url.Content("~/modules/order/load")';
-
+        var uCreateOrderForm = '@Url.Content("~/modules/order/create-order-form")';
 
         // Selectors
         var sOrderName = '[data-hook=order-name]';
         var sOrderDescription = '[data-hook=order-description]';
         var sOrderDate = '[data-hook=order-date]';
-        var placeholder = '[data-hook=placeholder]';
-        var plId = 'placeholder';
 
-        RenderInitial();
+        // Vars
+        var createNewOrder = @Html.Json(createNewOrder);
 
-        function RenderInitial() {
+        if (createNewOrder) {
+            RenderCreateNewOrder();
+        }
+
+        function RenderCreateNewOrder() {
             DialogSystem.open({
                 ajax: {
-                    url: uLoad
+                    url: uCreateOrderForm
                 },
                 dimension: { full: false, width: '50%', height: '50%' },
                 callback: function (e, data) {
@@ -52,12 +61,13 @@
                         window.location.href = '/modules/order/content';
                     }
                     else {
-                        UpdateDomFromOrder(data);
+                        debugger;
+                        window.location.href = window.location.href + '?id=' + data.order.Id;
+                        //UpdateDomFromOrder(data);
                     }
                 }
             });
         }
-
 
         function UpdateDomFromOrder(data) {
             debugger;

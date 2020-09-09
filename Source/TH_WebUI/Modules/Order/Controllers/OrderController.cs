@@ -18,7 +18,7 @@ namespace TH.WebUI.Modules.Order.Controllers
 
         public ActionResult Content()
         {
-            List<Order> orders = oMan.GetOrders(orderByDecending: true);
+            List<Order> orders = oMan.GetOrders();
 
             oMan.MergeOrderDataIntoOrder(orders);
 
@@ -34,17 +34,10 @@ namespace TH.WebUI.Modules.Order.Controllers
                 return BadRequest();
 
             oMan.MergeOrderDataIntoOrder(new List<Order>() { order });
-            oMan.MergeAllIntoOrderData(new List<Order>() { order });
+            oMan.MergeAllIntoOrder(new List<Order>() { order });
 
             ViewData["order"] = order;
             return View(views + "_OrderDetails.cshtml");
-        }
-
-        [ActionName("new-order")]
-        public ActionResult CreateNewOrder()
-        {
-            Order order = new Order();
-            return View(views + "Components/_CreateNewOrder.cshtml", order);
         }
 
         [ActionName("save-new-order")]
@@ -61,31 +54,40 @@ namespace TH.WebUI.Modules.Order.Controllers
             return Json(new { success = true, message = "Saved succesfully!" });
         }
 
+        //[ActionName("create-order-form")]
+        //public ActionResult CreateOrderForm()
+        //{
+        //    Form form = GetCreateOrderForm();
+
+        //    ViewData["Form"] = form;
+        //    return View(views + "/components/_CreateNewOrderForm.cshtml");
+        //}
+
+        /// <summary> Renders the page for creating or editing order. </summary>
+        /// <param name="id">Optional id for editing order.</param>
+        [ActionName("create-or-update-order")]
+        public ActionResult CreateOrder(int? id = null)
+        {
+            ViewData["order"] = null;
+            if (id.HasValue && id.Value > 0)
+            {
+                Order order = oMan.GetOrder(id.Value);
+
+                oMan.MergeAllIntoOrder(new List<Order>() { order });
+                ViewData["order"] = order;
+            }
+            ViewData["orderId"] = id;
+
+            return View(views + "_CreateOrUpdateOrder.cshtml");
+        }
+
         [ActionName("create-order-form")]
         public ActionResult CreateOrderForm()
-        {
-            Form form = GetCreateOrderForm();
-
-            ViewData["Form"] = form;
-            return View(views + "/components/_CreateNewOrderForm.cshtml");
-        }
-
-        [ActionName("create-order")]
-        public ActionResult CreateOrder()
-        {
-            Form orderForm = GetCreateOrderForm();
-
-            ViewData["OrderForm"] = orderForm;
-            return View(views + "_CreateOrder.cshtml");
-        }
-
-        [ActionName("load")]
-        public ActionResult Load()
         {
             Form form = GetCreateOrderFormNew();
 
             ViewData["Form"] = form;
-            return View(views + "/components/_CreateOrder.cshtml");
+            return View(views + "/components/_CreateOrderForm.cshtml");
         }
 
         [ActionName("save-order")]
@@ -105,7 +107,7 @@ namespace TH.WebUI.Modules.Order.Controllers
             order.ProjectName = form.Element<Input>(1).Value;
             order.Description = form.Element<Input>(2).Value;
 
-            oMan.SaveOrder(order);
+            order.Id = oMan.SaveOrder(order);
 
             return Json(new { success = true, order = order, message = "Saved Order" });
         }
