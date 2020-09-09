@@ -21,10 +21,6 @@ namespace TH.Core.Modules.Door.Entities
         [DbColumn("Id_Door_Kind")]
         public int IdDoorKind { get; set; }
 
-        [DbColumn("Id_Glass")]
-        [Obsolete]
-        public int? IdGlass { get; set; }
-
         /// <summary> Width in mm. </summary>
         [DbColumn]
         public int Width { get; set; }

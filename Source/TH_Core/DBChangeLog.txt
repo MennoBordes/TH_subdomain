@@ -2,6 +2,16 @@
 Database changelog
 ==============================
 
+# 9-9-2020 Door column
+ALTER TABLE `door`
+	DROP COLUMN `Id_Glass`;
+
+# 9-9-2020 Order data default value
+ALTER TABLE `order_data`
+	CHANGE COLUMN `Id_Door` `Id_Door` INT(10) NULL DEFAULT NULL AFTER `Id_Order`,
+	CHANGE COLUMN `Id_Window` `Id_Window` INT(10) NULL DEFAULT NULL AFTER `Id_Door`,
+	CHANGE COLUMN `Id_Frame` `Id_Frame` INT(10) NULL DEFAULT NULL AFTER `Id_Window`;
+
 # 27-8-2020 Order description
 
 ALTER TABLE `order`
