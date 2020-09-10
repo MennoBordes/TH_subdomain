@@ -1,5 +1,11 @@
 ﻿@using TH.Core.Tools.Form.Models
 @using TH.Core.Modules.Order.Entities
+@using TH.Core.Modules.Door.Entities
+@using TH.Core.Modules.Window.Entities
+@using TH.Core.Modules.Frame.Entities
+@using TH.Core.Modules.Connection.Entities
+@using TH.Core.Modules.Glass.Entities
+@using TH.Core.Modules.Wood.Entities
 
 @{ 
     //Form orderForm = (Form)ViewData["OrderForm"];
@@ -13,18 +19,76 @@
     <h1>Create new order</h1>
 
     <div id="order-container">
-        <h2 id="order-name" data-hook="order-name"></h2>
-        <h3 id="order-description" data-hook="order-description"></h3>
-        <h4 id="order-data" data-hook="order-date"></h4>
+        <h2>Order Name: <span data-hook="order-name"></span></h2>
+        <h3>Order Description: <span data-hook="order-description"></span></h3>
+        <h4>Order Date: <span data-hook="order-date"></span></h4>
     </div>
 } else
 { 
+<div class="order">
     <h1>Update order</h1>
     <div id="order-container">
-        <h2 data-hook="order-name">@order.ProjectName</h2>
-        <h3 id="order-description" data-hook="order-description">@order.Description</h3>
-        <h4 id="order-data" data-hook="order-date">@order.GetDate()</h4>
+        <h2>Order Name: <span data-hook="order-name">@order.ProjectName</span></h2>
+        <h3>Order Description: <span data-hook="order-description">@order.Description</span></h3>
+        <h4>Order Date: <span data-hook="order-date">@order.GetDate()</span></h4>
     </div>
+</div>
+<div class="order-datas">
+    @if (order.OrderDatas is null)
+    {
+        <h3>No order data to display :(</h3>
+    }
+    else
+    { 
+        foreach (OrderData data in order.OrderDatas)
+        {
+            <div class="data-description">Beschrijving: @data.Description</div>
+
+            <!-- Door -->
+            <div class="data-door">
+                @if (data.IdDoor != null && data.Door != null)
+                {
+                    Door door = data.Door;
+
+                    <p>Deur ID: @door.Id</p>
+                    <div class="door-width">Deur Breedte: <span>@door.Width</span></div>
+                    <div class="door-height">Deur Hoogte: <span>@door.Height</span></div>
+                    <div class="door-thickness">Deur Dikte: <span>@door.Thickness</span></div>                    
+                }
+            </div>
+
+            <!-- //Door -->
+
+            <!-- Window -->
+            <div class="data-window">
+                @if (data.IdWindow != null && data.Window != null)
+                {
+                    Window window = data.Window;
+
+                    <p>Raam ID: @window.Id</p>
+                    <div class="window-width">Raam Breedte: <span>@window.Width</span></div>
+                    <div class="window-hieght">Raam Hoogte: <span>@window.Height</span></div>
+                    <div class="window-thickness">Raam Dikte: <span>@window.Thickness</span></div>
+                }
+            </div>
+            <!-- //Window -->
+
+            <!-- Frame -->
+            <div class="data-frame">
+                @if (data.IdFrame != null && data.Frame != null)
+                {
+                    Frame frame = data.Frame;
+                    <p>Kozijn ID: @frame.Id</p>
+                    <div class="frame-width">Raam Breedte: <span>@frame.Width</span></div>
+                    <div class="frame-hieght">Raam Hoogte: <span>@frame.Height</span></div>
+                    <div class="frame-thickness">Raam Dikte: <span>@frame.Thickness</span></div>
+                }
+            </div>
+            <!-- //Frame -->
+        }
+    }
+</div>
+
 }
 
 
